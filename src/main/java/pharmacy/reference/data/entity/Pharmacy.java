@@ -3,20 +3,27 @@ package pharmacy.reference.data.entity;
 import java.util.List;
 
 public class Pharmacy {
-    private int id;
+    private long id;
     private String name;
     private String address;
     private String district;
     private List<Medicine> medicines;
 
-    public Pharmacy(int id, String name, String address, String district) {
+    public Pharmacy(long id,
+                    String name,
+                    String address,
+                    String district) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.district = district;
     }
 
-    public Pharmacy(int id, String name, String address, String district, List<Medicine> medicines) {
+    public Pharmacy(long id,
+                    String name,
+                    String address,
+                    String district,
+                    List<Medicine> medicines) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -24,7 +31,7 @@ public class Pharmacy {
         this.medicines = medicines;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -44,7 +51,7 @@ public class Pharmacy {
         return medicines;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -67,7 +74,7 @@ public class Pharmacy {
     @Override
     public int hashCode() {
         final int prime = 31;
-        return prime * id
+        return (int)  id * prime
                 + name.hashCode()
                 + address.hashCode()
                 + district.hashCode();

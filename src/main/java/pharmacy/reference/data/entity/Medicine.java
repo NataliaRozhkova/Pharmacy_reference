@@ -1,14 +1,14 @@
 package pharmacy.reference.data.entity;
 
 public class Medicine {
-    private int id;
+    private long id;
     private String name;
     private float price;
     private String manufacturer;
     private Pharmacy pharmacy;
     private String pharmacyName;
 
-    public Medicine(int id,
+    public Medicine(long id,
                     String name,
                     float price,
                     String manufacturer,
@@ -20,7 +20,7 @@ public class Medicine {
         this.pharmacyName = pharmacyName;
     }
 
-    public Medicine(int id,
+    public Medicine(long id,
                     String name,
                     float price,
                     String manufacturer,
@@ -32,7 +32,7 @@ public class Medicine {
         this.pharmacy = pharmacy;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -56,7 +56,7 @@ public class Medicine {
         return pharmacyName;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
