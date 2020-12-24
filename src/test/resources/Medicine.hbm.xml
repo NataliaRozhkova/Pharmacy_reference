@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="moscow.exchange.data.entity.Medicine" table="medicines">
+        <id name="id" type="long" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="name" column="name" type="string"/>
+        <property name="price" column="price" type="float"/>
+        <property name="manufacturer" column="manufacturer" type="string"/>
+        <many-to-one name="pharmacy" column="id" class="moscow.exchange.data.entity.Pharmacy" not-null="true"/>
+    </class>
+</hibernate-mapping>
