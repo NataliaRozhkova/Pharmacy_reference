@@ -3,7 +3,7 @@
         "-//Hibernate/Hibernate Mapping DTD//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="moscow.exchange.data.entity.Pharmacy" table="pharmacies">
+    <class name="pharmacy.reference.data.entity.Pharmacy" table="pharmacies">
         <id name="id" type="long" column="id">
             <generator class="identity"/>
         </id>
@@ -16,7 +16,7 @@
             <key>
                 <column name="id" not-null="true"/>
             </key>
-            <one-to-many class="moscow.exchange.data.entity.Medicine"/>
+            <one-to-many class="pharmacy.reference.data.entity.Medicine"/>
         </bag>
 
     </class>

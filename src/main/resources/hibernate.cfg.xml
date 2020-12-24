@@ -8,7 +8,7 @@
         <property name="hibernate.connection.username">user1</property>
         <property name="connection.password">123</property>
         <property name="hibernate.hbm2ddl.auto">update</property>
-        <mapping resource="Security.hbm.xml"/>
-        <mapping resource="Transaction.hbm.xml"/>
+        <mapping resource="Pharmacy.hbm.xml"/>
+        <mapping resource="Medicine.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>
