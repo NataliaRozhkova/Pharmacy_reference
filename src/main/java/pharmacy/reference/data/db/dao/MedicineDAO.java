@@ -6,6 +6,7 @@ import pharmacy.reference.data.Response;
 import pharmacy.reference.data.entity.Medicine;
 
 import javax.persistence.PersistenceException;
+import java.util.List;
 
 public class MedicineDAO {
     private final Session session;
@@ -21,8 +22,8 @@ public class MedicineDAO {
         try {
             session.save(medicine);
             session.getTransaction().commit();
-        response = new Response<>("Success", Response.State.SUCCESS);
-        }catch (TransientPropertyValueException e) {
+            response = new Response<>("Success", Response.State.SUCCESS);
+        } catch (TransientPropertyValueException e) {
             response = new Response<>("Pharmacy not found", Response.State.ERROR);
         } catch (PersistenceException e) {
             response = new Response<>(e.getMessage(), Response.State.ERROR);
@@ -32,7 +33,7 @@ public class MedicineDAO {
         return response;
     }
 
-    public Response<Medicine> readById (final long id) {
+    public Response<Medicine> readById(final long id) {
         session.getTransaction();
         Response<Medicine> response;
         try {
@@ -51,7 +52,7 @@ public class MedicineDAO {
         return response;
     }
 
-    public Response<String> delete (final long id) {
+    public Response<String> delete(final long id) {
         session.beginTransaction();
         Response<String> response;
         Medicine medicine = session.get(Medicine.class, id);
@@ -88,4 +89,31 @@ public class MedicineDAO {
         return response;
 
     }
+
+    public Response<List<Medicine>> readAll() {
+        session.beginTransaction();
+        List<Medicine> medicines = session.createQuery("FROM Medicine").list();
+        session.getTransaction().commit();
+        session.close();
+        return new Response<>(medicines, Response.State.SUCCESS);
+    }
+
+    public Response<List<Medicine>> readWithFilterParameter(String value) {
+        session.beginTransaction();
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT i FROM Medicine i JOIN FETCH i.pharmacy");
+        query.append(setFilterParameter(value));
+        List<Medicine> securities = session.createQuery(query.toString(), Medicine.class).getResultList();
+        ;
+        session.close();
+        return new Response<>(securities, Response.State.SUCCESS);
+
+    }
+
+    private String setFilterParameter(String value) {
+        return " WHERE lower(i.name)  LIKE  lower(\'%" + value + "%\')";
+
+    }
+
+
 }

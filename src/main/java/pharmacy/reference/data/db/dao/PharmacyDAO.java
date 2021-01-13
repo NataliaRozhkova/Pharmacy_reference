@@ -33,7 +33,7 @@ public class PharmacyDAO {
 
     public Response<List<Pharmacy>> readAll() {
         session.beginTransaction();
-        List<Pharmacy> pharmacies = session.createQuery("FROM pharmacies").list();
+        List<Pharmacy> pharmacies = session.createQuery("FROM Pharmacy").list();
         session.getTransaction().commit();
         session.close();
         return new Response<>(pharmacies, Response.State.SUCCESS);
