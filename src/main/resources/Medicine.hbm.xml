@@ -12,6 +12,6 @@
         <property name="quantity" column="quantity" type="int"/>
 
         <property name="manufacturer" column="manufacturer" type="string"/>
-        <many-to-one name="pharmacy" column="pharmacy" class="pharmacy.reference.data.entity.Pharmacy" not-null="true"/>
+        <many-to-one name="pharmacy" column="pharmacy_id" class="pharmacy.reference.data.entity.Pharmacy" not-null="true"/>
     </class>
 </hibernate-mapping>

@@ -4,17 +4,17 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
     <class name="pharmacy.reference.data.entity.Pharmacy" table="pharmacies">
-        <id name="id" type="long" column="id">
-            <generator class="identity"/>
+        <id name="pharmacyId" type="long" column="pharmacy_id">
+            <generator class="identity" />
         </id>
         <property name="name" column="name" type="string"/>
         <property name="address" column="address" type="string"/>
         <property name="district" column="district" type="string"/>
 
-        <bag name="medicines" table="medicines" inverse="true" lazy="false" fetch="select"
+        <bag name="medicines" table="medicines"  inverse="true" lazy="false" fetch="select"
              cascade="all-delete-orphan">
             <key>
-                <column name="id" not-null="true"/>
+                <column name="pharmacy_id" not-null="true"/>
             </key>
             <one-to-many class="pharmacy.reference.data.entity.Medicine"/>
         </bag>
