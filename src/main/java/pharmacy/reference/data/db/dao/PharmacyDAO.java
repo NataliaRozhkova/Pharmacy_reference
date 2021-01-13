@@ -5,6 +5,7 @@ import pharmacy.reference.data.Response;
 import pharmacy.reference.data.entity.Pharmacy;
 
 import javax.persistence.PersistenceException;
+import java.util.List;
 
 public class PharmacyDAO {
     private final Session session;
@@ -28,6 +29,14 @@ public class PharmacyDAO {
             session.close();
         }
         return response;
+    }
+
+    public Response<List<Pharmacy>> readAll() {
+        session.beginTransaction();
+        List<Pharmacy> pharmacies = session.createQuery("FROM pharmacies").list();
+        session.getTransaction().commit();
+        session.close();
+        return new Response<>(pharmacies, Response.State.SUCCESS);
     }
 
     public Response<Pharmacy> readById(final long id) {
