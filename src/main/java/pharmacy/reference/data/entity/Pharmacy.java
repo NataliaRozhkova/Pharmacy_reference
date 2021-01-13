@@ -31,6 +31,9 @@ public class Pharmacy {
         this.medicines = medicines;
     }
 
+    public Pharmacy() {
+    }
+
     public long getId() {
         return id;
     }

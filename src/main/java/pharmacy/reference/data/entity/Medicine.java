@@ -4,6 +4,7 @@ public class Medicine {
     private long id;
     private String name;
     private float price;
+    private int quantity;
     private String manufacturer;
     private Pharmacy pharmacy;
     private String pharmacyName;
@@ -11,11 +12,13 @@ public class Medicine {
     public Medicine(long id,
                     String name,
                     float price,
+                    int quantity,
                     String manufacturer,
                     String pharmacyName) {
         this.id = id;
         this.name = name;
         this.price = price;
+        this.quantity = quantity;
         this.manufacturer = manufacturer;
         this.pharmacyName = pharmacyName;
     }
@@ -23,13 +26,18 @@ public class Medicine {
     public Medicine(long id,
                     String name,
                     float price,
+                    int quantity,
                     String manufacturer,
                     Pharmacy pharmacy) {
         this.id = id;
         this.name = name;
         this.price = price;
+        this.quantity = quantity;
         this.manufacturer = manufacturer;
         this.pharmacy = pharmacy;
+    }
+
+    public Medicine() {
     }
 
     public long getId() {
@@ -42,6 +50,10 @@ public class Medicine {
 
     public float getPrice() {
         return price;
+    }
+
+    public int getQuantity() {
+        return quantity;
     }
 
     public String getManufacturer() {
@@ -66,6 +78,10 @@ public class Medicine {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public void setManufacturer(String manufacturer) {
