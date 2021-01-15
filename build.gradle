@@ -11,4 +11,28 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation 'org.jetbrains:annotations:19.0.0'
+    implementation group: 'org.postgresql', name: 'postgresql', version: '42.1.4'
+    implementation 'com.google.guava:guava:26.0-jre'
+    implementation 'org.apache.commons:commons-dbcp2:2.7.0'
+
+    implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.2.4'
+    implementation group: 'com.sun.xml.bind', name: 'jaxb-impl', version: '2.3.2'
+    implementation group: 'com.sun.xml.bind', name: 'jaxb-core', version: '2.3.0.1'
+
+    implementation 'org.hibernate:hibernate-core:5.4.22.Final'
+    implementation 'org.hibernate:hibernate-core:5.4.22.Final'
+
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.6'
+    compile group: 'javax.mail', name: 'mail', version: '1.4.1'
+
+// https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
+    compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.9'
+
+    // https://mvnrepository.com/artifact/commons-io/commons-io
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+    compile group: 'au.com.bytecode', name: 'opencsv', version: '2.4'
+
+
+
 }
