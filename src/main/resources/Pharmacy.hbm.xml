@@ -8,6 +8,7 @@
             <generator class="identity" />
         </id>
         <property name="name" column="name" type="string"/>
+        <property name="telephoneNumbers" column="telephone_numbers" type="string"/>
         <property name="address" column="address" type="string"/>
         <property name="district" column="district" type="string"/>
 
