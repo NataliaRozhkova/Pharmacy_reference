@@ -6,6 +6,7 @@ public class TableHeadVariants {
     public static final String MANUFACTURE = "columnMedicineManufactureNumber";
     public static final String QUANTITY = "columnMedicineQuantityNumber";
     public static final String PRICE = "columnMedicinePriceNumber";
+    public static final String COUNTRY = "columnMedicineCountryNumber";
 
     public static String tableHeadParse(String cellValue) {
 
@@ -26,6 +27,7 @@ public class TableHeadVariants {
                 return MANUFACTURE;
             case "количество":
             case "кол-во":
+            case "кол-во(ед)":
             case "количествотовара":
             case "кол.":
             case "ost":
@@ -39,7 +41,13 @@ public class TableHeadVariants {
             case "ценарозн.":
             case "розничнаяцена":
             case "cena":
+            case "ценапопрайсу({currencysymbol})заединицутовара":
                 return PRICE;
+            case "country":
+            case "страна":
+            case "странапроизводитель":
+            case "strana":
+                return COUNTRY;
             default:
                 return null;
         }
