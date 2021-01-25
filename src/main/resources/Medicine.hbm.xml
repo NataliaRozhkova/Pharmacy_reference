@@ -10,8 +10,8 @@
         <property name="name" column="name" type="string"/>
         <property name="price" column="price" type="float"/>
         <property name="quantity" column="quantity" type="int"/>
-
         <property name="manufacturer" column="manufacturer" type="string"/>
+        <property name="country" column="country" type="string"/>
         <many-to-one name="pharmacy" column="pharmacy_id" class="pharmacy.reference.data.entity.Pharmacy" not-null="true"/>
     </class>
 </hibernate-mapping>
