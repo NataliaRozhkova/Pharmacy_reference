@@ -1,26 +1,39 @@
 package pharmacy.reference.data.entity;
 
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class Pharmacy {
+    @SerializedName ("id")
     private long pharmacyId;
+    @SerializedName("name")
     private String name;
+    @SerializedName("telephone_numbers")
     private String telephoneNumbers;
+    @SerializedName("address")
     private String address;
+    @SerializedName("district")
     private String district;
+    @SerializedName("email")
+    private String email;
+    @SerializedName("product_list")
     private List<Medicine> medicines;
 
     public Pharmacy(long pharmacyId,
                     String name,
                     String telephoneNumbers,
                     String address,
-                    String district) {
+                    String district,
+                    String email
+    ) {
         this.pharmacyId = pharmacyId;
         this.name = name;
         this.telephoneNumbers = telephoneNumbers;
         this.address = address;
         this.district = district;
+        this.email = email;
     }
 
     public Pharmacy(long pharmacyId,
@@ -28,6 +41,7 @@ public class Pharmacy {
                     String telephoneNumbers,
                     String address,
                     String district,
+                    String email,
                     List<Medicine> medicines) {
         this.pharmacyId = pharmacyId;
         this.name = name;
@@ -35,10 +49,12 @@ public class Pharmacy {
         this.address = address;
         this.district = district;
         this.medicines = medicines;
+        this.email = email;
     }
 
     public Pharmacy() {
     }
+
 
     public long getPharmacyId() {
         return pharmacyId;
@@ -54,6 +70,10 @@ public class Pharmacy {
 
     public String getAddress() {
         return address;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public String getDistrict() {
@@ -76,6 +96,10 @@ public class Pharmacy {
         this.telephoneNumbers = telephoneNumbers;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public void setAddress(String address) {
         this.address = address;
     }
@@ -92,7 +116,7 @@ public class Pharmacy {
     public int hashCode() {
         final int prime = 31;
         return (int) pharmacyId * prime
-                +  telephoneNumbers.hashCode()
+                + telephoneNumbers.hashCode()
                 + name.hashCode()
                 + address.hashCode()
                 + district.hashCode();

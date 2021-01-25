@@ -1,12 +1,23 @@
 package pharmacy.reference.data.entity;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Medicine {
+    @SerializedName("id")
     private long id;
+    @SerializedName("name")
     private String name;
+    @SerializedName("price")
     private float price;
+    @SerializedName("quantity")
     private int quantity;
+    @SerializedName("manufacturer")
     private String manufacturer;
-    private Pharmacy pharmacy;
+    @SerializedName("country")
+    private String country;
+    private transient Pharmacy pharmacy;
+    @SerializedName("pharmacy_name")
     private String pharmacyName;
 
     public Medicine(long id,
@@ -14,12 +25,14 @@ public class Medicine {
                     float price,
                     int quantity,
                     String manufacturer,
+                    String country,
                     String pharmacyName) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
         this.manufacturer = manufacturer;
+        this.country = country;
         this.pharmacyName = pharmacyName;
     }
 
@@ -28,12 +41,14 @@ public class Medicine {
                     float price,
                     int quantity,
                     String manufacturer,
+                    String country,
                     Pharmacy pharmacy) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
         this.manufacturer = manufacturer;
+        this.country = country;
         this.pharmacy = pharmacy;
     }
 
@@ -58,6 +73,10 @@ public class Medicine {
 
     public String getManufacturer() {
         return manufacturer;
+    }
+
+    public String getCountry() {
+        return country;
     }
 
     public Pharmacy getPharmacy() {
@@ -86,6 +105,10 @@ public class Medicine {
 
     public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public void setPharmacy(Pharmacy pharmacy) {
