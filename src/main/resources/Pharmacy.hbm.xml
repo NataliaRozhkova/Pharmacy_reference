@@ -10,6 +10,7 @@
         <property name="name" column="name" type="string"/>
         <property name="telephoneNumbers" column="telephone_numbers" type="string"/>
         <property name="address" column="address" type="string"/>
+        <property name="email" column="email" type="string"/>
         <property name="district" column="district" type="string"/>
 
         <bag name="medicines" table="medicines"  inverse="true" lazy="false" fetch="select"
