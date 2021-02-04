@@ -1,4 +1,4 @@
-package pharmacy.reference.data.entity.parser;
+package pharmacy.reference.spring_server.parser;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -7,7 +7,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import pharmacy.reference.data.entity.Pharmacy;
+import pharmacy.reference.spring_server.entity.Pharmacy;
 
 import java.io.*;
 import java.util.ArrayList;

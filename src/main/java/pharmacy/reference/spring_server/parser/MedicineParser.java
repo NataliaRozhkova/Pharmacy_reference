@@ -1,22 +1,15 @@
-package pharmacy.reference.data.entity.parser;
+package pharmacy.reference.spring_server.parser;
 
-import au.com.bytecode.opencsv.CSVReader;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.tika.parser.txt.CharsetDetector;
-import org.apache.tika.parser.txt.CharsetMatch;
-import pharmacy.reference.data.entity.Medicine;
-import pharmacy.reference.data.entity.Pharmacy;
+import pharmacy.reference.spring_server.entity.Medicine;
+import pharmacy.reference.spring_server.entity.Pharmacy;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 public class MedicineParser {
@@ -58,10 +51,6 @@ public class MedicineParser {
         }
         return medicines;
     }
-
-
-
-
 
 
 }

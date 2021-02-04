@@ -1,4 +1,4 @@
-package pharmacy.reference.data.entity.parser;
+package pharmacy.reference.spring_server.parser;
 
 public class TableHeadVariants {
 

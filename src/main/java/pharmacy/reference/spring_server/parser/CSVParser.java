@@ -1,12 +1,11 @@
-package pharmacy.reference.data.entity.parser;
+package pharmacy.reference.spring_server.parser;
 
 import au.com.bytecode.opencsv.CSVReader;
 import org.apache.commons.io.IOUtils;
 import org.apache.tika.parser.txt.CharsetDetector;
 import org.apache.tika.parser.txt.CharsetMatch;
-import pharmacy.reference.PharmacyFileReader;
-import pharmacy.reference.data.entity.Medicine;
-import pharmacy.reference.data.entity.Pharmacy;
+import pharmacy.reference.spring_server.entity.Medicine;
+import pharmacy.reference.spring_server.entity.Pharmacy;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -43,7 +42,7 @@ public class CSVParser {
             }
             if (allRows.get(allRows.size() / 2).length == 1) {
                 stream.close();
-                String newTransformFile  = transformFile(file);
+                String newTransformFile = transformFile(file);
                 stream = new FileInputStream(newTransformFile);
                 isr = new InputStreamReader(stream);
                 reader = new CSVReader(isr, '\t', '\n');
