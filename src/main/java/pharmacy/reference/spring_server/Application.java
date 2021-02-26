@@ -15,7 +15,7 @@ import javax.servlet.MultipartConfigElement;
 //@ComponentScan
 @EnableAutoConfiguration
 @SpringBootApplication
-//@EnableJpaRepositories(basePackages = "pharmacy.reference.data.repository")
+@EnableJpaRepositories(basePackages = "pharmacy.reference.spring_server.repositories")
 
 public class Application {
 

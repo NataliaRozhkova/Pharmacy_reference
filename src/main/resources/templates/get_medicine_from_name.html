@@ -1,0 +1,99 @@
+<html charset="UTF-8" meta xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Аптечная справочная</title>
+    <link href="./select.css" rel="stylesheet">
+    <script src="./index_script.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <style type="text/css">
+.hideFullColumn tr > .hidecol
+{
+    display:none;
+}
+</style>
+
+</head>
+<body>
+Название <input id="medicine_name" placeholder="введи" required type="text" >
+Район
+<select class="form-control" id="district" name="district">
+    <option value=""></option>
+    <option th:each="district : ${districts}"
+            th:value="${district.name}"
+            th:text="${district.name} "></option>
+</select>
+Город
+<select class="form-control" id="town" name="town">
+    <option value=""></option>
+    <option th:each="town : ${towns}"
+            th:value="${town.name}"
+            th:text="${town.name} "></option>
+</select>
+Категория
+<select class="form-control" id="chain" name="chain">
+    <option value=""></option>
+    <option th:each="chain : ${chains}"
+            th:value="${chain.id}"
+            th:text="${chain.name} "></option>
+</select>
+Аптека
+<select class="form-control" id="pharmacy" name="pharmacy">
+    <option value="">Выберите аптеку</option>
+    <option th:each="pharmacy : ${pharmacies}"
+            th:value="${pharmacy.pharmacyId}"
+            th:text="${pharmacy.name} +'  :  '+${pharmacy.address}"></option>
+</select>
+
+<br><br>
+<button id="switcher" onclick="submitForm()"> Поиск
+</button>
+
+<button id="cliner" onclick="clearInput()"> Очистить
+</button>
+
+<input type="button" id="stat" value="Stat" onclick="fnselect()"/>
+<br><br>
+<div id="showData">
+    <table id="table" align="center" width="100%" frame="border"  border="1" bordercolor="grey" cellpadding="5" class="none">
+        <tr>
+            <th>Название</th>
+            <th>Аптека</th>
+            <th>Телефон</th>
+            <th>Район</th>
+            <th>Цена</th>
+            <th>Количество</th>
+            <th>Производитель</th>
+            <th>Последнее обновление</th>
+            <th style="hideFullColumn">ID</th>
+        </tr>
+
+    </table>
+
+    <script>
+
+
+
+    document.getElementById('medicine_name').addEventListener('change', submitForm);
+
+ function highlight(e) {
+        if (selected[0]) selected[0].className = '';
+        e.target.parentNode.className = 'selected';
+}
+
+    var table = document.getElementById('table'),
+        selected = table.getElementsByClassName('selected');
+    table.onclick = highlight;
+    table.className='';
+
+    function fnselect(){
+
+        alert("Отправляем в статистику " +  $("tr.selected td:last" ).html());
+    }
+
+
+</script>
+</div>
+
+</body>
+</html>
+

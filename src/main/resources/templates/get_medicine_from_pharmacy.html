@@ -1,0 +1,129 @@
+<html charset="UTF-8" meta xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Аптечная справочная</title>
+    <link href="static/select.css" rel="stylesheet">
+    <script src="static/index_script.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+
+Аптека
+<!--<select class="form-control" id="pharmacy" name="pharmacy">-->
+<!--    <option value="">Выберите аптеку</option>-->
+<!--    <option th:each="pharmacy : ${pharmacies}"-->
+<!--            th:value="${pharmacy.pharmacyId}"-->
+<!--            th:text="${pharmacy.name} +'  :  '+${pharmacy.address}"></option>-->
+<!--</select>-->
+
+<form action="#" th:action="@{/pharmacy}" th:object="${pharmacy}" method="get">
+
+    <select class="form-control" id="pharmacy" name="pharmacy">
+        <option value="">Выберите аптеку</option>
+        <option th:each="pharmacy : ${pharmacies}"
+                th:value="${pharmacy.pharmacyId}"
+                th:text="${pharmacy.name} +'  :  '+${pharmacy.address}"></option>
+    </select>
+
+
+</form>
+
+<br><br>
+<button id="switcher" onclick="submitPharmacy()"> Поиск
+</button>
+
+<br><br>
+
+<div id="showData">
+    <table id="table" align="center" width="100%" frame="border"  border="1"  cellpadding="5" >
+        <tr>
+            <th>Название</th>
+            <th>Аптека</th>
+            <th>Телефон</th>
+            <th>Район</th>
+            <th>Цена</th>
+            <th>Количество</th>
+            <th>Производитель</th>
+            <th>ID</th>
+        </tr>
+
+    </table>
+
+<script>
+function submitPharmacy(){
+
+    cleanTable();
+    let request = new XMLHttpRequest();
+    let url = 'http://localhost:8080/medicine/get/all/from/pharmacy';
+    url += '?pharmacy=' + pharmacy.value;
+    request.open("GET", url);
+    request.responseType = 'json';
+    request.onload = function () {
+        var response = request.response;
+        if (response.length > 0) {
+            drawTable(response);
+        }
+    }
+     request.send();
+}
+
+function drawTable(data) {
+    var name = 'name';
+    var price = 'price';
+    var quantity = 'quantity';
+    var pharmacy = 'pharmacy';
+    var address = 'address';
+    var telephone_numbers = 'telephoneNumbers';
+    var manufacturer = 'manufacturer';
+    var id = 'id';
+    var district = 'district';
+
+    var table = document.getElementById("table");
+    for (var i = 0; i < data.length; i++) {
+        tr = table.insertRow(-1);
+
+        var tabCell = tr.insertCell(-1);
+        tabCell.innerHTML = data[i][name];
+        var tabCell = tr.insertCell(-1);
+        tabCell.innerHTML = data[i][pharmacy][name] + ' (' + data[i][pharmacy][address] + ')';
+        var tabCell = tr.insertCell(-1);
+        tabCell.innerHTML = data[i][pharmacy][telephone_numbers];
+        var tabCell = tr.insertCell(-1);
+        tabCell.innerHTML = data[i][pharmacy][district];
+        var tabCell = tr.insertCell(-1);
+        tabCell.align = 'center';
+        tabCell.innerHTML = data[i][price];
+        var tabCell = tr.insertCell(-1);
+        tabCell.align = 'center';
+        tabCell.innerHTML = data[i][quantity];
+        var tabCell = tr.insertCell(-1);
+        tabCell.innerHTML = data[i][manufacturer];
+        var tabCell = tr.insertCell(-1);
+        tabCell.innerHTML = data[i][id];
+
+    }
+}
+
+function clearInput() {
+    var medicine_name = document.getElementById('medicine_name');
+    medicine_name.value = "";
+    var district = document.getElementById('district');
+    district.value = "";
+    var town = document.getElementById('town');
+    town.value = "";
+    var chain = document.getElementById('chain');
+    chain.value = "";
+    cleanTable();
+
+}
+
+function cleanTable() {
+    for (var i = document.getElementById('table').getElementsByTagName('tr').length -1; i; i--) {
+        document.getElementById('table').deleteRow(i);
+    }
+}
+</script>
+</div>
+
+</body>
+</html>
+

@@ -7,14 +7,11 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import pharmacy.reference.spring_server.entity.Medicine;
-import pharmacy.reference.spring_server.entity.Pharmacy;
+import pharmacy.reference.spring_server.entitis.Medicine;
+import pharmacy.reference.spring_server.entitis.Pharmacy;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class ExcelParser {
     private final HashMap<String, Integer> columnNumberNames = new HashMap<>();
@@ -53,6 +50,7 @@ public class ExcelParser {
             Medicine medicine = parseMedicineFromRowExel(iterator.next());
             if (medicine != null && medicine.getName() != null && !medicine.getName().equals("")) {
                 medicine.setPharmacy(pharmacy);
+                medicine.setDate(new Date(System.currentTimeMillis()));
                 medicines.add(medicine);
             }
         }
@@ -65,35 +63,40 @@ public class ExcelParser {
 
 
     private Medicine parseMedicineFromRowExel(Row row) {
-        Iterator<Cell> cells = row.iterator();
-        int column = 0;
-        Medicine medicine = new Medicine();
-        while (cells.hasNext()) {
-            Cell cell = cells.next();
-            try {
-                if (columnNumberNames.containsKey(TableHeadVariants.NAME) && column == columnNumberNames.get(TableHeadVariants.NAME)) {
-                    medicine.setName(cell.getStringCellValue());
-                }
-                if (columnNumberNames.containsKey(TableHeadVariants.PRICE) && column == columnNumberNames.get(TableHeadVariants.PRICE)) {
-                    medicine.setPrice((float) cell.getNumericCellValue());
-                }
-                if (columnNumberNames.containsKey(TableHeadVariants.QUANTITY) && column == columnNumberNames.get(TableHeadVariants.QUANTITY)) {
-                    medicine.setQuantity((int) cell.getNumericCellValue());
-                }
-                if (columnNumberNames.containsKey(TableHeadVariants.MANUFACTURE) && column == columnNumberNames.get(TableHeadVariants.MANUFACTURE)) {
-                    medicine.setManufacturer(cell.getStringCellValue());
-                }
-                if (columnNumberNames.containsKey(TableHeadVariants.COUNTRY) && column == columnNumberNames.get(TableHeadVariants.COUNTRY)) {
-                    medicine.setCountry(cell.getStringCellValue());
-                }
-            } catch (RuntimeException e) {
-                medicine = null;
-                break;
+        if (row.getLastCellNum() > 1) {
+            Iterator<Cell> cells = row.iterator();
+            int column = 0;
+            Medicine medicine = new Medicine();
+            while (cells.hasNext()) {
+                Cell cell = cells.next();
 
+                try {
+                    if (columnNumberNames.containsKey(TableHeadVariants.NAME) && column == columnNumberNames.get(TableHeadVariants.NAME)) {
+                        medicine.setName(cell.getStringCellValue());
+                    }
+                    if (columnNumberNames.containsKey(TableHeadVariants.PRICE) && column == columnNumberNames.get(TableHeadVariants.PRICE)) {
+                        medicine.setPrice((float) cell.getNumericCellValue());
+                    }
+                    if (columnNumberNames.containsKey(TableHeadVariants.QUANTITY) && column == columnNumberNames.get(TableHeadVariants.QUANTITY)) {
+                        medicine.setQuantity((int) cell.getNumericCellValue());
+                    }
+                    if (columnNumberNames.containsKey(TableHeadVariants.MANUFACTURE) && column == columnNumberNames.get(TableHeadVariants.MANUFACTURE)) {
+                        medicine.setManufacturer(cell.getStringCellValue());
+                    }
+                    if (columnNumberNames.containsKey(TableHeadVariants.COUNTRY) && column == columnNumberNames.get(TableHeadVariants.COUNTRY)) {
+                        medicine.setCountry(cell.getStringCellValue());
+                    }
+                } catch (RuntimeException e) {
+                    medicine = null;
+                    break;
+
+                }
+                column++;
             }
-            column++;
+
+            return medicine;
         }
-        return medicine;
+        else return null;
     }
 
     private void setColumnTypeNumberExcel(Iterator<Row> iterator) {

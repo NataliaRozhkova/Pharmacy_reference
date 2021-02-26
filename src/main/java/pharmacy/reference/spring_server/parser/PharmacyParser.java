@@ -7,7 +7,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import pharmacy.reference.spring_server.entity.Pharmacy;
+import pharmacy.reference.spring_server.entitis.Pharmacy;
+import pharmacy.reference.spring_server.entitis.PharmacyChain;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -17,6 +18,11 @@ import java.util.NoSuchElementException;
 
 public class PharmacyParser {
 
+    private List<PharmacyChain> chains;
+
+    public PharmacyParser(List<PharmacyChain> chains) {
+        this.chains = chains;
+    }
 
     public List<Pharmacy> parse(File file) throws IOException {
         InputStream stream = null;
@@ -57,12 +63,19 @@ public class PharmacyParser {
     private Pharmacy parsePharmacyFromRowExel(Row row) {
         Iterator<Cell> cells = row.iterator();
         Pharmacy pharmacy = new Pharmacy();
-//        while (cells.hasNext()) {
 
         try {
             pharmacy.setName(cells.next().getStringCellValue());
         } catch (NoSuchElementException e) {
             System.out.println("Empty pharmacy name");
+        }
+        try {
+//            pharmacy.setPharmacyChain(cells.next().getStringCellValue());
+//            Long num = Long.parseLong(cells.next().getStringCellValue());
+            Long num = (long) cells.next().getNumericCellValue();
+            pharmacy.setPharmacyChain(findChain(num));
+        } catch (NoSuchElementException e) {
+            System.out.println("Empty pharmacy chain");
         }
         try {
             pharmacy.setAddress(cells.next().getStringCellValue());
@@ -71,10 +84,16 @@ public class PharmacyParser {
 
         }
         try {
-            pharmacy.setTelephoneNumbers(String.valueOf((long) cells.next().getNumericCellValue()));
+//            pharmacy.setTelephoneNumbers(String.valueOf((long) cells.next().getNumericCellValue()));
+            pharmacy.setTelephoneNumbers(cells.next().getStringCellValue());
         } catch (NoSuchElementException e) {
             System.out.println("Empty pharmacy telephone number");
 
+        }
+        try {
+            pharmacy.setTown(cells.next().getStringCellValue());
+        } catch (NoSuchElementException e) {
+            System.out.println("Empty pharmacy town");
         }
         try {
             pharmacy.setDistrict(cells.next().getStringCellValue());
@@ -83,15 +102,21 @@ public class PharmacyParser {
 
         }
         try {
-//            System.out.println(cells.next().getCellType());
             pharmacy.setEmail(cells.next().getStringCellValue());
         } catch (NoSuchElementException e) {
             System.out.println("Empty pharmacy email");
 
         }
-
-//        }
         return pharmacy;
+    }
+
+    private PharmacyChain findChain(long id) {
+        for (PharmacyChain chain : chains) {
+            if (chain.getId() == id) {
+                return chain;
+            }
+        }
+        return null;
     }
 
 

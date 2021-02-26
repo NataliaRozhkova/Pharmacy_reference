@@ -1,8 +1,8 @@
 package pharmacy.reference.spring_server.parser;
 
 import org.apache.commons.io.FilenameUtils;
-import pharmacy.reference.spring_server.entity.Medicine;
-import pharmacy.reference.spring_server.entity.Pharmacy;
+import pharmacy.reference.spring_server.entitis.Medicine;
+import pharmacy.reference.spring_server.entitis.Pharmacy;
 
 import java.io.File;
 import java.io.FileInputStream;

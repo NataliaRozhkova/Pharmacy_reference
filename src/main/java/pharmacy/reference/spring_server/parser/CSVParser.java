@@ -1,14 +1,14 @@
 package pharmacy.reference.spring_server.parser;
 
 import au.com.bytecode.opencsv.CSVReader;
-import org.apache.commons.io.IOUtils;
 import org.apache.tika.parser.txt.CharsetDetector;
 import org.apache.tika.parser.txt.CharsetMatch;
-import pharmacy.reference.spring_server.entity.Medicine;
-import pharmacy.reference.spring_server.entity.Pharmacy;
+import pharmacy.reference.spring_server.entitis.Medicine;
+import pharmacy.reference.spring_server.entitis.Pharmacy;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -40,15 +40,15 @@ public class CSVParser {
                 allRows = reader.readAll();
                 stream.close();
             }
-            if (allRows.get(allRows.size() / 2).length == 1) {
-                stream.close();
-                String newTransformFile = transformFile(file);
-                stream = new FileInputStream(newTransformFile);
-                isr = new InputStreamReader(stream);
-                reader = new CSVReader(isr, '\t', '\n');
-                allRows = reader.readAll();
-                stream.close();
-            }
+//            if (allRows.size() < 5) {
+//                stream.close();
+//                String newTransformFile = transformFile(file);
+//                stream = new FileInputStream(newTransformFile);
+//                isr = new InputStreamReader(stream);
+//                reader = new CSVReader(isr, ';', '\n');
+//                allRows = reader.readAll();
+//                stream.close();
+//            }
             int table_start = setColumnTypeNumberCSV(allRows);
             medicines = parseAllMedicinesFromRows(table_start, allRows);
 
@@ -68,22 +68,35 @@ public class CSVParser {
         return medicines;
     }
 
-    private String transformFile(File file) throws IOException {
-        InputStream stream = new FileInputStream(file);
-        String fileToString = IOUtils.toString(stream, getFileEncodingType(file));
-        fileToString = fileToString.replaceAll("(?<=[A-Za-zА-яа-я])(?=[0-9])|(?<=[0-9])(?=[A-Za-zА-яа-я])", " ")
-                .replaceAll("000002", "\t 00002")
-                .replaceAll("(   )+", "\t")
-                .replaceAll("\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d", "\n")
-                .replaceAll("\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d", " ");
-
-        String newFileName = file.getAbsolutePath().replace(".", "1.");
-        FileWriter writer = new FileWriter(new File(newFileName));
-        writer.write(fileToString);
-        writer.close();
-        stream.close();
-        return newFileName;
-    }
+//    public String transformFile(File file) throws IOException {
+//        InputStream stream = new FileInputStream(file);
+//        String fileToString = IOUtils.toString(stream, getFileEncodingType(file));
+//        fileToString = fileToString
+//                .substring(fileToString.indexOf("А"))
+//                .replaceAll("(?<=[A-Za-zа-яА-Я])(?=[0-9])|(?<=[0-9])(?=[A-Za-zа-яА-Я])", " ")
+//        .replaceAll("(?<=(\\d[.]\\d\\d\\d\\d\\d))", "           ")
+////                .replaceAll("000000", "0      0")
+//                .replaceAll("\\d{8,17}", "")
+//                .replaceAll("(\\s{5})+", "@")
+////                .replaceAll("\u00AD", "!!!!")
+//
+//////                .replaceAll("\\d{9}", "@")
+////                .replaceAll("@@", "@")
+////                .replaceAll("@ @", "@")
+////
+////
+//                .replaceAll("((.*?\\@){5})", "$1\n\n")
+//
+//
+//        ;
+//
+//        String newFileName = file.getAbsolutePath().replace(".", "1.");
+//        FileWriter writer = new FileWriter(new File(newFileName));
+//        writer.write(fileToString);
+//        writer.close();
+//        stream.close();
+//        return newFileName;
+//    }
 
     private List<Medicine> parseAllMedicinesFromRows(int table_start, List<String[]> allRows) {
         List<Medicine> medicines = new ArrayList<>();
@@ -91,6 +104,7 @@ public class CSVParser {
             Medicine medicine = parseMedicineFromRowCSV(allRows.get(row));
             if (medicine != null && !medicine.getName().equals("")) {
                 medicine.setPharmacy(pharmacy);
+                medicine.setDate(new Date(System.currentTimeMillis()));
                 medicines.add(medicine);
             }
         }

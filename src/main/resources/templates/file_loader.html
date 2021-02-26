@@ -1,0 +1,128 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<body>
+<form action="/file/view" enctype="multipart/form-data"
+      method="POST">
+    Выберете файл для загрузки
+    <input name="file" type="file" id="file" onchange="setName()"><br/>
+    имя файла
+    <input name="name" id="file_name" type="text" ><br/>
+
+        Выберите аптеку:
+    <!--    <div class="col-lg-3" th:object="${pharmacy}">-->
+    <select class="form-control" id="pharmacyId" name="pharmacy_name">
+        <option value="">Выберите аптеку</option>
+        <option th:each="pharmacy : ${pharmacies}"
+                th:value="${pharmacy.pharmacyId}"
+                th:text="${pharmacy.name} +'  :  '+${pharmacy.address}"></option>
+    </select>
+    <br/><br/>
+
+    <input type="submit"  id="button_submit" value="Загрузить"> Нажмите для просмотра!
+
+</form>
+
+<div class="text-left" th:if="${not #lists.isEmpty(medicines)}">
+
+    <div class="lead">
+        <table class="table table-striped">
+            <tr>
+                <th>Название</th>
+                <th>Цена</th>
+                <th>Производитель</th>
+                <th>Страна</th>
+            </tr>
+            <tr th:each="medicine : ${medicines}">
+                <td th:text="${medicine.name}">Название</td>
+                <td th:text="${medicine.price}">Цена</td>
+                <td th:text="${medicine.manufacturer}">Производитель</td>
+                <td th:text="${medicine.country}">Страна</td>
+
+            </tr>
+        </table>
+    </div>
+</div>
+
+    <script>
+
+     function setName() {
+        document.getElementById('file_name').value = document.querySelector('#file').files[0].name;
+    }
+
+function submitFileToView(){
+<!-- document.getElementById('button_submit').show();-->
+    cleanTable();
+    let request = new XMLHttpRequest();
+    let url = 'http://localhost:8080/file/view';
+    url += '?pharmacy=' + pharmacy.value;
+ alert("!!!!!!!!!!!");
+    request.open("GET", url);
+    request.responseType = 'json';
+    request.onload = function () {
+        var response = request.response;
+        if (response.length > 0) {
+            drawTable(response);
+        }
+    }
+     request.send();
+}
+
+function drawTable(data) {
+    var name = 'name';
+    var price = 'price';
+    var quantity = 'quantity';
+    var pharmacy = 'pharmacy';
+    var address = 'address';
+    var telephone_numbers = 'telephoneNumbers';
+    var manufacturer = 'manufacturer';
+    var id = 'id';
+    var district = 'district';
+
+    var table = document.getElementById("table");
+    for (var i = 0; i < data.length; i++) {
+        tr = table.insertRow(-1);
+
+        var tabCell = tr.insertCell(-1);
+        tabCell.innerHTML = data[i][name];
+        var tabCell = tr.insertCell(-1);
+        tabCell.innerHTML = data[i][pharmacy][name] + ' (' + data[i][pharmacy][address] + ')';
+        var tabCell = tr.insertCell(-1);
+        tabCell.innerHTML = data[i][pharmacy][telephone_numbers];
+        var tabCell = tr.insertCell(-1);
+        tabCell.innerHTML = data[i][pharmacy][district];
+        var tabCell = tr.insertCell(-1);
+        tabCell.align = 'center';
+        tabCell.innerHTML = data[i][price];
+        var tabCell = tr.insertCell(-1);
+        tabCell.align = 'center';
+        tabCell.innerHTML = data[i][quantity];
+        var tabCell = tr.insertCell(-1);
+        tabCell.innerHTML = data[i][manufacturer];
+        var tabCell = tr.insertCell(-1);
+        tabCell.innerHTML = data[i][id];
+
+    }
+}
+
+function clearInput() {
+    var medicine_name = document.getElementById('medicine_name');
+    medicine_name.value = "";
+    var district = document.getElementById('district');
+    district.value = "";
+    var town = document.getElementById('town');
+    town.value = "";
+    var chain = document.getElementById('chain');
+    chain.value = "";
+    cleanTable();
+
+}
+
+function cleanTable() {
+    for (var i = document.getElementById('table').getElementsByTagName('tr').length -1; i; i--) {
+        document.getElementById('table').deleteRow(i);
+    }
+}
+
+
+</script>
+</body>
+</html>

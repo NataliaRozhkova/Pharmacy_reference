@@ -1,0 +1,62 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<body>
+<form action="/file/upload" enctype="multipart/form-data"
+      method="POST">
+    <!--    Выберете файл для загрузки-->
+    <!--    <input name="file" type="file" id="file" onchange="setName()"><br/>-->
+    <!--    имя файла-->
+    <!--    <input name="name" id="file_name" type="text" ><br/>-->
+
+<!--    <text class="form-control" th:field="*{file}"/>-->
+<!--    <text class="form-group">-->
+<!--        <label class="col-sm-2 control-label">File:</label>-->
+<!--        <div class="col-sm-10">-->
+<!--            <input class="form-control" th:text="${file}"/>-->
+<!--        </div>-->
+<!--    </text>-->
+    <input class="form-control"  id="file_name" name="file" th:value="${file.getAbsolutePath()}">
+        <option th:value="${file.getAbsolutePath()}"
+                th:text="${file.getName()}"></option>
+    </input>
+    Аптека:
+    <select class="form-control" id="pharmacyId" name="pharmacy_name">
+        <option th:value="${pharmacy.pharmacyId}"
+                th:text="${pharmacy.name} +'  :  '+${pharmacy.address}"></option>
+    </select>
+    <br/><br/>
+
+    <input type="submit" id="button_submit" value="Загрузить"> Нажмите для сохранения!
+
+</form>
+
+<div class="text-left" th:if="${not #lists.isEmpty(medicines)}">
+
+    <div class="lead">
+        <table class="table table-striped">
+            <tr>
+                <th>Название</th>
+                <th>Цена</th>
+                <th>Производитель</th>
+                <th>Страна</th>
+            </tr>
+            <tr th:each="medicine : ${medicines}">
+                <td th:text="${medicine.name}">Название</td>
+                <td th:text="${medicine.price}">Цена</td>
+                <td th:text="${medicine.manufacturer}">Производитель</td>
+                <td th:text="${medicine.country}">Страна</td>
+
+            </tr>
+        </table>
+    </div>
+</div>
+
+<script>
+
+     function setName() {
+        document.getElementById('file_name').value = document.querySelector('#file').files[0].name;
+    }
+
+
+</script>
+</body>
+</html>

@@ -16,14 +16,17 @@ public class TableHeadVariants {
             case "товар":
             case "preparat":
             case "наименованиетовара":
+            case "наименованиетоваров":
             case "названиетовара":
             case "название":
             case "номенклатура":
+            case "%name%":
                 return NAME;
             case "производитель":
             case "изготовитель":
             case "фирма-производитель":
             case "proizv":
+            case "%fabr%":
                 return MANUFACTURE;
             case "количество":
             case "кол-во":
@@ -33,6 +36,7 @@ public class TableHeadVariants {
             case "ost":
             case "остатокнаскладе":
             case "остаток":
+            case "%qnt%":
                 return QUANTITY;
             case "цена":
             case "цена,руб.":
@@ -40,13 +44,17 @@ public class TableHeadVariants {
             case "средняяцена":
             case "ценарозн.":
             case "розничнаяцена":
+            case "ценаоптовая":
             case "cena":
             case "ценапопрайсу({currencysymbol})заединицутовара":
+            case "ценапопрайсу({currencysymbol})":
+            case "%price%":
                 return PRICE;
             case "country":
             case "страна":
             case "странапроизводитель":
             case "strana":
+            case "%country%":
                 return COUNTRY;
             default:
                 return null;

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../public/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/3.2.1/jquery.min.js"
+            th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
+    <title>
+        Аптечная справка
+    </title>
+</head>
+<body>
+
+<div class="text-left" th:if="${not #lists.isEmpty(medicines)}">
+
+    <div class="lead">
+        <table class="table table-striped">
+            <tr>
+                <th>Название</th>
+                <th>Цена</th>
+                <th>Производитель</th>
+                <th>Страна</th>
+            </tr>
+            <tr th:each="medicine : ${medicines}">
+                <td th:text="${medicine.name}">Название</td>
+                <td th:text="${medicine.price}">Цена</td>
+                <td th:text="${medicine.manufacturer}">Производитель</td>
+                <td th:text="${medicine.country}">Страна</td>
+
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>
