@@ -52,6 +52,8 @@ dependencies {
 
     compile "org.thymeleaf:thymeleaf-spring4:3.0.2.RELEASE"
     compile "org.thymeleaf.extras:thymeleaf-extras-springsecurity5"
+    compile "org.webjars:bootstrap:3.3.7-1"
+    compile  "org.webjars:jquery:3.2.1"
 //    implementation 'com.github.thymeleaf:thymeleaf-extras-springsecurity:thymeleaf-extras-springsecurity5-3.0.4.RELEASE'
 
 //    implementation 'org.webjars:sockjs-client:1.0.2'
