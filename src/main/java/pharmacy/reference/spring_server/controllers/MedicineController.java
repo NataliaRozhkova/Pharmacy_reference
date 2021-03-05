@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import pharmacy.reference.spring_server.entitis.Medicine;
 import pharmacy.reference.spring_server.entitis.Pharmacy;
 import pharmacy.reference.spring_server.services.*;
-import pharmacy.reference.util.MedicineGrid;
+import pharmacy.reference.spring_server.util.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
