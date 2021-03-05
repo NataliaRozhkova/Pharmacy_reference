@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Аптечная справочная</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../public/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/3.2.1/jquery.min.js"
+            th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
+</head>
+
+<body>
+<div th:replace="~{fragments/header :: header}">Header</div>
+
+<div class="text-left" th:if="${not #lists.isEmpty(pharmacies)}">
+
+    <div class="lead">
+        <table class="table table-striped">
+            <tr>
+                <th>Название</th>
+                <th>Телефон</th>
+                <th>Ардес</th>
+                <th>Город</th>
+                <th>Район</th>
+                <th>Аптечная сеть</th>
+                <th>email</th>
+
+            </tr>
+            <tr th:each="pharmacy : ${pharmacies}">
+                <td th:text="${pharmacy.name}">Название</td>
+                <td th:text="${pharmacy.telephoneNumbers}">Телефон</td>
+                <td th:text="${pharmacy.address}">Ардес</td>
+                <td th:text="${pharmacy.town?.name}">Город</td>
+                <td th:text="${pharmacy.district?.name}">Район</td>
+                <td th:text="${pharmacy.pharmacyChain.name}">Аптечная сеть</td>
+                <td th:text="${pharmacy.email}">email</td>
+                <td><a th:href="${'/pharmacy/update/' + pharmacy.pharmacyId}">Edit</a></td>
+
+            </tr>
+        </table>
+    </div>
+</div>
+
+<script>
+</script>
+</body>
+</html>

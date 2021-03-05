@@ -1,129 +1,88 @@
 <html charset="UTF-8" meta xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../public/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/3.2.1/jquery.min.js"
+            th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
     <title>Аптечная справочная</title>
-    <link href="static/select.css" rel="stylesheet">
-    <script src="static/index_script.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
+<div th:replace="~{fragments/header :: header}">Header</div>
+<div class="container">
 
-Аптека
-<!--<select class="form-control" id="pharmacy" name="pharmacy">-->
-<!--    <option value="">Выберите аптеку</option>-->
-<!--    <option th:each="pharmacy : ${pharmacies}"-->
-<!--            th:value="${pharmacy.pharmacyId}"-->
-<!--            th:text="${pharmacy.name} +'  :  '+${pharmacy.address}"></option>-->
-<!--</select>-->
+    <h1>Данные аптеки</h1>
+    <div>
+        <form action="#" th:action="@{/medicine/get/all/from/pharmacy}" th:object="${pharmacy}" method="get">
+            <div class="form-group">
+                <!--                <label class="col-sm-2 control-label">Аптека:</label>-->
+                <div class="col-sm-10">
+                    <select class="form-control" id="pharmacy" name="pharmacy">
+                        <option value="">Выберите аптеку</option>
+                        <option th:each="pharmacy : ${pharmacies}"
+                                th:value="${pharmacy.pharmacyId}"
+                                th:text="${pharmacy.name} +'  :  '+${pharmacy.address}"></option>
+                    </select></div>
+            </div>
 
-<form action="#" th:action="@{/pharmacy}" th:object="${pharmacy}" method="get">
+            <div class="row">
+                <button class="btn btn-default">Просмотр</button>
+            </div>
 
-    <select class="form-control" id="pharmacy" name="pharmacy">
-        <option value="">Выберите аптеку</option>
-        <option th:each="pharmacy : ${pharmacies}"
-                th:value="${pharmacy.pharmacyId}"
-                th:text="${pharmacy.name} +'  :  '+${pharmacy.address}"></option>
-    </select>
+        </form>
+    </div>
+</div>
 
+<!--<div class="container">-->
+<!--    <div th:if="${pharmacy != null}" th:text="${pharmacy.name}  >-->
+<!--    </div>-->
+<!--</div>-->
+<div>
+    <form class="form-horizontal" th:if="${pharmacy != null}">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Аптека:</label>
+            <div class="col-sm-10">
+                <p class="form-control-static" th:text="${pharmacy.name}">Название</p></div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Адрес:</label>
+            <div class="col-sm-10">
+                <p class="form-control-static" th:text="${pharmacy.address}">Адрес</p>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="text-left" th:if="${not #lists.isEmpty(medicines)}">
+    <div class="lead">
+        <table class="table table-striped">
+            <tr>
+                <th>Название</th>
+                <th>Цена</th>
+                <th>Количество</th>
+                <th>Производитель</th>
+                <th>Страна</th>
+                <th>Дата обновления</th>
 
-</form>
+            </tr>
+            <tr th:each="medicine : ${medicines}">
+                <td th:text="${medicine.name}">Название</td>
+                <td th:text="${medicine.price}">Цена</td>
+                <td th:text="${medicine.quantity}">Количество</td>
+                <td th:text="${medicine.manufacturer}">Производитель</td>
+                <td th:text="${medicine.country}">Страна</td>
+                <td th:text="${medicine.date}">Дата обновления</td>
+                <!--                <td><a th:href="${'/pharmacy/update/' + pharmacy.pharmacyId}">Edit</a></td>-->
 
-<br><br>
-<button id="switcher" onclick="submitPharmacy()"> Поиск
-</button>
+            </tr>
 
-<br><br>
-
-<div id="showData">
-    <table id="table" align="center" width="100%" frame="border"  border="1"  cellpadding="5" >
-        <tr>
-            <th>Название</th>
-            <th>Аптека</th>
-            <th>Телефон</th>
-            <th>Район</th>
-            <th>Цена</th>
-            <th>Количество</th>
-            <th>Производитель</th>
-            <th>ID</th>
-        </tr>
-
-    </table>
-
-<script>
-function submitPharmacy(){
-
-    cleanTable();
-    let request = new XMLHttpRequest();
-    let url = 'http://localhost:8080/medicine/get/all/from/pharmacy';
-    url += '?pharmacy=' + pharmacy.value;
-    request.open("GET", url);
-    request.responseType = 'json';
-    request.onload = function () {
-        var response = request.response;
-        if (response.length > 0) {
-            drawTable(response);
-        }
-    }
-     request.send();
-}
-
-function drawTable(data) {
-    var name = 'name';
-    var price = 'price';
-    var quantity = 'quantity';
-    var pharmacy = 'pharmacy';
-    var address = 'address';
-    var telephone_numbers = 'telephoneNumbers';
-    var manufacturer = 'manufacturer';
-    var id = 'id';
-    var district = 'district';
-
-    var table = document.getElementById("table");
-    for (var i = 0; i < data.length; i++) {
-        tr = table.insertRow(-1);
-
-        var tabCell = tr.insertCell(-1);
-        tabCell.innerHTML = data[i][name];
-        var tabCell = tr.insertCell(-1);
-        tabCell.innerHTML = data[i][pharmacy][name] + ' (' + data[i][pharmacy][address] + ')';
-        var tabCell = tr.insertCell(-1);
-        tabCell.innerHTML = data[i][pharmacy][telephone_numbers];
-        var tabCell = tr.insertCell(-1);
-        tabCell.innerHTML = data[i][pharmacy][district];
-        var tabCell = tr.insertCell(-1);
-        tabCell.align = 'center';
-        tabCell.innerHTML = data[i][price];
-        var tabCell = tr.insertCell(-1);
-        tabCell.align = 'center';
-        tabCell.innerHTML = data[i][quantity];
-        var tabCell = tr.insertCell(-1);
-        tabCell.innerHTML = data[i][manufacturer];
-        var tabCell = tr.insertCell(-1);
-        tabCell.innerHTML = data[i][id];
-
-    }
-}
-
-function clearInput() {
-    var medicine_name = document.getElementById('medicine_name');
-    medicine_name.value = "";
-    var district = document.getElementById('district');
-    district.value = "";
-    var town = document.getElementById('town');
-    town.value = "";
-    var chain = document.getElementById('chain');
-    chain.value = "";
-    cleanTable();
-
-}
-
-function cleanTable() {
-    for (var i = document.getElementById('table').getElementsByTagName('tr').length -1; i; i--) {
-        document.getElementById('table').deleteRow(i);
-    }
-}
-</script>
+        </table>
+    </div>
 </div>
 
 </body>
+<script>
+
+</script>
 </html>
 

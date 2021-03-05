@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../public/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/3.2.1/jquery.min.js"
+            th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
+
+    <title>
+        ProSpring5 Singer Boot Application
+    </title>
+
+</head>
+
+<body>
+<div th:replace="~{fragments/header :: header}">Header</div>
+<div class="container">
+
+    <h1>Данные аптеки</h1>
+    <div>
+        <form class="form-horizontal" th:object="${pharmacy}" th:action="@{/pharmacy/save}" method="post">
+            <input type="hidden" th:field="*{pharmacyId}"/>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Название:</label>
+                <div class="col-sm-10">
+                    <input class="form-control" th:field="*{name}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Телефон:</label>
+                <div class="col-sm-10">
+                    <input class="form-control" th:field="*{telephoneNumbers}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Ардес:</label>
+                <div class="col-sm-10">
+                    <input class="form-control" th:field="*{address}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Город:</label>
+                <div class="col-sm-10">
+                    <select class="form-control" id="town" name="town" th:field="*{town}">
+                        <label class="col-sm-2 control-label">town:</label>
+                        <option value="">Выберите город</option>
+                        <option th:each="town : ${towns}"
+                                th:value="${town.id}"
+                                th:text="${town.name} "></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Район:</label>
+                <div class="col-sm-10">
+                    <select class="form-control" id="district" name="district" th:field="*{district}">
+                        <label class="col-sm-2 control-label">district:</label>
+                        <option value="">Выберите район</option>
+                        <option th:each="district : ${districts}"
+                                th:value="${district.id}"
+                                th:text="${district.name} "></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Аптечная сеть:</label>
+                <div class="col-sm-10">
+                    <select class="form-control" id="chain" name="chain" th:field="*{pharmacyChain}">
+                        <label class="col-sm-2 control-label">chain:</label>
+                        <option value="">Выберите аптечную сеть</option>
+                        <option th:each="chain : ${chains}"
+                                th:value="${chain.id}"
+                                th:text="${chain.name} "></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">email:</label>
+                <div class="col-sm-10">
+                    <input class="form-control" th:field="*{email}"/>
+                </div>
+            </div>
+            <div class="row">
+                <button class="btn btn-default">Сохранить</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

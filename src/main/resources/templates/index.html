@@ -1,25 +1,34 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Аптечная справочная</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link href="../../public/css/bootstrap.min.css"
           th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"
           rel="stylesheet" media="screen"/>
+<!--    <link rel="stylesheet" type="text/css"  href="css/ui.jqgrid.css"/>-->
     <script src="http://cdn.jsdelivr.net/webjars/jquery/3.2.1/jquery.min.js"
             th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
+    <title>Аптечная справочная</title>
 </head>
 <body>
-<div id="header">
-    <h1>Аптечная справочная</h1>
-    <p><a href="/medicine">Поиск лекарств</a></p>
-    <p><a href="/medicine/get/from/pharmacy">Список лекарств в аптеке</a></p>
-    <p><a href="/medicine/add">Добавить лекарство</a></p>
-    <p><a href="/file/add">Загрузка данных аптек из файла</a></p>
-    <p><a href="/pharmacy">Список аптек</a></p>
-</div>
-
 <div th:replace="~{fragments/header :: header}">Header</div>
+<div class="container">
+    <div class="text-left">
+
+        <h1>Аптечная справочная</h1>
+        <div class="lead">
+            <p><a href="/medicine">Поиск лекарств</a></p>
+            <p><a href="/medicine/add">Добавить лекарство</a></p>
+            <p><a href="/medicine/get/from/pharmacy">Список лекарств в аптеке</a></p>
+            <p><a href="/pharmacy/pharmacies">Список аптек</a></p>
+            <p sec:authorize="hasAuthority('ROLE_ADMIN')"><a href="/pharmacy/new">Добавить аптеку</a></p>
+            <p sec:authorize="hasAuthority('ROLE_ADMIN')"><a href="/file/add">Загрузка данных аптек из файла</a></p>
+        </div>
+
+    </div>
+
+
+</div>
 
 
 </body>
