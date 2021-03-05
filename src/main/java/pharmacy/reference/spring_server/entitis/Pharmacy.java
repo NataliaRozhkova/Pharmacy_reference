@@ -20,10 +20,12 @@ public class Pharmacy {
     private String telephoneNumbers;
     @Column
     private String address;
-    @Column
-    private String town;
-    @Column
-    private String district;
+    @ManyToOne
+    @JoinColumn(name = "town", referencedColumnName = "id")
+    private Town town;
+    @ManyToOne
+    @JoinColumn(name = "district", referencedColumnName = "id")
+    private District district;
     @Column
     private String email;
 
@@ -75,11 +77,11 @@ public class Pharmacy {
         return email;
     }
 
-    public String getTown() {
+    public Town getTown() {
         return town;
     }
 
-    public void setTown(String town) {
+    public void setTown(Town town) {
         this.town = town;
     }
 
@@ -87,11 +89,11 @@ public class Pharmacy {
         this.email = email;
     }
 
-    public String getDistrict() {
+    public District getDistrict() {
         return district;
     }
 
-    public void setDistrict(String district) {
+    public void setDistrict(District district) {
         this.district = district;
     }
 
@@ -100,11 +102,11 @@ public class Pharmacy {
 
         return pharmacyId + "\t" +
                 name + "\t" +
-                pharmacyChain + "\t" +
+                pharmacyChain.getName() + "\t" +
                 telephoneNumbers + "\t" +
                 address + "\t" +
-                town + "\t" +
-                district + "\t" +
+                town.getName() + "\t" +
+                district.getName() + "\t" +
                 email + "\t";
     }
 

@@ -24,6 +24,7 @@ public class Medicine implements Serializable {
     private String manufacturer;
     @Column
     private String country;
+    @Temporal(TemporalType.DATE)
     @Column(name = "date")
     private Date date;
     @ManyToOne

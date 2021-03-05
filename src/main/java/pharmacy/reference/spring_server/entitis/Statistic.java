@@ -19,11 +19,20 @@ public class Statistic {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "pharmacy_id", referencedColumnName = "pharmacy_id")
     private Pharmacy pharmacy;
-    @ManyToOne
-    @JoinColumn(name = "operator_id", referencedColumnName = "id")
-    private Operator operator;
+    //    @ManyToOne
+//    @JoinColumn(name = "operator_id", referencedColumnName = "id")
+    @Column(name = "operator_name")
+    private String operator;
 
     public Statistic() {
+    }
+
+    public void setOperator(String operator) {
+        this.operator = operator;
+    }
+
+    public String getOperator() {
+        return operator;
     }
 
     public long getId() {
@@ -66,13 +75,14 @@ public class Statistic {
         return medicinePrice;
     }
 
-    public void setOperator(Operator operator) {
-        this.operator = operator;
-    }
+//    public void setOperator(Operator operator) {
+//        this.operator = operator;
+//    }
+//
+//    public Operator getOperator() {
+//        return operator;
+//    }
 
-    public Operator getOperator() {
-        return operator;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -103,7 +113,8 @@ public class Statistic {
                 medicineName + "\t" +
                 medicinePrice + "\t" +
                 pharmacy.getName() + "\t" +
-                operator.getId() + "\t";
+//                operator.getId() + "\t";
+                operator+ "\t";
     }
 
 

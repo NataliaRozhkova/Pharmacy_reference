@@ -27,8 +27,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers( "/file").hasRole("ADMIN")
                 .antMatchers( "/file/**").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.DELETE, "/myurl/**").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.PUT, "/myurl/**").hasRole("USER")
+                .antMatchers( "/pharmacy/parse").hasRole("ADMIN")
+                .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/", "/home").permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -46,23 +46,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable()
         ;
-//          .authorizeRequests()
-//                .antMatchers("/", "/home").permitAll()
-//                .and()
-//                .authorizeRequests().antMatchers("/").authenticated()
-//                .and()
-//                .formLogin()
-//                .loginPage("/login")
-//                .permitAll()
-//                .and()
-//                .logout()
-//                .permitAll()
-//                .and()
-//                .logout()
-//                .logoutUrl("/logout")
-//                .logoutSuccessUrl("/")
-//                .and()
-//                .csrf().disable();
     }
 
     @Autowired
@@ -73,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder)
                 .withUser("user").password(passwordEncoder.encode("user")).roles("USER")
                 .and()
-                .withUser("admin").password(passwordEncoder.encode("9typakruto0")).roles("USER", "ADMIN");
+                .withUser("admin").password(passwordEncoder.encode("123")).roles("USER", "ADMIN");
 
     }
 

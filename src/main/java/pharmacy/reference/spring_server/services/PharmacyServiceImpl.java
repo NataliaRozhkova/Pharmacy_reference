@@ -27,6 +27,11 @@ public class PharmacyServiceImpl  implements PharmacyService{
         return pharmacyRepository.save(pharmacy);
     }
 
+    @Override
+    public List<Pharmacy> saveAll(List<Pharmacy> pharmacies) {
+        return pharmacyRepository.saveAll(pharmacies);
+    }
+
     @Autowired
     public void setPharmacyRepository(PharmacyRepository pharmacyRepository) {
         this.pharmacyRepository = pharmacyRepository;
