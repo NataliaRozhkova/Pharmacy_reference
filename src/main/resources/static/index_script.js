@@ -13,18 +13,17 @@ function submitForm(){
         url += '&town=' + town.value;
         url += '&chain=' + chain.value;
         url += '&pharmacy=' + pharmacy.value;
-
+        url += '&page=' + document.getElementById('pageNumber').value;
+        url += '&rows=' + 100;
         request.open("GET", url);
         request.responseType = 'json';
         request.onload = function () {
             var response = request.response;
-            if (response.length > 0) {
+                console.log("response");
                 drawTable(response);
-            }
         }
          request.send();
     }
-
 }
 
 function submitPharmacy(){
@@ -46,16 +45,21 @@ function submitPharmacy(){
 
 }
 
-function drawTable(data) {
+function drawTable(json) {
 
-//    var col = [];
-//    for (var i = 0; i < data.length; i++) {
-//        for (var key in data[i]) {
-//            if (col.indexOf(key) === -1) {
-//                col.push(key);
-//            }
-//        }
-//    }
+    var pageNumber = document.getElementById('pageNumber');
+    pageNumber.innerHTML = json['currentPage'];
+    if (json['currentPage'] === json['totalPages']) {
+        document.getElementById ('next').disabled = true;
+    } else {
+        document.getElementById ('next').disabled = false;
+    }
+
+    if (json['currentPage'] === 1) {
+            document.getElementById ('previous').disabled = true;
+        } else {
+            document.getElementById ('previous').disabled = false;
+        }
 
     var name = 'name';
     var price = 'price';
@@ -69,62 +73,116 @@ function drawTable(data) {
     var date = 'date';
 
     var table = document.getElementById("table");
-
-
-//    var tr = table.insertRow(-1);
-
-//    for (var i = 0; i < col.length; i++) {
-//        var th = document.createElement("th");
-//        th.innerHTML = col[i];
-//        tr.appendChild(th);
-//    }
+    var data = json['medicines'];
+    console.log(json);
 
     for (var i = 0; i < data.length; i++) {
 
         tr = table.insertRow(-1);
-//        tr.setAttribute('class', "selected");
-
-//        for (var j = 0; j < col.length; j++) {
-//            var tabCell = tr.insertCell(-1);
-//            tabCell.innerHTML = data[i][col[j]];
-//        }
-        var tabCell = tr.insertCell(-1);
-        tabCell.innerHTML = data[i][name];
-        var tabCell = tr.insertCell(-1);
-        tabCell.innerHTML = data[i][pharmacy][name] + ' (' + data[i][pharmacy][address] + ')';
-        var tabCell = tr.insertCell(-1);
-        tabCell.innerHTML = data[i][pharmacy][telephone_numbers];
-        var tabCell = tr.insertCell(-1);
-        tabCell.innerHTML = data[i][pharmacy][district];
-        var tabCell = tr.insertCell(-1);
-        tabCell.align = 'center';
-        tabCell.innerHTML = data[i][price];
-        var tabCell = tr.insertCell(-1);
-        tabCell.align = 'center';
-        tabCell.innerHTML = data[i][quantity];
-        var tabCell = tr.insertCell(-1);
-        tabCell.innerHTML = data[i][manufacturer];
-        var tabCell = tr.insertCell(-1);
-        tabCell.innerHTML = data[i][date];
-        var tabCell = tr.insertCell(-1);
-        tabCell.innerHTML = data[i][id];
+        var cellName = tr.insertCell(-1);
+        cellName.innerHTML = data[i][name];
+        var cellPharmacy = tr.insertCell(-1);
+        cellPharmacy.innerHTML = data[i][pharmacy][name] + ' (' + data[i][pharmacy][address] + ')';
+        var cellPhone = tr.insertCell(-1);
+        cellPhone.align = 'center';
+        cellPhone.innerHTML = data[i][pharmacy][telephone_numbers];
+        var cellDistrict = tr.insertCell(-1);
+        cellDistrict.align = 'center';
+        cellDistrict.innerHTML = data[i][pharmacy][district][name];
+        var cellPrice = tr.insertCell(-1);
+        cellPrice.align = 'center';
+        cellPrice.innerHTML = data[i][price];
+        var cellQuantity = tr.insertCell(-1);
+        cellQuantity.align = 'center';
+        cellQuantity.innerHTML = data[i][quantity];
+        var cellManuf = tr.insertCell(-1);
+        cellManuf.innerHTML = data[i][manufacturer];
+        var cellDate = tr.insertCell(-1);
+        cellDate.align = 'center';
+        cellDate.innerHTML = data[i][date];
+        var cellStat = tr.insertCell(-1);
+        cellStat.align = 'center';
+        var checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.name = "checkbox";
+        let checkboxId = data[i][id];
+        checkbox.id = checkboxId ;
+        checkbox.onchange = function() {
+                                fnselect(checkboxId);
+                            }
+        cellStat.appendChild (checkbox);
 
     }
+}
+function fnselect(id){
+    if (document.getElementById(id).checked ) {
+        listId.push(id);
+        console.log(listId);
+    }
 
-//    var divContainer = document.getElementById("showData");
-//    divContainer.innerHTML = "";
-//    divContainer.appendChild(table);
+    if (!document.getElementById(id).checked ){
+        var index = listId.indexOf(id);
+        if (index > -1) {
+           listId.splice(index, 1);
+        }
+        console.log(listId);
+    }
+}
 
-//    var tbody = document.getElementById('table').getElementsByTagName("TBODY")[0];
-//    var row = document.createElement("TR")
-//    var td1 = document.createElement("TD")
-//    td1.appendChild(document.createTextNode("column 1"))
-//    var td2 = document.createElement("TD")
-//    td2.appendChild (document.createTextNode("column 2"))
-//    row.appendChild(td1);
-//    row.appendChild(td2);
-//    tbody.appendChild(row);
+function checkedCheckbox() {
+    var checkBoxes = document.getElementsByName('checkbox');
+    for(var i=0; i<checkBoxes.length; i++) {
+        checkBoxes[i].checked = true;
+    }
+}
 
+
+var listId = [];
+
+function statView() {
+    if(listId.length > 0) {
+        let url = 'http://localhost:8080/statistic/view?medicines=';
+            for (var i = 0; i < listId.length - 1; i++) {
+                url += listId[i] + ","
+            }
+            url += listId[listId.length -1];
+            let request = new XMLHttpRequest();
+            request.open("GET", url);
+            request.responseType = 'json';
+            request.onload = function () {
+                var response = request.response;
+                console.log("response");
+                clearInput();
+                drawTable(response);
+                checkedCheckbox();
+                document.getElementById('statAdd').hidden = false;
+
+            }
+             request.send();
+    }
+}
+
+function statAdd() {
+
+    if(listId.length > 0) {
+        let url = 'http://localhost:8080/statistic/put?medicines=';
+            for (var i = 0; i < listId.length - 1; i++) {
+                url += listId[i] + ","
+            }
+            url += listId[listId.length -1];
+            url += '&role=' + document.getElementById('role').innerHTML;
+            let request = new XMLHttpRequest();
+            request.open("GET", url);
+            request.responseType = 'json';
+            request.onload = function () {
+                var response = request.response;
+                clearInput();
+                cleanTable();
+                document.getElementById('statAdd').hidden = true;
+                alert('Добавлено записей: ' + response)
+            }
+             request.send();
+    }
 }
 
 function clearInput() {
@@ -137,6 +195,10 @@ function clearInput() {
     var chain = document.getElementById('chain');
     chain.value = "";
     cleanTable();
+    document.getElementById('pageNumber').value = 1;
+    document.getElementById('previous').disabled = true;
+    document.getElementById('next').disabled = true;
+
 
 }
 
@@ -146,3 +208,17 @@ function cleanTable() {
     }
 }
 
+
+function previousPage() {
+    var pageNum = document.getElementById('pageNumber');
+    if (pageNumber.value > 1) {
+        pageNumber.value--;
+        submitForm();
+    }
+
+}
+function nextPage() {
+    var pageNum = document.getElementById('pageNumber');
+    pageNumber.value++;
+    submitForm();
+}
