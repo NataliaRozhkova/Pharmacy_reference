@@ -2,6 +2,7 @@ package pharmacy.reference.spring_server.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pharmacy.reference.spring_server.entitis.Medicine;
 import pharmacy.reference.spring_server.entitis.PharmacyChain;
 import pharmacy.reference.spring_server.repositories.PharmacyChainRepository;
 
@@ -26,6 +27,7 @@ public class PharmacyChainServiceImpl implements PharmacyChainService {
     public List<PharmacyChain> findAll() {
         return pharmacyChainRepository.findAll();
     }
+
 
     @Autowired
     public void setPharmacyChainRepository(PharmacyChainRepository pharmacyChainRepository) {

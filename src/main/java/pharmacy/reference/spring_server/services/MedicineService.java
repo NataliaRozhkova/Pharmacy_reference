@@ -30,4 +30,6 @@ public interface MedicineService {
 
     void deleteByPharmacyId(long pharmacyId);
 
+    void  deleteById(long id);
+
 }

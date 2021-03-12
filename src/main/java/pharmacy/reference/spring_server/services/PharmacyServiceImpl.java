@@ -2,6 +2,7 @@ package pharmacy.reference.spring_server.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pharmacy.reference.spring_server.entitis.Medicine;
 import pharmacy.reference.spring_server.entitis.Pharmacy;
 import pharmacy.reference.spring_server.repositories.PharmacyRepository;
 
@@ -30,6 +31,21 @@ public class PharmacyServiceImpl  implements PharmacyService{
     @Override
     public List<Pharmacy> saveAll(List<Pharmacy> pharmacies) {
         return pharmacyRepository.saveAll(pharmacies);
+    }
+
+    @Override
+    public List<Pharmacy> findByName(String name) {
+        return pharmacyRepository.findByName(name);
+    }
+
+    @Override
+    public List<Pharmacy> findAllVisible() {
+        return pharmacyRepository.findAllVisible();
+    }
+
+    @Override
+    public List<Pharmacy> findAllByPharmacyChain(Long chainId) {
+        return pharmacyRepository.findAllByPharmacyChain(chainId);
     }
 
     @Autowired

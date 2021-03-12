@@ -90,6 +90,11 @@ public class MedicineServiceImpl implements MedicineService {
         medicineRepository.deleteAll(medicineRepository.findByPharmacyId(pharmacyId));
     }
 
+    @Override
+    public void deleteById(long id) {
+        medicineRepository.deleteById(id);
+    }
+
     @Autowired
     public void setMedicineRepository(MedicineRepository medicineRepository) {
         this.medicineRepository = medicineRepository;
