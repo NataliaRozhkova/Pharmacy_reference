@@ -1,6 +1,9 @@
 package pharmacy.reference.spring_server.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +17,7 @@ import pharmacy.reference.spring_server.services.TownService;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -87,6 +91,17 @@ public class PharmacyController {
         pharmacyService.saveAll(pharmacies);
 
         return "pharmacy_update";
+    }
+
+    @GetMapping(value = "/add/file/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String addAll(@PathVariable("id") Long id, Model model) {
+        Pharmacy pharmacy = pharmacyService.findById(id);
+        List<Pharmacy> pharmacies = new ArrayList<>();
+        pharmacies.add(pharmacy);
+        model.addAttribute("pharmacies", pharmacies);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return "file_loader";
     }
 
     @GetMapping("/chains")

@@ -11,13 +11,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pharmacy.reference.spring_server.entitis.Medicine;
 import pharmacy.reference.spring_server.entitis.Pharmacy;
+import pharmacy.reference.spring_server.entitis.Statistic;
 import pharmacy.reference.spring_server.services.*;
-import pharmacy.reference.spring_server.util.*;
+import pharmacy.reference.spring_server.util.MedicineGrid;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -31,6 +30,7 @@ public class MedicineController {
     private PharmacyChainService chainService;
     private TownService townService;
     private DistrictService districtService;
+    private StatisticService statisticService;
 
     private MessageSource messageSource;
 
@@ -40,9 +40,8 @@ public class MedicineController {
         model.addAttribute("districts", districtService.findAll());
         model.addAttribute("towns", townService.findAll());
         model.addAttribute("chains", chainService.findAll());
-        model.addAttribute("pharmacies", pharmacyService.findAll());
+        model.addAttribute("pharmacies", pharmacyService.findAllVisible());
         model.addAttribute("role", SecurityContextHolder.getContext().getAuthentication().getName());
-        System.out.println(SecurityContextHolder.getContext().getAuthentication());
         return "get_medicine_from_name";
     }
 
@@ -55,23 +54,15 @@ public class MedicineController {
                                @RequestParam(name = "pharmacy", required = false, defaultValue = "") Pharmacy pharmacy,
                                @RequestParam(value = "page", required = false) Integer page,
                                @RequestParam(value = "rows", required = false) Integer rows
-                               ) {
-
-
-//        System.out.println(district);
-//        System.out.println(town);
-//        System.out.println(chain);
-//        System.out.println(page);
-//        System.out.println(rows);
-
-
+    ) {
+        List<String> words = splitLine(name);
         List<Medicine> medicines = new ArrayList<>();
         if (pharmacy != null && pharmacy.getPharmacyId() != 0) {
-            medicines = medicineService.findByNameAndPharmacy(name, pharmacy.getPharmacyId());
+            medicines = medicineService.findByNameAndPharmacy(words.get(0), pharmacy.getPharmacyId());
         } else {
-            medicines = medicineService.findByName(name);
+            medicines = medicineService.findByName(words.get(0));
         }
-        System.out.println(medicines.size());
+//        words.remove(0);
         medicines = medicines.stream()
                 .filter(
                         medicine -> {
@@ -85,6 +76,11 @@ public class MedicineController {
                             if (chain != null) {
                                 res &= medicine.getPharmacy().getPharmacyChain().getId() == chain;
                             }
+                            if (words.size() > 0) {
+                                for (String word : words) {
+                                    res &= medicine.getName().toLowerCase(Locale.ROOT).contains(word.toLowerCase(Locale.ROOT));
+                                }
+                            }
 
                             return res;
                         }
@@ -96,7 +92,6 @@ public class MedicineController {
             medicineGrid.setMedicines(medicines);
             medicineGrid.setCurrentPage(1);
             medicineGrid.setTotalPages(1);
-//            return medicines;
         } else {
             medicineGrid.setCurrentPage(page);
             medicineGrid.setTotalPages(medicines.size() / rows + 1);
@@ -104,8 +99,11 @@ public class MedicineController {
         }
 
         return medicineGrid;
-//        return medicines.subList(page - 1, page - 1 + rows);
 
+    }
+
+    private List<String> splitLine(String line) {
+        return Arrays.asList(line.split(" ").clone());
     }
 
 
@@ -128,6 +126,16 @@ public class MedicineController {
         return "get_medicine_from_pharmacy";
     }
 
+    @GetMapping("/get/from/pharmacy/and/medicine")
+    public String getFromPharmacyAndMedicine(Model model,
+                                             @RequestParam(name = "medicine_name", required = false, defaultValue = "") String name,
+                                             @RequestParam(name = "pharmacyId", required = false, defaultValue = "") Long pharmacy_id) {
+        model.addAttribute("pharmacy", pharmacyService.findById(pharmacy_id));
+        model.addAttribute("medicines", medicineService.findByNameAndPharmacy(name, pharmacy_id));
+        model.addAttribute("pharmacies", pharmacyService.findAll());
+        return "get_medicine_from_pharmacy";
+    }
+
 
     @GetMapping("/get/all/from/pharmacy")
 //    @ResponseBody
@@ -140,15 +148,11 @@ public class MedicineController {
         return "get_medicine_from_pharmacy";
     }
 
-    @GetMapping("/delete")
-    public String delete(@RequestParam(name = "id", required = false, defaultValue = "") Long id) {
-//        statisticRepository.
-//        try {
-//            medicineRepository.deleteById(id);
-//            return id + " deleted";
-//        } catch (IllegalArgumentException e) {
-        return "Id must be not null";
-//        }
+    @GetMapping("/delete/{id}")
+    @ResponseBody
+    public String delete(@PathVariable("id") Long id) {
+        medicineService.deleteById(id);
+        return "Лекарство удалено";
     }
 
     @GetMapping("/add")
@@ -162,6 +166,26 @@ public class MedicineController {
         medicine.setDate(new Date(System.currentTimeMillis()));
         model.addAttribute("text", medicineService.save(medicine).toString());
         return "base_page";
+    }
+
+    @GetMapping("/defecture/put")
+    @ResponseBody
+    public Medicine putDefecture(@RequestParam(name = "medicines") String medicinesName,
+                                 @RequestParam(name = "role") String role) {
+        Medicine medicineDefecture = new Medicine();
+        medicineDefecture.setName(medicinesName);
+        Pharmacy defecture = pharmacyService.findByName("деф").get(0);
+        medicineDefecture.setPharmacy(defecture);
+        medicineDefecture.setDate(new Date(System.currentTimeMillis()));
+
+        medicineService.save(medicineDefecture);
+        Statistic statistic = new Statistic();
+        statistic.setMedicineName(medicinesName);
+        statistic.setPharmacy(defecture);
+        statistic.setDate(new Date(System.currentTimeMillis()));
+        statistic.setOperator(role);
+        statisticService.save(statistic);
+        return medicineDefecture;
     }
 
 
@@ -193,6 +217,11 @@ public class MedicineController {
     @Autowired
     public void setMessageSource(MessageSource messageSource) {
         this.messageSource = messageSource;
+    }
+
+    @Autowired
+    public void setStatisticService(StatisticService statisticService) {
+        this.statisticService = statisticService;
     }
 }
 
