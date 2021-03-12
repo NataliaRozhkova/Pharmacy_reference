@@ -20,9 +20,9 @@ import java.util.NoSuchElementException;
 
 public class PharmacyParser {
 
-    private List<PharmacyChain> chains;
-    private List<District> districts;
-    private List<Town> towns;
+    private final List<PharmacyChain> chains;
+    private final List<District> districts;
+    private final List<Town> towns;
 
     public PharmacyParser(List<PharmacyChain> chains, List<District> districts, List<Town> towns) {
         this.chains = chains;
@@ -118,7 +118,7 @@ public class PharmacyParser {
         try {
             pharmacy.setVisibility(cells.next().getBooleanCellValue());
         } catch (NoSuchElementException e) {
-            System.out.println("Empty pharmacy email");
+            System.out.println("Empty pharmacy visibility");
 
         }
         return pharmacy;
