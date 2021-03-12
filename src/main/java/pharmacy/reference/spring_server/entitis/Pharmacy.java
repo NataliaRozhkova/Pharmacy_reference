@@ -28,6 +28,8 @@ public class Pharmacy {
     private District district;
     @Column
     private String email;
+    @Column
+    private boolean visibility;
 
     public Pharmacy() {
     }
@@ -97,6 +99,13 @@ public class Pharmacy {
         this.district = district;
     }
 
+    public boolean isVisibility() {
+        return visibility;
+    }
+
+    public void setVisibility(boolean visibility) {
+        this.visibility = visibility;
+    }
 
     public String toString() {
 
@@ -125,7 +134,8 @@ public class Pharmacy {
                 Objects.equals(this.telephoneNumbers, pharmacy.telephoneNumbers) &&
                 Objects.equals(this.town, pharmacy.town) &&
                 Objects.equals(this.district, pharmacy.district) &&
-                Objects.equals(this.email, pharmacy.email)
+                Objects.equals(this.email, pharmacy.email) &&
+                Objects.equals(this.visibility, pharmacy.visibility)
                 ;
     }
 
@@ -138,7 +148,8 @@ public class Pharmacy {
                 this.address,
                 this.telephoneNumbers,
                 this.district,
-                this.email);
+                this.email,
+                this.visibility);
 
     }
 }
