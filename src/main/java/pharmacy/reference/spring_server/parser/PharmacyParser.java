@@ -115,6 +115,12 @@ public class PharmacyParser {
             System.out.println("Empty pharmacy email");
 
         }
+        try {
+            pharmacy.setVisibility(cells.next().getBooleanCellValue());
+        } catch (NoSuchElementException e) {
+            System.out.println("Empty pharmacy email");
+
+        }
         return pharmacy;
     }
 
