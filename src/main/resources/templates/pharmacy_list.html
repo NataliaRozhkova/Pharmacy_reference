@@ -25,6 +25,7 @@
                 <th>Район</th>
                 <th>Аптечная сеть</th>
                 <th>email</th>
+                <th>Видимость</th>
 
             </tr>
             <tr th:each="pharmacy : ${pharmacies}">
@@ -35,7 +36,9 @@
                 <td th:text="${pharmacy.district?.name}">Район</td>
                 <td th:text="${pharmacy.pharmacyChain.name}">Аптечная сеть</td>
                 <td th:text="${pharmacy.email}">email</td>
-                <td><a th:href="${'/pharmacy/update/' + pharmacy.pharmacyId}">Edit</a></td>
+                <td th:text="${pharmacy.visibility}">Видимость</td>
+                <td><a th:href="${'/pharmacy/update/' + pharmacy.pharmacyId}">Редактировать</a></td>
+                <td><a th:href="${'/pharmacy/add/file/' + pharmacy.pharmacyId}">Загрузить данные</a></td>
 
             </tr>
         </table>

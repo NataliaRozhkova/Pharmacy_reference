@@ -20,8 +20,8 @@
             <input name="name" id="file_name" type="text"><br/>
 
             Выберите аптеку:
-            <select class="form-control" id="pharmacyId" name="pharmacy_name">
-                <option value="">Выберите аптеку</option>
+            <select class="form-control" id="pharmacyId" name="pharmacy_name" >
+                <option value="" th:if="${#lists.size(pharmacies)}  > 1" disabled selected>Выберите аптеку</option>
                 <option th:each="pharmacy : ${pharmacies}"
                         th:value="${pharmacy.pharmacyId}"
                         th:text="${pharmacy.name} +'  :  '+${pharmacy.address}"></option>

@@ -33,6 +33,9 @@
         </form>
     </div>
 </div>
+<div>
+    <p class="form-control-static"  id="count" th:text="'Количество записей  '+ ${medicines.size}">Роль</p>
+</div>
 
 <div class="text-left" th:if="${not #lists.isEmpty(medicines)}">
 

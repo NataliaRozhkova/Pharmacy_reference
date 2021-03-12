@@ -24,7 +24,13 @@
    .button{
     height:50px;
     width:200px;
-}
+    }
+    input[type=checkbox]
+    {
+        transform: scale(2);
+    }
+
+
 
 
     </style>
@@ -40,8 +46,15 @@
                 <label class="col-sm-2 control-label">Введите название лекарства:</label>
                 <div class="col-sm-10">
                     <input class="form-control" id="medicine_name" placeholder="введи" required type="text">
+
                 </div>
             </div>
+            <div class="row">
+                <button class="button" type="button" id="defecture" onclick="addDefecture()" hidden="true">Добваить
+                    в дефектуру
+                </button>
+            </div>
+
             <div class="form-group">
                 <label class="col-sm-2 control-label"></label>
                 <div class="col-sm-10">
@@ -109,14 +122,16 @@
                             </td>
                             <td>
                                 <div>
-                                    <button class="button" type="button" id="statView" onclick="statView()">Посмотреть
+                                    <button class="button" type="button" id="statView" onclick="statView()">
+                                        Посмотреть
                                         статистику
                                     </button>
                                 </div>
                             </td>
                             <td>
                                 <div>
-                                    <button class="button" type="button" id="statAdd" onclick="statAdd()" hidden="true">
+                                    <button class="button" type="button" id="statAdd" onclick="statAdd()"
+                                            hidden="true">
                                         Отпарвить статистику
                                     </button>
                                 </div>
@@ -193,6 +208,7 @@
 <script id="script">
 
     document.getElementById('medicine_name').addEventListener('change', submitForm);
+
 
 
 </script>

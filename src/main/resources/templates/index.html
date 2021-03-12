@@ -5,7 +5,7 @@
     <link href="../../public/css/bootstrap.min.css"
           th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"
           rel="stylesheet" media="screen"/>
-<!--    <link rel="stylesheet" type="text/css"  href="css/ui.jqgrid.css"/>-->
+    <!--    <link rel="stylesheet" type="text/css"  href="css/ui.jqgrid.css"/>-->
     <script src="http://cdn.jsdelivr.net/webjars/jquery/3.2.1/jquery.min.js"
             th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
     <title>Аптечная справочная</title>
@@ -23,6 +23,7 @@
             <p><a href="/pharmacy/pharmacies">Список аптек</a></p>
             <p sec:authorize="hasAuthority('ROLE_ADMIN')"><a href="/pharmacy/new">Добавить аптеку</a></p>
             <p sec:authorize="hasAuthority('ROLE_ADMIN')"><a href="/file/add">Загрузка данных аптек из файла</a></p>
+            <p><a href="/medicine/get/all/from/pharmacy?pharmacy=748">Дефектура </a></p>
         </div>
 
     </div>
