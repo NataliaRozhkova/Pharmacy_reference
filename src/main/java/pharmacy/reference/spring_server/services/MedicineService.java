@@ -32,4 +32,6 @@ public interface MedicineService {
 
     void  deleteById(long id);
 
+    Integer countByPharmacy(long id);
+
 }

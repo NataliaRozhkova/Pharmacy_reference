@@ -95,6 +95,11 @@ public class MedicineServiceImpl implements MedicineService {
         medicineRepository.deleteById(id);
     }
 
+    @Override
+    public Integer countByPharmacy(long id) {
+        return medicineRepository.countByPharmacy(id);
+    }
+
     @Autowired
     public void setMedicineRepository(MedicineRepository medicineRepository) {
         this.medicineRepository = medicineRepository;

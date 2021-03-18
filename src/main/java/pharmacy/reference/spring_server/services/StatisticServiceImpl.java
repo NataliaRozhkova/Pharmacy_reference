@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pharmacy.reference.spring_server.entitis.Statistic;
 import pharmacy.reference.spring_server.repositories.StatisticRepository;
 
+import java.util.Date;
 import java.util.List;
 
 @Transactional
@@ -44,8 +45,15 @@ public class StatisticServiceImpl implements StatisticService {
         return statisticRepository.findAll(pageable);
     }
 
+    @Override
+    public List<Statistic> findByPharmacyIdAndDate(Long id, Date startDate, Date finishDate) {
+        return statisticRepository.findByPharmacyIdAndDate(id, startDate, finishDate);
+    }
+
     @Autowired
     public void setStatisticRepository(StatisticRepository statisticRepository) {
         this.statisticRepository = statisticRepository;
     }
+
+
 }
