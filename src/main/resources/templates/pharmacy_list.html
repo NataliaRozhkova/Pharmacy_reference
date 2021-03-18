@@ -8,6 +8,14 @@
           rel="stylesheet" media="screen"/>
     <script src="http://cdn.jsdelivr.net/webjars/jquery/3.2.1/jquery.min.js"
             th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
+    <style>
+
+   th,td {
+   text-align: center;
+   font-size: small;
+   }
+
+    </style>
 </head>
 
 <body>
@@ -26,6 +34,11 @@
                 <th>Аптечная сеть</th>
                 <th>email</th>
                 <th>Видимость</th>
+                <th>Количество лекарств</th>
+                <th>Дата последнего обновления</th>
+                <th>Редактировать</th>
+                <th>Загрузить данные</th>
+
 
             </tr>
             <tr th:each="pharmacy : ${pharmacies}">
@@ -37,6 +50,8 @@
                 <td th:text="${pharmacy.pharmacyChain.name}">Аптечная сеть</td>
                 <td th:text="${pharmacy.email}">email</td>
                 <td th:text="${pharmacy.visibility}">Видимость</td>
+                <td th:text="${countMedicines.get(pharmacy.pharmacyId)}"></td>
+                <td th:text="${dateLastChangeMedicines.get(pharmacy.pharmacyId)}"></td>
                 <td><a th:href="${'/pharmacy/update/' + pharmacy.pharmacyId}">Редактировать</a></td>
                 <td><a th:href="${'/pharmacy/add/file/' + pharmacy.pharmacyId}">Загрузить данные</a></td>
 
