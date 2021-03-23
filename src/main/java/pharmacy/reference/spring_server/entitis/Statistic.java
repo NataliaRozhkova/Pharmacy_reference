@@ -10,8 +10,11 @@ public class Statistic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "date")
-    private Date date;
+    //    @Column(name = "date")
+//    private Date date;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "phone_call_id", referencedColumnName = "id")
+    private PhoneCall phoneCall;
     @Column(name = "medicine_name")
     private String medicineName;
     @Column(name = "medicine_price")
@@ -39,8 +42,21 @@ public class Statistic {
         return id;
     }
 
-    public Date getDate() {
-        return date;
+//    public Date getDate() {
+//        return date;
+//    }
+//
+//    public void setDate(Date date) {
+//        this.date = date;
+//    }
+
+
+    public void setPhoneCall(PhoneCall phoneCall) {
+        this.phoneCall = phoneCall;
+    }
+
+    public PhoneCall getPhoneCall() {
+        return phoneCall;
     }
 
     public Pharmacy getPharmacy() {
@@ -49,10 +65,6 @@ public class Statistic {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
     public void setPharmacy(Pharmacy pharmacy) {
@@ -93,7 +105,8 @@ public class Statistic {
 
         Statistic statistic = (Statistic) o;
         return Objects.equals(this.id, statistic.id) &&
-                Objects.equals(this.date, statistic.date) &&
+//                Objects.equals(this.date, statistic.date) &&
+                Objects.equals(this.phoneCall, statistic.phoneCall) &&
                 Objects.equals(this.pharmacy, statistic.pharmacy) &&
                 Objects.equals(this.operator, statistic.operator) &&
                 Objects.equals(this.medicineName, statistic.medicineName) &&
@@ -104,17 +117,17 @@ public class Statistic {
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id, this.date, this.pharmacy, this.operator);
+        return Objects.hash(this.id, this.phoneCall, this.pharmacy, this.operator);
     }
 
     public String toString() {
         return id + "\t" +
-                date + "\t" +
+                phoneCall.getDate() + "\t" +
                 medicineName + "\t" +
                 medicinePrice + "\t" +
                 pharmacy.getName() + "\t" +
 //                operator.getId() + "\t";
-                operator+ "\t";
+                operator + "\t";
     }
 
 

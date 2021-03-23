@@ -14,7 +14,7 @@ public class Medicine implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column
-    @Size(min=5, max=255)
+    @Size(min=3, max=255)
     private String name;
     @Column
     private float price;
