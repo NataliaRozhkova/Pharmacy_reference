@@ -90,6 +90,7 @@ public class FileLoaderController {
                 model.addAttribute("file", newFile);
                 model.addAttribute("pharmacy", pharmacy);
             } catch (Exception e) {
+                System.out.println("!!!!!!"+e.getMessage());
             }
         } else {
         }

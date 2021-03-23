@@ -7,17 +7,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import pharmacy.reference.spring_server.entitis.Medicine;
 import pharmacy.reference.spring_server.entitis.Pharmacy;
 import pharmacy.reference.spring_server.entitis.PharmacyChain;
 import pharmacy.reference.spring_server.parser.PharmacyParser;
-import pharmacy.reference.spring_server.services.DistrictService;
-import pharmacy.reference.spring_server.services.PharmacyChainService;
-import pharmacy.reference.spring_server.services.PharmacyService;
-import pharmacy.reference.spring_server.services.TownService;
+import pharmacy.reference.spring_server.services.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -28,13 +28,28 @@ public class PharmacyController {
 
     private PharmacyChainService pharmacyChainService;
 
+    private MedicineService medicineService;
+
     private DistrictService districtService;
 
     private TownService townService;
 
     @GetMapping("pharmacies")
     public String getAll(Model model) {
-        model.addAttribute("pharmacies", pharmacyService.findAll());
+        List<Pharmacy> pharmacies = pharmacyService.findAll();
+        HashMap<Long, Integer> countMedicines = new HashMap<>();
+        HashMap<Long, Date> dateLastChangeMedicines = new HashMap<>();
+        for (Pharmacy pharmacy : pharmacies) {
+            Integer size = medicineService.countByPharmacy(pharmacy.getPharmacyId());
+//            List<Medicine> medicines = medicineService.findByPharmacyId(pharmacy.getPharmacyId());
+            countMedicines.put(pharmacy.getPharmacyId(), size);
+            if (size > 0) {
+//                dateLastChangeMedicines.put(pharmacy.getPharmacyId(),medicineService.get(0).getDate());
+            }
+        }
+        model.addAttribute("pharmacies", pharmacies);
+        model.addAttribute("countMedicines", countMedicines);
+        model.addAttribute("dateLastChangeMedicines", dateLastChangeMedicines);
         return "pharmacy_list";
     }
 
@@ -128,5 +143,10 @@ public class PharmacyController {
     @Autowired
     public void setTownService(TownService townService) {
         this.townService = townService;
+    }
+
+    @Autowired
+    public void setMedicineService(MedicineService medicineService) {
+        this.medicineService = medicineService;
     }
 }

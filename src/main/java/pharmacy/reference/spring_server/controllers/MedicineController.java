@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pharmacy.reference.spring_server.entitis.Medicine;
 import pharmacy.reference.spring_server.entitis.Pharmacy;
+import pharmacy.reference.spring_server.entitis.PhoneCall;
 import pharmacy.reference.spring_server.entitis.Statistic;
 import pharmacy.reference.spring_server.services.*;
 import pharmacy.reference.spring_server.util.MedicineGrid;
@@ -47,11 +48,11 @@ public class MedicineController {
 
     @GetMapping("/get/all")
     @ResponseBody
-    public MedicineGrid getAll(@RequestParam(name = "name", required = false, defaultValue = "") String name,
-                               @RequestParam(name = "district", required = false, defaultValue = "") Long district,
-                               @RequestParam(name = "town", required = false, defaultValue = "") Long town,
-                               @RequestParam(name = "chain", required = false, defaultValue = "") Long chain,
-                               @RequestParam(name = "pharmacy", required = false, defaultValue = "") Pharmacy pharmacy,
+    public MedicineGrid getAll(@RequestParam(name = "name", required = false) String name,
+                               @RequestParam(name = "district", required = false) Long district,
+                               @RequestParam(name = "town", required = false) Long town,
+                               @RequestParam(name = "chain", required = false) Long chain,
+                               @RequestParam(name = "pharmacy", required = false) Pharmacy pharmacy,
                                @RequestParam(value = "page", required = false) Integer page,
                                @RequestParam(value = "rows", required = false) Integer rows
     ) {
@@ -62,16 +63,29 @@ public class MedicineController {
         } else {
             medicines = medicineService.findByName(words.get(0));
         }
+        System.out.println(name);
+        System.out.println(district);
+        System.out.println(town);
+        System.out.println(chain);
+        System.out.println(page);
 //        words.remove(0);
         medicines = medicines.stream()
                 .filter(
                         medicine -> {
                             boolean res = true;
                             if (district != null) {
-                                res &= medicine.getPharmacy().getDistrict().getId() == district;
+                                if (medicine.getPharmacy().getDistrict() != null) {
+                                    res &= medicine.getPharmacy().getDistrict().getId() == district;
+                                } else {
+                                    res &= false;
+                                }
                             }
                             if (town != null) {
-                                res &= medicine.getPharmacy().getTown().getId() == town;
+                                if (medicine.getPharmacy().getTown() != null) {
+                                    res &= medicine.getPharmacy().getTown().getId() == town;
+                                }else {
+                                    res &= false;
+                                }
                             }
                             if (chain != null) {
                                 res &= medicine.getPharmacy().getPharmacyChain().getId() == chain;
@@ -174,15 +188,15 @@ public class MedicineController {
                                  @RequestParam(name = "role") String role) {
         Medicine medicineDefecture = new Medicine();
         medicineDefecture.setName(medicinesName);
-        Pharmacy defecture = pharmacyService.findByName("деф").get(0);
-        medicineDefecture.setPharmacy(defecture);
+        medicineDefecture.setPharmacy(pharmacyService.findByName("деф").get(0));
         medicineDefecture.setDate(new Date(System.currentTimeMillis()));
-
+        PhoneCall phoneCall = new PhoneCall();
+        phoneCall.setDate(new Date(System.currentTimeMillis()));
         medicineService.save(medicineDefecture);
         Statistic statistic = new Statistic();
         statistic.setMedicineName(medicinesName);
-        statistic.setPharmacy(defecture);
-        statistic.setDate(new Date(System.currentTimeMillis()));
+        statistic.setPharmacy(pharmacyService.findByName("деф").get(0));
+        statistic.setPhoneCall(phoneCall);
         statistic.setOperator(role);
         statisticService.save(statistic);
         return medicineDefecture;
