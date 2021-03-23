@@ -4,10 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import org.springframework.format.FormatterRegistry;
-import org.springframework.ui.context.support.ResourceBundleThemeSource;
 import org.springframework.web.servlet.config.annotation.*;
-import org.springframework.web.servlet.theme.ThemeChangeInterceptor;
-import pharmacy.reference.util.DateFormatter;
+import pharmacy.reference.spring_server.util.DateFormatter;
 
 
 @Configuration
