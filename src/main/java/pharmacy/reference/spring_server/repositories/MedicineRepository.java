@@ -23,6 +23,9 @@ public interface MedicineRepository extends JpaRepository<Medicine, Long> {
     @Query("SELECT b from Medicine b WHERE lower(b.name)  LIKE  concat('%', lower(:name), '%') AND b.pharmacy.pharmacyId = :id")
     List<Medicine> findByNameAndPharmacy(@Param("name") String name,@Param("id") Long id);
 
+    @Query("SELECT count(b) from Medicine b WHERE b.pharmacy.pharmacyId = :pharmacyId")
+    Integer countByPharmacy(@Param("pharmacyId") Long id);
+
 
 
 }
