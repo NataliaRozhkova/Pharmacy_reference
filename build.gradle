@@ -26,6 +26,8 @@ task runApp(type: JavaExec) {
     main = project.hasProperty("mainClass") ? project.getProperty("mainClass") : "pharmacy.reference.spring_server.Application"
 }
 
+
+
 dependencies {
     implementation 'org.junit.jupiter:junit-jupiter:5.4.2'
     implementation 'org.junit.jupiter:junit-jupiter:5.4.2'
@@ -54,14 +56,9 @@ dependencies {
     compile "org.thymeleaf.extras:thymeleaf-extras-springsecurity5"
     compile "org.webjars:bootstrap:3.3.7-1"
     compile  "org.webjars:jquery:3.2.1"
-//    implementation 'com.github.thymeleaf:thymeleaf-extras-springsecurity:thymeleaf-extras-springsecurity5-3.0.4.RELEASE'
 
-//    implementation 'org.webjars:sockjs-client:1.0.2'
-//    implementation 'org.webjars:stomp-websocket:2.3.3'
-//    implementation 'org.webjars:bootstrap:3.3.7'
-////implementation 'org.webjars:jquery:3.1.1-1'
-//    test {
-//        useJUnitPlatform()
-//    }
+    compile group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
+
+
 
 }
