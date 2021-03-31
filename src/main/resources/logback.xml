@@ -5,19 +5,63 @@
         <resetJUL>true</resetJUL>
     </contextListener>
 
-    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+<!--    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">-->
+<!--        <encoder>-->
+<!--            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n</pattern>-->
+<!--        </encoder>-->
+<!--    </appender>-->
+
+<!--    <logger name="com.apress.prospring5.ch11" level="debug"/>-->
+
+<!--    <logger name="org.hibernate" level="off"/>-->
+
+<!--    <logger name="org.springframework" level="debug"/>-->
+
+<!--    <root level="info">-->
+<!--        <appender-ref ref="console" />-->
+<!--    </root>-->
+<!--</configuration>-->
+
+
+            <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n</pattern>
         </encoder>
     </appender>
+    <property name="DEV_HOME" value="/home/natasha/IdeaProjects/Справка/pharmacy_reference/src/main/resources/temp" />
 
-    <logger name="com.apress.prospring5.ch11" level="debug"/>
+    <appender name="FILE-AUDIT"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${DEV_HOME}/pharmacy.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>
+                %d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n
+            </Pattern>
+        </encoder>
 
-    <logger name="org.hibernate" level="off"/>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${DEV_HOME}/archived/pharmacy.%d{yyyy-MM-dd}.%i.log
+            </fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
 
-    <logger name="org.springframework" level="debug"/>
+    </appender>
+
+
+    <logger name="pharmacy.reference.spring_server" level="info"/>
+
+    <logger name="org.hibernate" level="error"/>
+
+    <logger name="org.springframework" level="ERROR"/>
 
     <root level="info">
+        <appender-ref ref="FILE-AUDIT" />
+    </root>
+    <root level="error">
         <appender-ref ref="console" />
     </root>
 </configuration>

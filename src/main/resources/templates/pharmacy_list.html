@@ -51,7 +51,7 @@
                 <td th:text="${pharmacy.email}">email</td>
                 <td th:text="${pharmacy.visibility}">Видимость</td>
                 <td th:text="${countMedicines.get(pharmacy.pharmacyId)}"></td>
-                <td th:text="${dateLastChangeMedicines.get(pharmacy.pharmacyId)}"></td>
+                <td th:text="${#dates.format(pharmacy.lastUpdateMedicines, 'dd-MM-yyyy HH:mm:ss')}"></td>
                 <td><a th:href="${'/pharmacy/update/' + pharmacy.pharmacyId}">Редактировать</a></td>
                 <td><a th:href="${'/pharmacy/add/file/' + pharmacy.pharmacyId}">Загрузить данные</a></td>
 

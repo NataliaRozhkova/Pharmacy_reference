@@ -2,6 +2,7 @@ package pharmacy.reference.spring_server.entitis;
 
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -30,10 +31,19 @@ public class Pharmacy {
     private String email;
     @Column
     private boolean visibility;
+    @Column(name = "last_update_medicines")
+    private Date lastUpdateMedicines;
 
     public Pharmacy() {
     }
 
+    public Date getLastUpdateMedicines() {
+        return lastUpdateMedicines;
+    }
+
+    public void setLastUpdateMedicines(Date lastUpdateMedicines) {
+        this.lastUpdateMedicines = lastUpdateMedicines;
+    }
 
     public long getPharmacyId() {
         return pharmacyId;
@@ -111,12 +121,14 @@ public class Pharmacy {
 
         return pharmacyId + "\t" +
                 name + "\t" +
-                pharmacyChain.getName() + "\t" +
+                (pharmacyChain != null ? pharmacyChain.getName() : "") + "\t" +
                 telephoneNumbers + "\t" +
                 address + "\t" +
-                town.getName() + "\t" +
-                district.getName() + "\t" +
-                email + "\t";
+                (town != null ? town.getName() : "") +
+                (district != null ? district.getName() : "") + "\t" +
+                email + "\t" +
+                (lastUpdateMedicines != null ? lastUpdateMedicines.toString() : "") + "\t";
+
     }
 
     @Override
@@ -135,6 +147,8 @@ public class Pharmacy {
                 Objects.equals(this.town, pharmacy.town) &&
                 Objects.equals(this.district, pharmacy.district) &&
                 Objects.equals(this.email, pharmacy.email) &&
+                Objects.equals(this.lastUpdateMedicines, pharmacy.lastUpdateMedicines) &&
+
                 Objects.equals(this.visibility, pharmacy.visibility)
                 ;
     }
@@ -149,6 +163,7 @@ public class Pharmacy {
                 this.telephoneNumbers,
                 this.district,
                 this.email,
+                this.lastUpdateMedicines,
                 this.visibility);
 
     }

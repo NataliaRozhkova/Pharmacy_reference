@@ -24,6 +24,11 @@
             <p sec:authorize="hasAuthority('ROLE_ADMIN')"><a href="/pharmacy/new">Добавить аптеку</a></p>
             <p sec:authorize="hasAuthority('ROLE_ADMIN')"><a href="/file/add">Загрузка данных аптек из файла</a></p>
             <p><a href="/medicine/get/all/from/pharmacy?pharmacy=852">Дефектура </a></p>
+            <p sec:authorize="hasAuthority('ROLE_ADMIN')"><a href="/statistic/file"> Генерация файлов статистики </a>
+            </p>
+            <p sec:authorize="hasAuthority('ROLE_ADMIN')"><a href="/email/download"> Автозагрузка даных с почты</a></p>
+
+
         </div>
 
     </div>

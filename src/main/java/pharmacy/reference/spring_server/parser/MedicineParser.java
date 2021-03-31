@@ -3,6 +3,7 @@ package pharmacy.reference.spring_server.parser;
 import org.apache.commons.io.FilenameUtils;
 import pharmacy.reference.spring_server.entitis.Medicine;
 import pharmacy.reference.spring_server.entitis.Pharmacy;
+import pharmacy.reference.spring_server.util.ZipExtractor;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,6 +30,14 @@ public class MedicineParser {
         try {
             inputStream = new FileInputStream(file);
             String fileType = FilenameUtils.getExtension(file.getAbsolutePath()).toLowerCase();
+            if(fileType.equalsIgnoreCase("zip")){
+                ZipExtractor.unzip(file.getAbsolutePath());
+                int index = file.getAbsolutePath().indexOf(".zip");
+                List<File> files = listFilesForFolder(new File(file.getAbsolutePath().substring(0, index)));
+                file = files.get(0);
+                fileType = FilenameUtils.getExtension(file.getAbsolutePath()).toLowerCase();
+
+            }
             if (fileType.equalsIgnoreCase("xls") ||
                     fileType.equalsIgnoreCase("xlsx")) {
                 ExcelParser parser = new ExcelParser(pharmacy, file);
@@ -50,6 +59,15 @@ public class MedicineParser {
             }
         }
         return medicines;
+    }
+
+    public List<File> listFilesForFolder(final File folder) {
+        List<File> files = new ArrayList<>();
+        for (final File fileEntry : folder.listFiles()) {
+
+            files.add(fileEntry);
+        }
+        return files;
     }
 
 

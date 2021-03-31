@@ -48,6 +48,11 @@ public class PharmacyServiceImpl  implements PharmacyService{
         return pharmacyRepository.findAllByPharmacyChain(chainId);
     }
 
+    @Override
+    public List<Pharmacy> findAllByEmail(String email) {
+        return pharmacyRepository.findAllByEmail(email);
+    }
+
     @Autowired
     public void setPharmacyRepository(PharmacyRepository pharmacyRepository) {
         this.pharmacyRepository = pharmacyRepository;

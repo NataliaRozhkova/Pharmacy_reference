@@ -21,4 +21,7 @@ public interface PharmacyService {
     List<Pharmacy> findAllVisible();
 
     List<Pharmacy> findAllByPharmacyChain(Long chainId);
+
+    List<Pharmacy> findAllByEmail(String email);
+
 }
