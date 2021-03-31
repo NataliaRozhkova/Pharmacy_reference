@@ -1,5 +1,7 @@
 package pharmacy.reference.spring_server.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -7,7 +9,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pharmacy.reference.spring_server.entitis.Medicine;
 import pharmacy.reference.spring_server.entitis.Pharmacy;
 import pharmacy.reference.spring_server.entitis.PharmacyChain;
 import pharmacy.reference.spring_server.parser.PharmacyParser;
@@ -34,22 +35,21 @@ public class PharmacyController {
 
     private TownService townService;
 
+    private final Logger logger = LoggerFactory.getLogger(MedicineController.class);
+
+
     @GetMapping("pharmacies")
     public String getAll(Model model) {
         List<Pharmacy> pharmacies = pharmacyService.findAll();
         HashMap<Long, Integer> countMedicines = new HashMap<>();
-        HashMap<Long, Date> dateLastChangeMedicines = new HashMap<>();
         for (Pharmacy pharmacy : pharmacies) {
             Integer size = medicineService.countByPharmacy(pharmacy.getPharmacyId());
-//            List<Medicine> medicines = medicineService.findByPharmacyId(pharmacy.getPharmacyId());
             countMedicines.put(pharmacy.getPharmacyId(), size);
             if (size > 0) {
-//                dateLastChangeMedicines.put(pharmacy.getPharmacyId(),medicineService.get(0).getDate());
             }
         }
         model.addAttribute("pharmacies", pharmacies);
         model.addAttribute("countMedicines", countMedicines);
-        model.addAttribute("dateLastChangeMedicines", dateLastChangeMedicines);
         return "pharmacy_list";
     }
 
@@ -76,23 +76,18 @@ public class PharmacyController {
 
     @GetMapping("/update/{id}")
     public String updatePharmacy(@PathVariable("id") Long id,
-//                                 @RequestParam(name = "chain", required = false, defaultValue = "") Long chain,
                                  Model model) {
         Pharmacy pharmacy = pharmacyService.findById(id);
         model.addAttribute("pharmacy", pharmacy);
         model.addAttribute("chains", pharmacyChainService.findAll());
         model.addAttribute("districts", districtService.findAll());
         model.addAttribute("towns", townService.findAll());
-//        model.addAttribute("chain_select", pharmacy.getPharmacyChain());
         return "pharmacy_update";
     }
 
     @PostMapping("/save")
-    public String savePharmacy(Pharmacy pharmacy,
-                               @RequestParam(name = "chain", required = false, defaultValue = "") Long chain,
-                               Model model) {
-//        pharmacy.setPharmacyChain(pharmacyChainService.findById(chain));
-        System.out.println(chain);
+    public String savePharmacy(Pharmacy pharmacy, Model model) {
+        logger.info("Изменены данные аптеки " + pharmacy + ": Оператор " + SecurityContextHolder.getContext().getAuthentication().getName() );
         pharmacyService.save(pharmacy);
         model.addAttribute("text", pharmacy);
         return "base_page";
@@ -100,10 +95,13 @@ public class PharmacyController {
 
     @GetMapping("/parse")
     @ResponseBody
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+
     public String parse() throws IOException {
         PharmacyParser pharmacyParser = new PharmacyParser(pharmacyChainService.findAll(), districtService.findAll(), townService.findAll());
         List<Pharmacy> pharmacies = pharmacyParser.parse(new File("/home/natasha/IdeaProjects/Справка/pharmacy_reference/src/main/resources/Pharmacy_list.xlsx"));
         pharmacyService.saveAll(pharmacies);
+        logger.info("Парсинг данных аптек из файла " + ": Оператор " + SecurityContextHolder.getContext().getAuthentication().getName() );
 
         return "pharmacy_update";
     }
@@ -115,7 +113,7 @@ public class PharmacyController {
         List<Pharmacy> pharmacies = new ArrayList<>();
         pharmacies.add(pharmacy);
         model.addAttribute("pharmacies", pharmacies);
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
         return "file_loader";
     }
 

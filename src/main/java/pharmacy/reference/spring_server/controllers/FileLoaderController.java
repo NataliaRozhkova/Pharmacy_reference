@@ -1,5 +1,7 @@
 package pharmacy.reference.spring_server.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -21,6 +23,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -31,6 +34,8 @@ public class FileLoaderController {
 
     private MedicineService medicineService;
     private PharmacyService pharmacyService;
+    private final Logger logger = LoggerFactory.getLogger(MedicineController.class);
+
 
     @GetMapping(value = "/add")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -56,10 +61,15 @@ public class FileLoaderController {
             medicineService.deleteByPharmacyId(pharmacy.getPharmacyId());
             medicineService.save(medicines.get(0));
             List<Medicine> saveMedicines = medicineService.saveAll(medicines);
+            pharmacy.setLastUpdateMedicines(new Date(System.currentTimeMillis()));
+            pharmacyService.save(pharmacy);
             model.addAttribute("text", "Добавлено позиций " + saveMedicines.size());
+            logger.info("Обновление списка лекарств аптеки из файла "+ pharmacy + ": Оператор " + SecurityContextHolder.getContext().getAuthentication().getName() );
 
         } catch (Exception e) {
             model.addAttribute("text", "Вам не удалось загрузить " + file.getName() + " => " + e.getMessage());
+            logger.info("Не удалось загрузить данные "+ e.getMessage() + ": Оператор " + SecurityContextHolder.getContext().getAuthentication().getName() );
+
         }
         return "base_page";
     }

@@ -33,8 +33,6 @@ public class MedicineController {
     private DistrictService districtService;
     private StatisticService statisticService;
 
-    private MessageSource messageSource;
-
     @GetMapping(value = "")
     public String getPage(Model model, SecurityContextHolder auth) {
 
@@ -56,6 +54,8 @@ public class MedicineController {
                                @RequestParam(value = "page", required = false) Integer page,
                                @RequestParam(value = "rows", required = false) Integer rows
     ) {
+
+
         List<String> words = splitLine(name);
         List<Medicine> medicines = new ArrayList<>();
         if (pharmacy != null && pharmacy.getPharmacyId() != 0) {
@@ -63,12 +63,7 @@ public class MedicineController {
         } else {
             medicines = medicineService.findByName(words.get(0));
         }
-        System.out.println(name);
-        System.out.println(district);
-        System.out.println(town);
-        System.out.println(chain);
-        System.out.println(page);
-//        words.remove(0);
+
         medicines = medicines.stream()
                 .filter(
                         medicine -> {
@@ -135,7 +130,6 @@ public class MedicineController {
 
     @GetMapping("/get/from/pharmacy")
     public String getPagePharmacySelect(Model model) {
-//        List<Pharmacy> pharmacies = pharmacyRepository.findAll();
         model.addAttribute("pharmacies", pharmacyService.findAll());
         return "get_medicine_from_pharmacy";
     }
@@ -165,6 +159,7 @@ public class MedicineController {
     @GetMapping("/delete/{id}")
     @ResponseBody
     public String delete(@PathVariable("id") Long id) {
+        logger.info("Удалено лекарство" + medicineService.findById(id)+ ": Оператор " + SecurityContextHolder.getContext().getAuthentication().getName());
         medicineService.deleteById(id);
         return "Лекарство удалено";
     }
@@ -179,6 +174,7 @@ public class MedicineController {
     public String checkShowAddForm(@Valid Medicine medicine, BindingResult bindingResult, Model model) {
         medicine.setDate(new Date(System.currentTimeMillis()));
         model.addAttribute("text", medicineService.save(medicine).toString());
+        logger.info("Добавлено лекарство" + medicine + ": Оператор " + SecurityContextHolder.getContext().getAuthentication().getName());
         return "base_page";
     }
 
@@ -186,6 +182,7 @@ public class MedicineController {
     @ResponseBody
     public Medicine putDefecture(@RequestParam(name = "medicines") String medicinesName,
                                  @RequestParam(name = "role") String role) {
+        logger.info("Добавлено в дефектуру " + medicinesName + ": Оператор " + SecurityContextHolder.getContext().getAuthentication().getName());
         Medicine medicineDefecture = new Medicine();
         medicineDefecture.setName(medicinesName);
         medicineDefecture.setPharmacy(pharmacyService.findByName("деф").get(0));
@@ -226,11 +223,6 @@ public class MedicineController {
     @Autowired
     public void setDistrictService(DistrictService districtService) {
         this.districtService = districtService;
-    }
-
-    @Autowired
-    public void setMessageSource(MessageSource messageSource) {
-        this.messageSource = messageSource;
     }
 
     @Autowired
