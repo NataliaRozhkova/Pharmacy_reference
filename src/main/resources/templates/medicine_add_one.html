@@ -7,64 +7,67 @@
           rel="stylesheet" media="screen"/>
     <script src="http://cdn.jsdelivr.net/webjars/jquery/3.2.1/jquery.min.js"
             th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
-    <title>Аптечная справочная</title>
+    <title> Единая аптечная справочная
+    </title>
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}">Header</div>
 <div class="container">
-<div>
-    <form class="form-horizontal" th:object="${medicine}" th:action="@{/medicine/add}" method="post">
-        <input type="hidden" th:field="*{id}"/>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">Название:</label>
-            <div class="col-sm-10">
-                <input class="form-control" th:field="*{name}"/>
-                <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Название должно содержать от 2 до 255 символов </label>
+    <h1>Добавьте новое лекарство</h1>
+    <div>
+        <form class="form-horizontal" th:object="${medicine}" th:action="@{/medicine/add}" method="post">
+            <input type="hidden" th:field="*{id}"/>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Название:</label>
+                <div class="col-sm-10">
+                    <input class="form-control" th:field="*{name}"/>
+                    <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Название должно содержать от 2 до
+                        255 символов </label>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">Цена:</label>
-            <div class="col-sm-10">
-                <input class="form-control" th:field="*{price}"/>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Цена:</label>
+                <div class="col-sm-10">
+                    <input class="form-control" th:field="*{price}"/>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">Количество:</label>
-            <div class="col-sm-10">
-                <input class="form-control" th:field="*{quantity}"/>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Количество:</label>
+                <div class="col-sm-10">
+                    <input class="form-control" th:field="*{quantity}"/>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">Производитель:</label>
-            <div class="col-sm-10">
-                <input class="form-control" th:field="*{manufacturer}">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Производитель:</label>
+                <div class="col-sm-10">
+                    <input class="form-control" th:field="*{manufacturer}">
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">Страна:</label>
-            <div class="col-sm-10">
-                <input class="form-control" th:field="*{country}">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Страна:</label>
+                <div class="col-sm-10">
+                    <input class="form-control" th:field="*{country}">
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">Апетека:</label>
-            <div class="col-sm-10">
-                <select class="form-control" id="pharmacy" name="pharmacy" th:field="*{pharmacy}">
-                    <label class="col-sm-2 control-label">pharmacy:</label>
-                    <option value="">Выберите аптеку</option>
-                    <option th:each="pharmacy : ${pharmacies}"
-                            th:value="${pharmacy.pharmacyId}"
-                            th:text="${pharmacy.name} + '  :  '+${pharmacy.address}"></option>
-                </select>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Апетека:</label>
+                <div class="col-sm-10">
+                    <select class="form-control" id="pharmacy" name="pharmacy" th:field="*{pharmacy}">
+                        <label class="col-sm-2 control-label">pharmacy:</label>
+                        <option value="">Выберите аптеку</option>
+                        <option th:each="pharmacy : ${pharmacies}"
+                                th:value="${pharmacy.pharmacyId}"
+                                th:text="${pharmacy.name} + '  :  '+${pharmacy.address}"></option>
+                    </select>
+                </div>
             </div>
-        </div>
 
-        <div class="row">
-            <button class="btn btn-default">Сохранить</button>
-        </div>
+            <div class="row">
+                <button class="btn btn-default">Сохранить</button>
+            </div>
 
-    </form>
-</div>
+        </form>
+    </div>
 </div>
 </body>
 </html>

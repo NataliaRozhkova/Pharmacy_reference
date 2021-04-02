@@ -8,25 +8,42 @@
     <!--    <link rel="stylesheet" type="text/css"  href="css/ui.jqgrid.css"/>-->
     <script src="http://cdn.jsdelivr.net/webjars/jquery/3.2.1/jquery.min.js"
             th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
-    <title>Аптечная справочная</title>
+    <title>Единая аптечная справочная</title>
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}">Header</div>
 <div class="container">
     <div class="text-left">
 
-        <h1>Аптечная справочная</h1>
+        <h1>Единая аптечная справочная</h1>
+        <br/><br/>
         <div class="lead">
-            <p><a href="/medicine">Поиск лекарств</a></p>
-            <p><a href="/medicine/add">Добавить лекарство</a></p>
-            <p><a href="/medicine/get/from/pharmacy">Список лекарств в аптеке</a></p>
-            <p><a href="/pharmacy/pharmacies">Список аптек</a></p>
-            <p sec:authorize="hasAuthority('ROLE_ADMIN')"><a href="/pharmacy/new">Добавить аптеку</a></p>
-            <p sec:authorize="hasAuthority('ROLE_ADMIN')"><a href="/file/add">Загрузка данных аптек из файла</a></p>
-            <p><a href="/medicine/get/all/from/pharmacy?pharmacy=852">Дефектура </a></p>
-            <p sec:authorize="hasAuthority('ROLE_ADMIN')"><a href="/statistic/file"> Генерация файлов статистики </a>
-            </p>
-            <p sec:authorize="hasAuthority('ROLE_ADMIN')"><a href="/email/download"> Автозагрузка даных с почты</a></p>
+            <table>
+                <td>
+                    <p><a href="/medicine">Поиск лекарств</a></p>
+                    <p><a href="/medicine/add">Добавить лекарство</a></p>
+                    <p><a href="/medicine/get/from/pharmacy">Список лекарств в аптеке</a></p>
+                    <p><a href="/pharmacy/pharmacies">Список аптек</a></p>
+                    <p><a href="/medicine/get/all/from/pharmacy?pharmacy=852">Дефектура </a></p>
+
+                </td>
+                <td width="150"></td>
+                <td sec:authorize="hasAuthority('ROLE_ADMIN')">
+                    <p><a href="/pharmacy/new">Добавить аптеку</a></p>
+                    <p><a href="/auxiliary/add/town">Добавить город</a></p>
+                    <p><a href="/auxiliary/add/district">Добавить район</a></p>
+                    <p><a href="/file/add">Загрузка данных аптек из файла</a></p>
+                    <p><a href="/statistic/file"> Генерация файлов статистики </a></p>
+                    <p><a href="/email/download"> Автозагрузка даных с почты</a></p>
+                    <p><a href="/statistic/file/download"> Скачать файлы статистики</a></p>
+                </td>
+            </table>
+
+            <!--            <p sec:authorize="hasAuthority('ROLE_ADMIN')"><a href="/pharmacy/new">Добавить аптеку</a></p>-->
+            <!--            <p sec:authorize="hasAuthority('ROLE_ADMIN')"><a href="/file/add">Загрузка данных аптек из файла</a></p>-->
+            <!--            <p sec:authorize="hasAuthority('ROLE_ADMIN')"><a href="/statistic/file"> Генерация файлов статистики </a>-->
+            <!--            </p>-->
+            <!--            <p sec:authorize="hasAuthority('ROLE_ADMIN')"><a href="/email/download"> Автозагрузка даных с почты</a></p>-->
 
 
         </div>
