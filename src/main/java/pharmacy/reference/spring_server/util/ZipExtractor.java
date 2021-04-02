@@ -3,11 +3,13 @@ package pharmacy.reference.spring_server.util;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import java.util.zip.ZipOutputStream;
+
 
 public class ZipExtractor {
-
 
 
     public static void unzip(String file) {
@@ -65,4 +67,35 @@ public class ZipExtractor {
             System.out.println("IOError :" + ioe);
         }
     }
+
+    public static void writeToZipFile(List<File> srcFiles, String zipName) throws IOException {
+        FileOutputStream fos = new FileOutputStream(zipName);
+        ZipOutputStream zipOut = new ZipOutputStream(fos);
+
+        srcFiles.stream()
+                .forEach(file -> {
+                    FileInputStream fis = null;
+                    try {
+                        fis = new FileInputStream(file);
+                        ZipEntry zipEntry = new ZipEntry(file.getName());
+                        zipOut.putNextEntry(zipEntry);
+
+                        byte[] bytes = new byte[1024];
+                        int length;
+                        while ((length = fis.read(bytes)) >= 0) {
+                            zipOut.write(bytes, 0, length);
+                        }
+                        fis.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+
+        zipOut.close();
+        fos.close();
+    }
+
+
 }
