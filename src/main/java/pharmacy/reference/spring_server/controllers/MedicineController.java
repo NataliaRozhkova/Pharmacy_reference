@@ -34,7 +34,7 @@ public class MedicineController {
     private StatisticService statisticService;
 
     @GetMapping(value = "")
-    public String getPage(Model model, SecurityContextHolder auth) {
+    public String getPage(Model model) {
 
         model.addAttribute("districts", districtService.findAll());
         model.addAttribute("towns", townService.findAll());
@@ -57,7 +57,7 @@ public class MedicineController {
 
 
         List<String> words = splitLine(name);
-        List<Medicine> medicines = new ArrayList<>();
+        List<Medicine> medicines;
         if (pharmacy != null && pharmacy.getPharmacyId() != 0) {
             medicines = medicineService.findByNameAndPharmacy(words.get(0), pharmacy.getPharmacyId());
         } else {

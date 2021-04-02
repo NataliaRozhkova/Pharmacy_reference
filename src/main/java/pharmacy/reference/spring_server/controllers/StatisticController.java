@@ -1,22 +1,25 @@
 package pharmacy.reference.spring_server.controllers;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import pharmacy.reference.spring_server.entitis.*;
 import pharmacy.reference.spring_server.entitis.reports.*;
 import pharmacy.reference.spring_server.services.*;
 import pharmacy.reference.spring_server.util.MedicineGrid;
+import pharmacy.reference.spring_server.util.ZipExtractor;
 import pharmacy.reference.spring_server.web.YAMLConfig;
 import pharmacy.reference.spring_server.writer.ExcelWriter;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,8 +46,6 @@ public class StatisticController {
     private PharmacyChainService pharmacyChainService;
 
     private PhoneCallService phoneCallService;
-
-//    private final String STATISTIC_PATH = config.getStatisticPath();
 
     private final Logger logger = LoggerFactory.getLogger(MedicineController.class);
 
@@ -93,23 +94,74 @@ public class StatisticController {
         return "statistic_file_create";
     }
 
+    @GetMapping("/file/download")
+    public String downloadFilePage(Model model) {
+        model.addAttribute("files", listFilesForFolder(new File(config.getStatisticPath())).stream()
+                .map(file -> file.getName())
+                .sorted()
+                .collect(toList()));
+
+        return "download_statistic_file";
+    }
+
+    @RequestMapping(value = "/file/download/{fileName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void downloadFile(@PathVariable("fileName") String fileName,  HttpServletResponse response) throws IOException {
+        File file = new File(config.getStatisticPath() + "/" + fileName);
+        response.setHeader("Content-Type", "application/zip");
+        response.getOutputStream().write(new FileInputStream(file).readAllBytes());
+
+
+    }
 
     @GetMapping("/file/create")
-//    @ResponseBody
     public String createStat(Model model,
                              @RequestParam(name = "month", required = false, defaultValue = "") String period
     ) throws IOException, ParseException {
         logger.debug(period);
         int month = Integer.parseInt(period.split("-")[1]);
         int year = Integer.parseInt(period.split("-")[0]);
-        createStatFile(year, month, 1);
-        createWorkStatFile(year, month, 1);
+        generateFile(year, month, 1);
         model.addAttribute("text", "Файлы статистики сгенерированы");
         logger.info("Сгененированы файлы статистики за " + month + "-" + year);
         return "base_page";
     }
 
-    private void createStatFile(int year, int month, int day) throws ParseException, IOException {
+    // * "0 0 * * * *" = the top of every hour of every day.
+    //* "*/10 * * * * *" = every ten seconds.
+    //* "0 0 8-10 * * *" = 8, 9 and 10 o'clock of every day.
+    //* "0 0/30 8-10 * * *" = 8:00, 8:30, 9:00, 9:30 and 10 o'clock every day.
+    //* "0 0 9-17 * * MON-FRI" = on the hour nine-to-five weekdays
+
+    //* "0 0 0 25 12 ?" = every Christmas Day at midnight
+    @Scheduled(cron = "0 00 7 * * *")
+    public void autoCreateStatAllFiles() throws IOException, ParseException {
+        int month = Calendar.getInstance().get(Calendar.MONTH);
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        int day = Calendar.getInstance().get(Calendar.DATE);
+        logger.info("Автоматичсески сгененированы файлы статистики за " + month + "-" + year);
+        generateFile(year, month, day);
+
+    }
+
+    private void generateFile(int year, int month, int day) throws IOException, ParseException {
+        String filePath = config.getStatisticPath() + "/" + month + "-" + year;
+        createStatFile(year, month, day, filePath);
+        createWorkStatFile(year, month, day, filePath);
+        ZipExtractor.writeToZipFile(listFilesForFolder(new File(filePath)), filePath + ".zip");
+        FileUtils.deleteDirectory(new File(filePath));
+        medicineService.deleteByPharmacyId(pharmacyService.findByName("Дефектура").get(0).getPharmacyId());
+    }
+
+    private static List<File> listFilesForFolder(final File folder) {
+        List<File> files = new ArrayList<>();
+        for (final File fileEntry : folder.listFiles()) {
+
+            files.add(fileEntry);
+        }
+        return files;
+    }
+
+    private void createStatFile(int year, int month, int day, String path) throws ParseException, IOException {
 
         Date startDate = setFirstDate(year, month, day);
         Date finishDate = setLastDate(year, month, day);
@@ -117,7 +169,7 @@ public class StatisticController {
         List<PharmacyChain> chains = pharmacyChainService.findAll();
         for (PharmacyChain chain : chains) {
             if (!chain.getName().equals("Розничные аптеки")) {
-                Path filePath = Paths.get(config.getStatisticPath() + "/" + chain.getName());
+                Path filePath = Paths.get(path);
                 if (!Files.exists(filePath)) {
                     Files.createDirectory(filePath);
                 }
@@ -152,7 +204,7 @@ public class StatisticController {
             } else {
                 for (Pharmacy pharmacy : pharmacyService.findAllByPharmacyChain(chain.getId())) {
                     String pharmacyNameAdress = pharmacy.getName() + "(" + pharmacy.getAddress() + ")";
-                    Path filePath = Paths.get(config.getStatisticPath() + "/" + pharmacyNameAdress);
+                    Path filePath = Paths.get(path);
                     if (!Files.exists(filePath)) {
                         Files.createDirectory(filePath);
                     }
@@ -183,11 +235,11 @@ public class StatisticController {
         }
     }
 
-    private void createWorkStatFile(int year, int month, int day) throws IOException, ParseException {
+    private void createWorkStatFile(int year, int month, int day, String path) throws IOException, ParseException {
         Date startDate = setFirstDate(year, month, day);
         Date finishDate = setLastDate(year, month, day);
 
-        Path filePath = Paths.get(config.getStatisticPath() + "/" + "work_statistic");
+        Path filePath = Paths.get(path);
         if (!Files.exists(filePath)) {
             Files.createDirectory(filePath);
         }
@@ -239,27 +291,6 @@ public class StatisticController {
         writer.write();
     }
 
-
-    @Scheduled(cron = "0 53 10 * * *")
-    public void autoCreateStatAllFiles() throws IOException, ParseException {
-        int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
-        int year = Calendar.getInstance().get(Calendar.YEAR);
-        int day = Calendar.getInstance().get(Calendar.DATE);
-        logger.info("Автоматичсески сгененированы файлы статистики за " + month + "-" + year);
-        createStatFile(year, month, day);
-
-    }
-
-
-    @Scheduled(cron = "0 53 10 * * *")
-    public void autoCreateStatWorkFile() throws IOException, ParseException {
-        int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
-        int year = Calendar.getInstance().get(Calendar.YEAR);
-        int day = Calendar.getInstance().get(Calendar.DATE);
-        logger.info("Автоматичсески сгененирован рабочий файл статистики за " + month + "-" + year);
-        createWorkStatFile(year, month, day);
-    }
-
     private PharmacyChainReport createPharmacyChainReport(List<Pharmacy> pharmacies, Date startDate, Date finishDate) {
         List<PharmacyReport> reports = new ArrayList<>();
         for (Pharmacy pharmacy : pharmacies) {
@@ -285,13 +316,7 @@ public class StatisticController {
                 .map(statistic -> statistic.getMedicinePrice())
                 .reduce(0f, (a, b) -> a + b);
     }
-    // * "0 0 * * * *" = the top of every hour of every day.
-    //* "*/10 * * * * *" = every ten seconds.
-    //* "0 0 8-10 * * *" = 8, 9 and 10 o'clock of every day.
-    //* "0 0/30 8-10 * * *" = 8:00, 8:30, 9:00, 9:30 and 10 o'clock every day.
-    //* "0 0 9-17 * * MON-FRI" = on the hour nine-to-five weekdays
 
-    //* "0 0 0 25 12 ?" = every Christmas Day at midnight
 
 
     private List<CallsCountReport> countCallsFromDay(Date startDate, Date finishDate) {
@@ -319,15 +344,6 @@ public class StatisticController {
         return statisticService.findAll();
     }
 
-//    @GetMapping("/get/month/{id}")
-//    @ResponseBody
-//    public List<Statistic> getStatMonth(@PathVariable("id") Long id) throws ParseException {
-//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-//
-//        Date start = formatter.parse("2021-03-01");
-//        Date finish = formatter.parse("2021-03-31");
-//        return statisticService.findByPharmacyIdAndDate(id, start, finish);
-//    }
 
     private Date setFirstDate(int year, int month, int day) throws ParseException {
         LocalDate localDate = LocalDate.of(year, month, day);
