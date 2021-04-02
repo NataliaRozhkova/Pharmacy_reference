@@ -1,7 +1,6 @@
 package pharmacy.reference.spring_server.entitis;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -10,8 +9,6 @@ public class Statistic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    //    @Column(name = "date")
-//    private Date date;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "phone_call_id", referencedColumnName = "id")
     private PhoneCall phoneCall;
@@ -22,8 +19,6 @@ public class Statistic {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "pharmacy_id", referencedColumnName = "pharmacy_id")
     private Pharmacy pharmacy;
-    //    @ManyToOne
-//    @JoinColumn(name = "operator_id", referencedColumnName = "id")
     @Column(name = "operator_name")
     private String operator;
 
@@ -41,15 +36,6 @@ public class Statistic {
     public long getId() {
         return id;
     }
-
-//    public Date getDate() {
-//        return date;
-//    }
-//
-//    public void setDate(Date date) {
-//        this.date = date;
-//    }
-
 
     public void setPhoneCall(PhoneCall phoneCall) {
         this.phoneCall = phoneCall;
@@ -87,13 +73,6 @@ public class Statistic {
         return medicinePrice;
     }
 
-//    public void setOperator(Operator operator) {
-//        this.operator = operator;
-//    }
-//
-//    public Operator getOperator() {
-//        return operator;
-//    }
 
 
     @Override
@@ -105,13 +84,11 @@ public class Statistic {
 
         Statistic statistic = (Statistic) o;
         return Objects.equals(this.id, statistic.id) &&
-//                Objects.equals(this.date, statistic.date) &&
                 Objects.equals(this.phoneCall, statistic.phoneCall) &&
                 Objects.equals(this.pharmacy, statistic.pharmacy) &&
                 Objects.equals(this.operator, statistic.operator) &&
                 Objects.equals(this.medicineName, statistic.medicineName) &&
                 Objects.equals(this.medicinePrice, statistic.medicinePrice)
-
                 ;
     }
 
@@ -126,7 +103,6 @@ public class Statistic {
                 medicineName + "\t" +
                 medicinePrice + "\t" +
                 pharmacy.getName() + "\t" +
-//                operator.getId() + "\t";
                 operator + "\t";
     }
 
