@@ -70,7 +70,7 @@ public class ScheduledController {
     public String downloadEmail(LocalDate localDate) throws IOException {
 
         String date = localDate.getDayOfMonth() + "-" + localDate.getMonthValue() + "-" + localDate.getYear();
-        Path downloadPath = Path.of(config.getEmailDownloadPath() + "/" + date);
+        Path downloadPath = Paths.get(config.getEmailDownloadPath() + "/" + date);
         if (!Files.exists(downloadPath)) {
             Files.createDirectory(downloadPath);
         }
