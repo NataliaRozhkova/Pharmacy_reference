@@ -138,7 +138,7 @@ public class EmailDownloader {
 
     private String getFileEncodingType(InputStream inputStream) throws IOException, MessagingException {
         CharsetDetector charsetDetector = new CharsetDetector();
-        charsetDetector.setText(inputStream.readAllBytes());
+        charsetDetector.setText(PhFileUtils.readAllBytes(inputStream));
         CharsetMatch match = charsetDetector.detect();
         inputStream.close();
         return match.getName();

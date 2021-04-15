@@ -1,5 +1,7 @@
 package pharmacy.reference.spring_server.util;
 
+import org.apache.tika.io.IOUtils;
+
 import java.io.*;
 
 public class PhFileUtils {
@@ -50,5 +52,8 @@ public class PhFileUtils {
         }
     }
 
+    public static byte[] readAllBytes(InputStream is) throws IOException {
+        return IOUtils.toByteArray(is);
+    }
 
 }
