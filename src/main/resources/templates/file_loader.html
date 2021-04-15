@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <link href="../../public/css/bootstrap.min.css"
-          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"
-          rel="stylesheet" media="screen"/>
+          media="screen"
+          rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"/>
     <script src="http://cdn.jsdelivr.net/webjars/jquery/3.2.1/jquery.min.js"
             th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
     <title>Аптечная справочная</title>
@@ -15,20 +15,20 @@
         <form action="/file/view" enctype="multipart/form-data"
               method="POST">
             Выберете файл для загрузки
-            <input name="file" type="file" id="file" onchange="setName()" required><br/>
+            <input id="file" name="file" onchange="setName()" required type="file"><br/>
             имя файла
-            <input name="name" id="file_name" type="text"><br/>
+            <input id="file_name" name="name" type="text"><br/>
 
             Выберите аптеку:
             <select class="form-control" id="pharmacyId" name="pharmacy_name" required>
-                <option value="" th:if="${#lists.size(pharmacies)}  > 1" disabled selected>Выберите аптеку</option>
+                <option disabled selected th:if="${#lists.size(pharmacies)}  > 1" value="">Выберите аптеку</option>
                 <option th:each="pharmacy : ${pharmacies}"
-                        th:value="${pharmacy.pharmacyId}"
-                        th:text="${pharmacy.name} +'  :  '+${pharmacy.address}"></option>
+                        th:text="${pharmacy.name} +'  :  '+${pharmacy.address}"
+                        th:value="${pharmacy.pharmacyId}"></option>
             </select>
             <br/><br/>
 
-            <input type="submit" id="button_submit" value="Загрузить"> Нажмите для просмотра!
+            <input id="button_submit" type="submit" value="Загрузить"> Нажмите для просмотра!
 
         </form>
     </div>
@@ -134,6 +134,7 @@ function cleanTable() {
         document.getElementById('table').deleteRow(i);
     }
 }
+
 
 
 

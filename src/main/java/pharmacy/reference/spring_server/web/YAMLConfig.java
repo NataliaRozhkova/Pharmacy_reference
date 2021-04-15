@@ -17,54 +17,55 @@ public class YAMLConfig {
     private String emailAddress;
     private String emailPassword;
     private String logfilePath;
-    private Map<String, Credential> users =  new HashMap<>();;
+    private Map<String, Credential> users = new HashMap<>();
+    ;
 
     public String getEmailDownloadPath() {
         return emailDownloadPath;
-    }
-
-    public String getStatisticPath() {
-        return statisticPath;
-    }
-
-    public void setUsers(Map<String, Credential> users) {
-        this.users = users;
-    }
-
-    public Map<String, Credential> getUsers() {
-        return users;
-    }
-
-    public void setLogfilePath(String logfilePath) {
-        this.logfilePath = logfilePath;
-    }
-
-    public String getLogfilePath() {
-        return logfilePath;
-    }
-
-    public void setStatisticPath(String statisticPath) {
-        this.statisticPath = statisticPath;
     }
 
     public void setEmailDownloadPath(String emailDownloadPath) {
         this.emailDownloadPath = emailDownloadPath;
     }
 
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
+    public String getStatisticPath() {
+        return statisticPath;
     }
 
-    public void setEmailPassword(String emailPassword) {
-        this.emailPassword = emailPassword;
+    public void setStatisticPath(String statisticPath) {
+        this.statisticPath = statisticPath;
+    }
+
+    public Map<String, Credential> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Map<String, Credential> users) {
+        this.users = users;
+    }
+
+    public String getLogfilePath() {
+        return logfilePath;
+    }
+
+    public void setLogfilePath(String logfilePath) {
+        this.logfilePath = logfilePath;
     }
 
     public String getEmailAddress() {
         return emailAddress;
     }
 
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
     public String getEmailPassword() {
         return emailPassword;
+    }
+
+    public void setEmailPassword(String emailPassword) {
+        this.emailPassword = emailPassword;
     }
 
     public static class Credential {
@@ -76,12 +77,12 @@ public class YAMLConfig {
             return username;
         }
 
-        public String getPassword() {
-            return password;
-        }
-
         public void setUsername(String username) {
             this.username = username;
+        }
+
+        public String getPassword() {
+            return password;
         }
 
         public void setPassword(String password) {

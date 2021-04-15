@@ -1,6 +1,5 @@
 package pharmacy.reference.spring_server.entitis.reports;
 
-import javax.xml.crypto.Data;
 import java.util.Date;
 
 public class CallsReport {

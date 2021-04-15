@@ -18,7 +18,6 @@ import pharmacy.reference.spring_server.util.MedicineGrid;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Date;

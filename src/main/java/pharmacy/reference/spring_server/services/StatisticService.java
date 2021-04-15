@@ -2,7 +2,6 @@ package pharmacy.reference.spring_server.services;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import pharmacy.reference.spring_server.entitis.Statistic;
 
 import java.util.Date;

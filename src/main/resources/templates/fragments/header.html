@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <link href="../../public/css/bootstrap.min.css"
-          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"
-          rel="stylesheet" media="screen"/>
+          media="screen"
+          rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{/css/general.css}"/>
 
     <script src="http://cdn.jsdelivr.net/webjars/jquery/3.2.1/jquery.min.js"
@@ -27,14 +27,14 @@
                     <li><a href="#" th:href="@{/medicine/add}">Добавить лекарство</a></li>
                 </ul>
 
-                <ul class="nav navbar-nav navbar-right" >
+                <ul class="nav navbar-nav navbar-right">
                     <li th:if="${#authorization.expression('!isAuthenticated()')}">
                         <a href="/login" th:href="@{/login}">
                             <span class="glyphicon glyphicon-log-in"></span>&nbsp;Войти
                         </a>
                     </li>
                     <li th:if="${#authorization.expression('isAuthenticated()')}">
-                        <a href="/logout" th:href="@{/logout}" onclick="$('#form').submit();">
+                        <a href="/logout" onclick="$('#form').submit();" th:href="@{/logout}">
                             <span class="glyphicon glyphicon-log-out"></span>&nbsp;Выйти
                         </a>
                     </li>

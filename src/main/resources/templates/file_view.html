@@ -2,10 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Аптечная справочная</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <link href="../../public/css/bootstrap.min.css"
-          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"
-          rel="stylesheet" media="screen"/>
+          media="screen"
+          rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"/>
     <script src="http://cdn.jsdelivr.net/webjars/jquery/3.2.1/jquery.min.js"
             th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
 </head>
@@ -17,24 +17,24 @@
         <form action="/file/upload" enctype="multipart/form-data"
               method="POST">
 
-            <input class="form-control" id="file_name" name="file" th:value="${file.getAbsolutePath()}" required>
-            <option th:value="${file.getAbsolutePath()}"
-                    th:text="${file.getName()}" ></option>
+            <input class="form-control" id="file_name" name="file" required th:value="${file.getAbsolutePath()}">
+            <option th:text="${file.getName()}"
+                    th:value="${file.getAbsolutePath()}"></option>
             </input>
             Аптека:
             <select class="form-control" id="pharmacyId" name="pharmacy_name" required>
-                <option th:value="${pharmacy.pharmacyId}"
-                        th:text="${pharmacy.name} +'  :  '+${pharmacy.address}"></option>
+                <option th:text="${pharmacy.name} +'  :  '+${pharmacy.address}"
+                        th:value="${pharmacy.pharmacyId}"></option>
             </select>
             <br/><br/>
 
-            <input type="submit" id="button_submit" value="Загрузить"> Нажмите для сохранения!
+            <input id="button_submit" type="submit" value="Загрузить"> Нажмите для сохранения!
 
         </form>
     </div>
 </div>
 <div>
-    <p class="form-control-static"  id="count" th:text="'Количество записей  '+ ${medicines.size}">Роль</p>
+    <p class="form-control-static" id="count" th:text="'Количество записей  '+ ${medicines.size}">Роль</p>
 </div>
 
 <div class="text-left" th:if="${not #lists.isEmpty(medicines)}">
@@ -63,6 +63,7 @@
      function setName() {
         document.getElementById('file_name').value = document.querySelector('#file').files[0].name;
     }
+
 
 
 

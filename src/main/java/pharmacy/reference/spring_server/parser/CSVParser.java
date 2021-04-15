@@ -6,9 +6,7 @@ import org.apache.tika.parser.txt.CharsetMatch;
 import pharmacy.reference.spring_server.entitis.Medicine;
 import pharmacy.reference.spring_server.entitis.Pharmacy;
 
-//import java.io.*;
 import java.io.*;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -131,7 +129,11 @@ public class CSVParser {
     private String getFileEncodingType(File file) throws IOException {
         CharsetDetector charsetDetector = new CharsetDetector();
         FileInputStream inputStream = new FileInputStream(file);
-        charsetDetector.setText(inputStream.readAllBytes());
+        byte[] bytes = new byte[(int) file.length()];
+        DataInputStream dis = new DataInputStream(inputStream);
+        dis.readFully(bytes);
+        dis.close();
+        charsetDetector.setText(bytes);
         CharsetMatch match = charsetDetector.detect();
         inputStream.close();
         return match.getName();

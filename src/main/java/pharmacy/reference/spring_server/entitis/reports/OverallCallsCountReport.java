@@ -13,7 +13,7 @@ public class OverallCallsCountReport {
         this.overall = new Overall(countCalls(callsCountReports), 0f);
     }
 
-    private int countCalls(List<CallsCountReport> callsCountReports){
+    private int countCalls(List<CallsCountReport> callsCountReports) {
         return callsCountReports.stream()
                 .mapToInt(callsCountReport -> callsCountReport.callCount)
                 .sum();

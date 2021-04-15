@@ -30,7 +30,7 @@ public class MedicineParser {
         try {
             inputStream = new FileInputStream(file);
             String fileType = FilenameUtils.getExtension(file.getAbsolutePath()).toLowerCase();
-            if(fileType.equalsIgnoreCase("zip")){
+            if (fileType.equalsIgnoreCase("zip")) {
                 ZipExtractor.unzip(file.getAbsolutePath());
                 int index = file.getAbsolutePath().indexOf(".zip");
                 List<File> files = listFilesForFolder(new File(file.getAbsolutePath().substring(0, index)));

@@ -32,10 +32,9 @@ import java.util.List;
 
 public class FileLoaderController {
 
+    private final Logger logger = LoggerFactory.getLogger(MedicineController.class);
     private MedicineService medicineService;
     private PharmacyService pharmacyService;
-    private final Logger logger = LoggerFactory.getLogger(MedicineController.class);
-
 
     @GetMapping(value = "/add")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -64,11 +63,11 @@ public class FileLoaderController {
             pharmacy.setLastUpdateMedicines(new Date(System.currentTimeMillis()));
             pharmacyService.save(pharmacy);
             model.addAttribute("text", "Добавлено позиций " + saveMedicines.size());
-            logger.info("Updating a pharmacy drug list from a file "+ pharmacy + ": Operator " + SecurityContextHolder.getContext().getAuthentication().getName() );
+            logger.info("Updating a pharmacy drug list from a file " + pharmacy + ": Operator " + SecurityContextHolder.getContext().getAuthentication().getName());
 
         } catch (Exception e) {
             model.addAttribute("text", "You were unable to download  " + file.getName() + " => " + e.getMessage());
-            logger.info("You were unable to download"+ e.getMessage() + ": Operator  " + SecurityContextHolder.getContext().getAuthentication().getName() );
+            logger.info("You were unable to download" + e.getMessage() + ": Operator  " + SecurityContextHolder.getContext().getAuthentication().getName());
 
         }
         return "base_page";
@@ -100,7 +99,7 @@ public class FileLoaderController {
                 model.addAttribute("file", newFile);
                 model.addAttribute("pharmacy", pharmacy);
             } catch (Exception e) {
-               logger.info("!!!!!!"+e.getMessage());
+                logger.info("!!!!!!" + e.getMessage());
             }
         } else {
         }

@@ -1,6 +1,5 @@
 package pharmacy.reference.spring_server.repositories;
 
-import com.beust.jcommander.internal.Nullable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,11 +20,10 @@ public interface MedicineRepository extends JpaRepository<Medicine, Long> {
     List<Medicine> findByPharmacyId(@Param("id") Long id);
 
     @Query("SELECT b from Medicine b WHERE lower(b.name)  LIKE  concat('%', lower(:name), '%') AND b.pharmacy.pharmacyId = :id")
-    List<Medicine> findByNameAndPharmacy(@Param("name") String name,@Param("id") Long id);
+    List<Medicine> findByNameAndPharmacy(@Param("name") String name, @Param("id") Long id);
 
     @Query("SELECT count(b) from Medicine b WHERE b.pharmacy.pharmacyId = :pharmacyId")
     Integer countByPharmacy(@Param("pharmacyId") Long id);
-
 
 
 }

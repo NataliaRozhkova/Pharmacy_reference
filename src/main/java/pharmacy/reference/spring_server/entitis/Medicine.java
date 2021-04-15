@@ -14,7 +14,7 @@ public class Medicine implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column
-    @Size(min=3, max=255)
+    @Size(min = 3, max = 255)
     private String name;
     @Column
     private float price;
@@ -62,16 +62,16 @@ public class Medicine implements Serializable {
         return quantity;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public Date getDate() {
         return date;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public String getManufacturer() {
@@ -130,7 +130,7 @@ public class Medicine implements Serializable {
                 quantity + "\t" +
                 manufacturer + "\t" +
                 country + "\t" +
-                pharmacy.getName() + "\t"+
+                pharmacy.getName() + "\t" +
                 date + "\t";
     }
 

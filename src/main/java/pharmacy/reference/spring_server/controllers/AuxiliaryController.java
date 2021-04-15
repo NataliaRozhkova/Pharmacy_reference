@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pharmacy.reference.spring_server.entitis.District;
-import pharmacy.reference.spring_server.entitis.Medicine;
 import pharmacy.reference.spring_server.entitis.PharmacyChain;
 import pharmacy.reference.spring_server.entitis.Town;
-import pharmacy.reference.spring_server.services.*;
+import pharmacy.reference.spring_server.services.DistrictService;
+import pharmacy.reference.spring_server.services.PharmacyChainService;
+import pharmacy.reference.spring_server.services.TownService;
 
 import javax.validation.Valid;
-import java.util.Date;
 
 @Controller
 @RequestMapping("/auxiliary")
@@ -50,14 +50,14 @@ public class AuxiliaryController {
     }
 
     @GetMapping("/delete/town/{id}")
-    public  String deleteTown(@PathVariable("id") Long id, Model model) {
+    public String deleteTown(@PathVariable("id") Long id, Model model) {
         townService.delete(townService.findById(id));
         return showList(model);
     }
 
     @GetMapping("/update/town/{id}")
     public String updateTown(@PathVariable("id") Long id,
-                                 Model model) {
+                             Model model) {
         model.addAttribute("town", townService.findById(id));
         return "town_update";
     }
@@ -73,15 +73,16 @@ public class AuxiliaryController {
         logger.info("Add district" + district + ": Operator " + SecurityContextHolder.getContext().getAuthentication().getName());
         return showList(model);
     }
+
     @GetMapping("/delete/district/{id}")
-    public  String deleteDistrict(@PathVariable("id") Long id, Model model) {
+    public String deleteDistrict(@PathVariable("id") Long id, Model model) {
         districtService.delete(districtService.findById(id));
         return showList(model);
     }
 
     @GetMapping("/update/district/{id}")
     public String updateDistrict(@PathVariable("id") Long id,
-                             Model model) {
+                                 Model model) {
         model.addAttribute("district", districtService.findById(id));
         return "district_update";
     }
@@ -97,18 +98,20 @@ public class AuxiliaryController {
         logger.info("Add pharmacy chain  " + pharmacyChain + ": Operator " + SecurityContextHolder.getContext().getAuthentication().getName());
         return showList(model);
     }
+
     @GetMapping("/delete/pharmacy_chain/{id}")
-    public  String deletePharmacyChain(@PathVariable("id") Long id, Model model) {
+    public String deletePharmacyChain(@PathVariable("id") Long id, Model model) {
         chainService.delete(chainService.findById(id));
         return showList(model);
     }
 
     @GetMapping("/update/pharmacy_chain/{id}")
     public String updatePharmacyChain(@PathVariable("id") Long id,
-                                 Model model) {
+                                      Model model) {
         model.addAttribute("pharmacy_chain", chainService.findById(id));
         return "pharmacy_chain_update";
     }
+
     @Autowired
     public void setChainService(PharmacyChainService chainService) {
         this.chainService = chainService;

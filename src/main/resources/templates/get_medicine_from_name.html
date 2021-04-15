@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <link href="../../public/css/bootstrap.min.css"
-          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"
-          rel="stylesheet" media="screen"/>
+          media="screen"
+          rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"/>
     <script
             src="./index_script.js"></script>
     <!--    <link href="./select.css" rel="stylesheet">-->
@@ -31,6 +31,7 @@
     }
 
 
+
     </style>
 
 </head>
@@ -50,7 +51,7 @@
                 </div>
             </div>
             <div class="row">
-                <button class="button" type="button" id="defecture" onclick="addDefecture()" hidden="true">Добваить
+                <button class="button" hidden="true" id="defecture" onclick="addDefecture()" type="button">Добваить
                     в дефектуру
                 </button>
             </div>
@@ -58,15 +59,15 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label"></label>
                 <div class="col-sm-10">
-                    <table width="100%" bordercolor="white">
+                    <table bordercolor="white" width="100%">
                         <tr>
                             <td>
                                 <div>
                                     <select class="form-control" id="district" name="district">
                                         <option value="">Все районы</option>
                                         <option th:each="district : ${districts}"
-                                                th:value="${district.id}"
-                                                th:text="${district.name} "></option>
+                                                th:text="${district.name} "
+                                                th:value="${district.id}"></option>
                                     </select>
                                 </div>
                             </td>
@@ -75,8 +76,8 @@
                                     <select class="form-control" id="town" name="town">
                                         <option value="">Все города</option>
                                         <option th:each="town : ${towns}"
-                                                th:value="${town.id}"
-                                                th:text="${town.name} "></option>
+                                                th:text="${town.name} "
+                                                th:value="${town.id}"></option>
                                     </select>
                                 </div>
                             </td>
@@ -85,8 +86,8 @@
                                     <select class="form-control" id="chain" name="chain">
                                         <option value="">Все сети</option>
                                         <option th:each="chain : ${chains}"
-                                                th:value="${chain.id}"
-                                                th:text="${chain.name} "></option>
+                                                th:text="${chain.name} "
+                                                th:value="${chain.id}"></option>
                                     </select>
                                 </div>
                             </td>
@@ -95,8 +96,8 @@
                                     <select class="form-control" id="pharmacy" name="pharmacy">
                                         <option value="">Все аптеки</option>
                                         <option th:each="pharmacy : ${pharmacies}"
-                                                th:value="${pharmacy.pharmacyId}"
-                                                th:text="${pharmacy.name} +'  :  '+${pharmacy.address}"></option>
+                                                th:text="${pharmacy.name} +'  :  '+${pharmacy.address}"
+                                                th:value="${pharmacy.pharmacyId}"></option>
                                     </select>
                                 </div>
 
@@ -108,7 +109,7 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label"></label>
                 <div class="col-sm-10">
-                    <table width="100%" bordercolor="white">
+                    <table bordercolor="white" width="100%">
                         <tr>
                             <td>
                                 <div>
@@ -122,7 +123,7 @@
                             </td>
                             <td>
                                 <div>
-                                    <button class="button" type="button" id="statView" onclick="statView()">
+                                    <button class="button" id="statView" onclick="statView()" type="button">
                                         Посмотреть
                                         статистику
                                     </button>
@@ -130,8 +131,8 @@
                             </td>
                             <td>
                                 <div>
-                                    <button class="button" type="button" id="statAdd" onclick="statAdd()"
-                                            hidden="true">
+                                    <button class="button" hidden="true" id="statAdd" onclick="statAdd()"
+                                            type="button">
                                         Отпарвить статистику
                                     </button>
                                 </div>
@@ -148,8 +149,8 @@
 
 <div class="text-left" id="showData">
     <div class="layer">
-        <table id="table" align="center" width="100%" frame="border" border="1" bordercolor="grey"
-               cellpadding="5" class="none">
+        <table align="center" border="1" bordercolor="grey" cellpadding="5" class="none" frame="border"
+               id="table" width="100%">
             <tr align="center">
                 <th width="25%">Название</th>
                 <th width="15%">Аптека</th>
@@ -177,7 +178,7 @@
                         <tr>
                             <td>
                                 <div>
-                                    <button id="previous" onclick="previousPage()" disabled="true">Предыдущая
+                                    <button disabled="true" id="previous" onclick="previousPage()">Предыдущая
                                         страница
                                     </button>
                                 </div>
@@ -191,7 +192,7 @@
                             </td>
                             <td>
                                 <div>
-                                    <button id="next" onclick="nextPage()" disabled="true">Следующая страница
+                                    <button disabled="true" id="next" onclick="nextPage()">Следующая страница
                                     </button>
                                 </div>
                             </td>
@@ -208,6 +209,7 @@
 <script id="script">
 
     document.getElementById('medicine_name').addEventListener('change', submitForm);
+
 
 
 

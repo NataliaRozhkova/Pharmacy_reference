@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +17,6 @@ import pharmacy.reference.spring_server.web.YAMLConfig;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,20 +24,13 @@ import java.util.List;
 @RequestMapping("/pharmacy")
 public class PharmacyController {
 
-    private PharmacyService pharmacyService;
-
-    private PharmacyChainService pharmacyChainService;
-
-    private MedicineService medicineService;
-
-    private DistrictService districtService;
-
-    private TownService townService;
-
-    private StatisticService statisticService;
-
     private final Logger logger = LoggerFactory.getLogger(MedicineController.class);
-
+    private PharmacyService pharmacyService;
+    private PharmacyChainService pharmacyChainService;
+    private MedicineService medicineService;
+    private DistrictService districtService;
+    private TownService townService;
+    private StatisticService statisticService;
     @Autowired
     private YAMLConfig config;
 
@@ -102,7 +93,7 @@ public class PharmacyController {
 
     @PostMapping("/save")
     public String savePharmacy(Pharmacy pharmacy, Model model) {
-        logger.info("Pharmacy data changed " + pharmacy + ": Operator " + SecurityContextHolder.getContext().getAuthentication().getName() );
+        logger.info("Pharmacy data changed " + pharmacy + ": Operator " + SecurityContextHolder.getContext().getAuthentication().getName());
         pharmacyService.save(pharmacy);
         model.addAttribute("text", pharmacy);
         return "base_page";
@@ -116,7 +107,7 @@ public class PharmacyController {
         PharmacyParser pharmacyParser = new PharmacyParser(pharmacyChainService.findAll(), districtService.findAll(), townService.findAll());
         List<Pharmacy> pharmacies = pharmacyParser.parse(new File("/workspace/BOOT-INF/classes/Pharmacy_list.xlsx"));
         pharmacyService.saveAll(pharmacies);
-        logger.info("Parsing pharmacy data from a file " + ": Operator " + SecurityContextHolder.getContext().getAuthentication().getName() );
+        logger.info("Parsing pharmacy data from a file " + ": Operator " + SecurityContextHolder.getContext().getAuthentication().getName());
 
         return "pharmacy_update";
     }

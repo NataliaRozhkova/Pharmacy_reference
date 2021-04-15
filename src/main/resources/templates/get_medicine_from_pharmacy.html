@@ -1,9 +1,9 @@
 <html charset="UTF-8" meta xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <link href="../../public/css/bootstrap.min.css"
-          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"
-          rel="stylesheet" media="screen"/>
+          media="screen"
+          rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"/>
     <script src="http://cdn.jsdelivr.net/webjars/jquery/3.2.1/jquery.min.js"
             th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
     <title>Аптечная справочная</title>
@@ -14,15 +14,15 @@
 
     <h1>Данные аптеки</h1>
     <div>
-        <form action="#" th:action="@{/medicine/get/all/from/pharmacy}" th:object="${pharmacy}" method="get">
+        <form action="#" method="get" th:action="@{/medicine/get/all/from/pharmacy}" th:object="${pharmacy}">
             <div class="form-group">
                 <!--                <label class="col-sm-2 control-label">Аптека:</label>-->
                 <div class="col-sm-10">
                     <select class="form-control" id="pharmacy" name="pharmacy">
                         <option value="">Выберите аптеку</option>
                         <option th:each="pharmacy : ${pharmacies}"
-                                th:value="${pharmacy.pharmacyId}"
-                                th:text="${pharmacy.name} +'  :  '+${pharmacy.address}"></option>
+                                th:text="${pharmacy.name} +'  :  '+${pharmacy.address}"
+                                th:value="${pharmacy.pharmacyId}"></option>
                     </select></div>
 
             </div>
@@ -55,13 +55,13 @@
 
     </form>
 </div>
-<form action="#" th:action="@{/medicine/get/from/pharmacy/and/medicine}"
-      method="get" th:if="${pharmacy != null}">
-    <div class="form-group" >
+<form action="#" method="get"
+      th:action="@{/medicine/get/from/pharmacy/and/medicine}" th:if="${pharmacy != null}">
+    <div class="form-group">
         <!--                <label class="col-sm-2 control-label">Аптека:</label>-->
 
-        <div class="col-sm-10"  hidden="true">
-            <input type="hidden"  th:field="${pharmacy.pharmacyId}"/>
+        <div class="col-sm-10" hidden="true">
+            <input th:field="${pharmacy.pharmacyId}" type="hidden"/>
         </div>
         <div class="col-sm-10">
             <input class="form-control" name="medicine_name" placeholder="введи название лекарства" required

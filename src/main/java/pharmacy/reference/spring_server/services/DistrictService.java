@@ -6,7 +6,10 @@ import java.util.List;
 
 public interface DistrictService {
     List<District> findAll();
+
     District findById(Long id);
+
     District save(District district);
+
     void delete(District district);
 }

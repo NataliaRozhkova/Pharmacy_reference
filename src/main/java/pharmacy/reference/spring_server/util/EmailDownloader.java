@@ -16,10 +16,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
 import java.util.Properties;
 
 public class EmailDownloader {
+    private final Logger logger;
     private Session session;
     private POP3SSLStore store;
     private String username;
@@ -27,7 +27,6 @@ public class EmailDownloader {
     private POP3Folder folder;
     private URLName url;
     private String saveDirectory;
-    private final Logger logger;
 
     public EmailDownloader(String username, String password, String saveDirectory, Logger logger) {
         this.username = username;

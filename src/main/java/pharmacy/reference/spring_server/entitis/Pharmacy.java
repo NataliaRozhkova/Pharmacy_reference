@@ -89,16 +89,16 @@ public class Pharmacy {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public Town getTown() {
         return town;
     }
 
     public void setTown(Town town) {
         this.town = town;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public District getDistrict() {

@@ -2,8 +2,6 @@ package pharmacy.reference.spring_server.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import pharmacy.reference.spring_server.entitis.District;
 import pharmacy.reference.spring_server.entitis.PhoneCall;
 import pharmacy.reference.spring_server.repositories.PhoneCallRepository;
 
@@ -11,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service("phoneCallService")
-public class PhoneCallServiceImpl implements PhoneCallService{
+public class PhoneCallServiceImpl implements PhoneCallService {
     private PhoneCallRepository phoneCallRepository;
 
     @Override

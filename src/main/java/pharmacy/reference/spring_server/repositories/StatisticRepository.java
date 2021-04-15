@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import pharmacy.reference.spring_server.entitis.Statistic;
 
-import javax.xml.crypto.Data;
 import java.util.Date;
 import java.util.List;
 

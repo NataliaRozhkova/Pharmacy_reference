@@ -35,20 +35,22 @@ import static java.util.stream.Collectors.toList;
 @RequestMapping("/statistic")
 public class StatisticController {
 
+    private final Logger logger = LoggerFactory.getLogger(MedicineController.class);
     private YAMLConfig config;
-
     private MedicineService medicineService;
-
     private PharmacyService pharmacyService;
-
     private StatisticService statisticService;
-
     private PharmacyChainService pharmacyChainService;
-
     private PhoneCallService phoneCallService;
 
-    private final Logger logger = LoggerFactory.getLogger(MedicineController.class);
+    private static List<File> listFilesForFolder(final File folder) {
+        List<File> files = new ArrayList<>();
+        for (final File fileEntry : folder.listFiles()) {
 
+            files.add(fileEntry);
+        }
+        return files;
+    }
 
     @GetMapping("/put")
     @ResponseBody
@@ -114,6 +116,15 @@ public class StatisticController {
         return "download_logfile";
 
     }
+//
+//    @RequestMapping(value = "/logfile/archived/{fileName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+//    public void downloadLogfile(@PathVariable("fileName") String fileName,  HttpServletResponse response) throws IOException {
+//        File file = new File(config.getLogfilePath() + "/" + fileName);
+//        response.setHeader("Content-Type", "text");
+//        response.getOutputStream().write(new FileInputStream(file).readAllBytes());
+//
+//
+//    }
 
     @RequestMapping(value = "/logfile/{fileName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public void downloadLogfile(@PathVariable("fileName") String fileName, HttpServletResponse response) throws IOException {
@@ -128,15 +139,6 @@ public class StatisticController {
 
 
     }
-//
-//    @RequestMapping(value = "/logfile/archived/{fileName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-//    public void downloadLogfile(@PathVariable("fileName") String fileName,  HttpServletResponse response) throws IOException {
-//        File file = new File(config.getLogfilePath() + "/" + fileName);
-//        response.setHeader("Content-Type", "text");
-//        response.getOutputStream().write(new FileInputStream(file).readAllBytes());
-//
-//
-//    }
 
     @GetMapping("/logfile/archived")
     public String downloadArchivedLogFile(Model model) {
@@ -156,6 +158,13 @@ public class StatisticController {
 
     }
 
+    // * "0 0 * * * *" = the top of every hour of every day.
+    //* "*/10 * * * * *" = every ten seconds.
+    //* "0 0 8-10 * * *" = 8, 9 and 10 o'clock of every day.
+    //* "0 0/30 8-10 * * *" = 8:00, 8:30, 9:00, 9:30 and 10 o'clock every day.
+    //* "0 0 9-17 * * MON-FRI" = on the hour nine-to-five weekdays
+    //* "0 0 0 25 12 ?" = every Christmas Day at midnight
+
     @GetMapping("/file/create")
     public String createStat(Model model,
                              @RequestParam(name = "month", required = false, defaultValue = "") String period
@@ -168,13 +177,6 @@ public class StatisticController {
         logger.info("Generated statistics files for  " + month + "-" + year);
         return "base_page";
     }
-
-    // * "0 0 * * * *" = the top of every hour of every day.
-    //* "*/10 * * * * *" = every ten seconds.
-    //* "0 0 8-10 * * *" = 8, 9 and 10 o'clock of every day.
-    //* "0 0/30 8-10 * * *" = 8:00, 8:30, 9:00, 9:30 and 10 o'clock every day.
-    //* "0 0 9-17 * * MON-FRI" = on the hour nine-to-five weekdays
-    //* "0 0 0 25 12 ?" = every Christmas Day at midnight
 
     @Scheduled(cron = "0 0 7 1 * *")
     public void autoCreateStatAllFiles() throws IOException, ParseException {
@@ -202,15 +204,6 @@ public class StatisticController {
 
         FileUtils.deleteDirectory(new File(filePath));
         medicineService.deleteByPharmacyId(pharmacyService.findByName("Дефектура").get(0).getPharmacyId());
-    }
-
-    private static List<File> listFilesForFolder(final File folder) {
-        List<File> files = new ArrayList<>();
-        for (final File fileEntry : folder.listFiles()) {
-
-            files.add(fileEntry);
-        }
-        return files;
     }
 
     private void createStatFile(int year, int month, int day, String path) throws ParseException, IOException {

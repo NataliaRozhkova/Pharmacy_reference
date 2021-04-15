@@ -2,10 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <link href="../../public/css/bootstrap.min.css"
-          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"
-          rel="stylesheet" media="screen"/>
+          media="screen"
+          rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"/>
     <script src="http://cdn.jsdelivr.net/webjars/jquery/3.2.1/jquery.min.js"
             th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
 
@@ -24,9 +24,9 @@
         <div>
             <form action="/statistic/file/create" enctype="multipart/form-data"
                   method="GET">
-                <input name="month" type="month" id="month" required><br/>
+                <input id="month" name="month" required type="month"><br/>
 
-                <input type="submit" id="button_submit" value="Загрузить"> Нажмите для просмотра!
+                <input id="button_submit" type="submit" value="Загрузить"> Нажмите для просмотра!
 
             </form>
         </div>

@@ -1,6 +1,5 @@
 package pharmacy.reference.spring_server.services;
 
-import pharmacy.reference.spring_server.entitis.District;
 import pharmacy.reference.spring_server.entitis.PhoneCall;
 
 import java.util.Date;

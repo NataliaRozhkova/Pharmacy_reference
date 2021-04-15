@@ -25,55 +25,53 @@ public class Statistic {
     public Statistic() {
     }
 
-    public void setOperator(String operator) {
-        this.operator = operator;
-    }
-
     public String getOperator() {
         return operator;
+    }
+
+    public void setOperator(String operator) {
+        this.operator = operator;
     }
 
     public long getId() {
         return id;
     }
 
-    public void setPhoneCall(PhoneCall phoneCall) {
-        this.phoneCall = phoneCall;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public PhoneCall getPhoneCall() {
         return phoneCall;
     }
 
-    public Pharmacy getPharmacy() {
-        return pharmacy;
+    public void setPhoneCall(PhoneCall phoneCall) {
+        this.phoneCall = phoneCall;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public Pharmacy getPharmacy() {
+        return pharmacy;
     }
 
     public void setPharmacy(Pharmacy pharmacy) {
         this.pharmacy = pharmacy;
     }
 
-    public void setMedicineName(String medicineName) {
-        this.medicineName = medicineName;
-    }
-
     public String getMedicineName() {
         return medicineName;
     }
 
-    public void setMedicinePrice(float medicinePrice) {
-        this.medicinePrice = medicinePrice;
+    public void setMedicineName(String medicineName) {
+        this.medicineName = medicineName;
     }
 
     public float getMedicinePrice() {
         return medicinePrice;
     }
 
-
+    public void setMedicinePrice(float medicinePrice) {
+        this.medicinePrice = medicinePrice;
+    }
 
     @Override
     public boolean equals(Object o) {

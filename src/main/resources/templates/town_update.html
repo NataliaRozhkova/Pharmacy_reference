@@ -2,10 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <link href="../../public/css/bootstrap.min.css"
-          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"
-          rel="stylesheet" media="screen"/>
+          media="screen"
+          rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"/>
     <script src="http://cdn.jsdelivr.net/webjars/jquery/3.2.1/jquery.min.js"
             th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
 
@@ -20,8 +20,8 @@
 
     <h1>Город</h1>
     <div>
-        <form class="form-horizontal" th:object="${town}" th:action="@{/auxiliary/add/town}" method="post">
-            <input type="hidden" th:field="*{id}"/>
+        <form class="form-horizontal" method="post" th:action="@{/auxiliary/add/town}" th:object="${town}">
+            <input th:field="*{id}" type="hidden"/>
             <div class="form-group">
                 <label class="col-sm-2 control-label">Название:</label>
                 <div class="col-sm-10">

@@ -19,12 +19,12 @@ public class PhoneCall {
         return id;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
     public void setId(long id) {
         this.id = id;
+    }
+
+    public Date getDate() {
+        return date;
     }
 
     public void setDate(Date date) {

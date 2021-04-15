@@ -8,7 +8,7 @@ import pharmacy.reference.spring_server.repositories.TownRepository;
 import java.util.List;
 
 @Service("townService")
-public class TownServiceImpl implements TownService{
+public class TownServiceImpl implements TownService {
 
     private TownRepository townRepository;
 

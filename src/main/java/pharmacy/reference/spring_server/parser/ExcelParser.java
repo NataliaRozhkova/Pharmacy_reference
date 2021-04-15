@@ -95,8 +95,7 @@ public class ExcelParser {
             }
 
             return medicine;
-        }
-        else return null;
+        } else return null;
     }
 
     private void setColumnTypeNumberExcel(Iterator<Row> iterator) {

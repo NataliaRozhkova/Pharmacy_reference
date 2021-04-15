@@ -2,10 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <link href="../../public/css/bootstrap.min.css"
-          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"
-          rel="stylesheet" media="screen"/>
+          media="screen"
+          rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"/>
     <script src="http://cdn.jsdelivr.net/webjars/jquery/3.2.1/jquery.min.js"
             th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
 
@@ -21,8 +21,8 @@
 
     <h1>Данные аптеки</h1>
     <div>
-        <form class="form-horizontal" th:object="${pharmacy}" th:action="@{/pharmacy/save}" method="post">
-            <input type="hidden" th:field="*{pharmacyId}"/>
+        <form class="form-horizontal" method="post" th:action="@{/pharmacy/save}" th:object="${pharmacy}">
+            <input th:field="*{pharmacyId}" type="hidden"/>
             <div class="form-group">
                 <label class="col-sm-2 control-label">Название:</label>
                 <div class="col-sm-10">
@@ -48,8 +48,8 @@
                         <label class="col-sm-2 control-label">town:</label>
                         <option value="">Выберите город</option>
                         <option th:each="town : ${towns}"
-                                th:value="${town.id}"
-                                th:text="${town.name} "></option>
+                                th:text="${town.name} "
+                                th:value="${town.id}"></option>
                     </select>
                 </div>
             </div>
@@ -61,8 +61,8 @@
                         <label class="col-sm-2 control-label">district:</label>
                         <option value="">Выберите район</option>
                         <option th:each="district : ${districts}"
-                                th:value="${district.id}"
-                                th:text="${district.name} "></option>
+                                th:text="${district.name} "
+                                th:value="${district.id}"></option>
                     </select>
                 </div>
             </div>
@@ -73,8 +73,8 @@
                         <label class="col-sm-2 control-label">chain:</label>
                         <option value="">Выберите аптечную сеть</option>
                         <option th:each="chain : ${chains}"
-                                th:value="${chain.id}"
-                                th:text="${chain.name} "></option>
+                                th:text="${chain.name} "
+                                th:value="${chain.id}"></option>
                     </select>
                 </div>
             </div>
