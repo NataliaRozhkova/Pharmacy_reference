@@ -5,6 +5,7 @@ import org.apache.tika.parser.txt.CharsetDetector;
 import org.apache.tika.parser.txt.CharsetMatch;
 import pharmacy.reference.spring_server.entitis.Medicine;
 import pharmacy.reference.spring_server.entitis.Pharmacy;
+import pharmacy.reference.spring_server.util.PhFileUtils;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -128,14 +129,8 @@ public class CSVParser {
 
     private String getFileEncodingType(File file) throws IOException {
         CharsetDetector charsetDetector = new CharsetDetector();
-        FileInputStream inputStream = new FileInputStream(file);
-        byte[] bytes = new byte[(int) file.length()];
-        DataInputStream dis = new DataInputStream(inputStream);
-        dis.readFully(bytes);
-        dis.close();
-        charsetDetector.setText(bytes);
+        charsetDetector.setText(PhFileUtils.readAllBytes(file));
         CharsetMatch match = charsetDetector.detect();
-        inputStream.close();
         return match.getName();
     }
 

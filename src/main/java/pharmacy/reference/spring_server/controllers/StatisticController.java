@@ -12,15 +12,14 @@ import org.springframework.web.bind.annotation.*;
 import pharmacy.reference.spring_server.entitis.*;
 import pharmacy.reference.spring_server.entitis.reports.*;
 import pharmacy.reference.spring_server.services.*;
+import pharmacy.reference.spring_server.util.PhFileUtils;
 import pharmacy.reference.spring_server.util.MedicineGrid;
 import pharmacy.reference.spring_server.util.ZipExtractor;
 import pharmacy.reference.spring_server.web.YAMLConfig;
 import pharmacy.reference.spring_server.writer.ExcelWriter;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -135,7 +134,7 @@ public class StatisticController {
             file = new File(config.getLogfilePath() + "/archived/" + fileName);
         }
         response.setHeader("Content-Type", "text");
-        response.getOutputStream().write(new FileInputStream(file).readAllBytes());
+        response.getOutputStream().write(PhFileUtils.readAllBytes(file));
 
 
     }
@@ -153,9 +152,7 @@ public class StatisticController {
     public void downloadFile(@PathVariable("fileName") String fileName, HttpServletResponse response) throws IOException {
         File file = new File(config.getStatisticPath() + "/" + fileName);
         response.setHeader("Content-Type", "application/zip");
-        response.getOutputStream().write(new FileInputStream(file).readAllBytes());
-
-
+        response.getOutputStream().write(PhFileUtils.readAllBytes(file));
     }
 
     // * "0 0 * * * *" = the top of every hour of every day.
