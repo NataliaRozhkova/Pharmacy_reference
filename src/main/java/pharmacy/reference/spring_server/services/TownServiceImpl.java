@@ -27,6 +27,11 @@ public class TownServiceImpl implements TownService{
         return townRepository.save(town);
     }
 
+    @Override
+    public void delete(Town town) {
+        townRepository.delete(town);
+    }
+
     @Autowired
     public void setTownRepository(TownRepository townRepository) {
         this.townRepository = townRepository;

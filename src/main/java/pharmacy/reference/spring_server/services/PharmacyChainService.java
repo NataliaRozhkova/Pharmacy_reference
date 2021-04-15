@@ -14,4 +14,6 @@ public interface PharmacyChainService {
 
     List<PharmacyChain> findAll();
 
+    void delete(PharmacyChain chain);
+
 }

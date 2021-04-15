@@ -13,6 +13,7 @@ import pharmacy.reference.spring_server.entitis.Pharmacy;
 import pharmacy.reference.spring_server.entitis.PharmacyChain;
 import pharmacy.reference.spring_server.parser.PharmacyParser;
 import pharmacy.reference.spring_server.services.*;
+import pharmacy.reference.spring_server.web.YAMLConfig;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,7 +36,12 @@ public class PharmacyController {
 
     private TownService townService;
 
+    private StatisticService statisticService;
+
     private final Logger logger = LoggerFactory.getLogger(MedicineController.class);
+
+    @Autowired
+    private YAMLConfig config;
 
 
     @GetMapping("pharmacies")
@@ -54,11 +60,20 @@ public class PharmacyController {
     }
 
     @GetMapping("/{id}")
-    @ResponseBody
+//    @ResponseBody
     public String getPharmacy(@PathVariable("id") Long id, Model model) {
         Pharmacy pharmacy = pharmacyService.findById(id);
-        model.addAttribute("pharmacies", pharmacy);
+        model.addAttribute("pharmacies", new ArrayList<Pharmacy>().add(pharmacy));
         return "pharmacy_list";
+    }
+
+    @GetMapping("/delete/{id}")
+    @ResponseBody
+    public String deletePharmacy(@PathVariable("id") Long id, Model model) {
+        medicineService.deleteByPharmacyId(id);
+        statisticService.deleteFromPharmacyId(id);
+        pharmacyService.delete(id);
+        return "УАптека удалена";
     }
 
 
@@ -99,7 +114,7 @@ public class PharmacyController {
 
     public String parse() throws IOException {
         PharmacyParser pharmacyParser = new PharmacyParser(pharmacyChainService.findAll(), districtService.findAll(), townService.findAll());
-        List<Pharmacy> pharmacies = pharmacyParser.parse(new File("/home/natasha/IdeaProjects/Справка/pharmacy_reference/src/main/resources/Pharmacy_list.xlsx"));
+        List<Pharmacy> pharmacies = pharmacyParser.parse(new File("/workspace/BOOT-INF/classes/Pharmacy_list.xlsx"));
         pharmacyService.saveAll(pharmacies);
         logger.info("Парсинг данных аптек из файла " + ": Оператор " + SecurityContextHolder.getContext().getAuthentication().getName() );
 
@@ -146,5 +161,10 @@ public class PharmacyController {
     @Autowired
     public void setMedicineService(MedicineService medicineService) {
         this.medicineService = medicineService;
+    }
+
+    @Autowired
+    public void setStatisticService(StatisticService statisticService) {
+        this.statisticService = statisticService;
     }
 }

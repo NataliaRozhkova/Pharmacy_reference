@@ -7,10 +7,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pharmacy.reference.spring_server.entitis.District;
 import pharmacy.reference.spring_server.entitis.Medicine;
+import pharmacy.reference.spring_server.entitis.PharmacyChain;
 import pharmacy.reference.spring_server.entitis.Town;
 import pharmacy.reference.spring_server.services.*;
 
@@ -22,12 +24,17 @@ import java.util.Date;
 public class AuxiliaryController {
 
     private final Logger logger = LoggerFactory.getLogger(MedicineController.class);
-    private MedicineService medicineService;
-    private PharmacyService pharmacyService;
-    private PharmacyChainService chainService;
     private TownService townService;
     private DistrictService districtService;
-    private StatisticService statisticService;
+    private PharmacyChainService chainService;
+
+    @GetMapping("/list")
+    public String showList(Model model) {
+        model.addAttribute("towns", townService.findAll());
+        model.addAttribute("districts", districtService.findAll());
+        model.addAttribute("pharmacy_chains", chainService.findAll());
+        return "auxiliary_inf_list";
+    }
 
 
     @GetMapping("/add/town")
@@ -39,7 +46,20 @@ public class AuxiliaryController {
     public String checkShowAddFormTown(@Valid Town town, Model model) {
         model.addAttribute("text", townService.save(town).getName());
         logger.info("Добавлен город" + town + ": Оператор " + SecurityContextHolder.getContext().getAuthentication().getName());
-        return "base_page";
+        return showList(model);
+    }
+
+    @GetMapping("/delete/town/{id}")
+    public  String deleteTown(@PathVariable("id") Long id, Model model) {
+        townService.delete(townService.findById(id));
+        return showList(model);
+    }
+
+    @GetMapping("/update/town/{id}")
+    public String updateTown(@PathVariable("id") Long id,
+                                 Model model) {
+        model.addAttribute("town", townService.findById(id));
+        return "town_update";
     }
 
     @GetMapping("/add/district")
@@ -51,19 +71,44 @@ public class AuxiliaryController {
     public String checkShowAddFormDistrict(@Valid District district, Model model) {
         model.addAttribute("text", districtService.save(district).getName());
         logger.info("Добавлен район" + district + ": Оператор " + SecurityContextHolder.getContext().getAuthentication().getName());
-        return "base_page";
+        return showList(model);
+    }
+    @GetMapping("/delete/district/{id}")
+    public  String deleteDistrict(@PathVariable("id") Long id, Model model) {
+        districtService.delete(districtService.findById(id));
+        return showList(model);
     }
 
-    @Autowired
-    public void setMedicineService(MedicineService medicineService) {
-        this.medicineService = medicineService;
+    @GetMapping("/update/district/{id}")
+    public String updateDistrict(@PathVariable("id") Long id,
+                             Model model) {
+        model.addAttribute("district", districtService.findById(id));
+        return "district_update";
     }
 
-    @Autowired
-    public void setPharmacyService(PharmacyService pharmacyService) {
-        this.pharmacyService = pharmacyService;
+    @GetMapping("/add/pharmacy_chain")
+    public String showAddFormPharmacyChain(PharmacyChain pharmacyChain) {
+        return "pharmacy_chain_add";
     }
 
+    @PostMapping("/add/pharmacy_chain")
+    public String checkShowAddFormPharmacyChain(@Valid PharmacyChain pharmacyChain, Model model) {
+        model.addAttribute("text", chainService.save(pharmacyChain).getName());
+        logger.info("Добавлена сеть" + pharmacyChain + ": Оператор " + SecurityContextHolder.getContext().getAuthentication().getName());
+        return showList(model);
+    }
+    @GetMapping("/delete/pharmacy_chain/{id}")
+    public  String deletePharmacyChain(@PathVariable("id") Long id, Model model) {
+        chainService.delete(chainService.findById(id));
+        return showList(model);
+    }
+
+    @GetMapping("/update/pharmacy_chain/{id}")
+    public String updatePharmacyChain(@PathVariable("id") Long id,
+                                 Model model) {
+        model.addAttribute("pharmacy_chain", chainService.findById(id));
+        return "pharmacy_chain_update";
+    }
     @Autowired
     public void setChainService(PharmacyChainService chainService) {
         this.chainService = chainService;
@@ -79,8 +124,4 @@ public class AuxiliaryController {
         this.districtService = districtService;
     }
 
-    @Autowired
-    public void setStatisticService(StatisticService statisticService) {
-        this.statisticService = statisticService;
-    }
 }

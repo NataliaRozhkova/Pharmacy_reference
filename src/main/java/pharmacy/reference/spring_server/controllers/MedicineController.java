@@ -3,7 +3,7 @@ package pharmacy.reference.spring_server.controllers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,8 +16,14 @@ import pharmacy.reference.spring_server.entitis.Statistic;
 import pharmacy.reference.spring_server.services.*;
 import pharmacy.reference.spring_server.util.MedicineGrid;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Controller
@@ -33,17 +39,28 @@ public class MedicineController {
     private DistrictService districtService;
     private StatisticService statisticService;
 
+    @Value("${server.port}")
+    private int port;
+
+    @Value("${server.ip}")
+    private String ip;
+
+    @Autowired(required = true)
+    private HttpServletRequest request;
+
     @GetMapping(value = "")
-    public String getPage(Model model) {
+    public String getPage(Model model) throws UnknownHostException {
 
         model.addAttribute("districts", districtService.findAll());
         model.addAttribute("towns", townService.findAll());
         model.addAttribute("chains", chainService.findAll());
         model.addAttribute("pharmacies", pharmacyService.findAllVisible());
         model.addAttribute("role", SecurityContextHolder.getContext().getAuthentication().getName());
+        model.addAttribute("address", ip + ":" + port);
         return "get_medicine_from_name";
     }
 
+    @CrossOrigin
     @GetMapping("/get/all")
     @ResponseBody
     public MedicineGrid getAll(@RequestParam(name = "name", required = false) String name,
@@ -78,7 +95,7 @@ public class MedicineController {
                             if (town != null) {
                                 if (medicine.getPharmacy().getTown() != null) {
                                     res &= medicine.getPharmacy().getTown().getId() == town;
-                                }else {
+                                } else {
                                     res &= false;
                                 }
                             }
@@ -159,7 +176,7 @@ public class MedicineController {
     @GetMapping("/delete/{id}")
     @ResponseBody
     public String delete(@PathVariable("id") Long id) {
-        logger.info("Удалено лекарство" + medicineService.findById(id)+ ": Оператор " + SecurityContextHolder.getContext().getAuthentication().getName());
+        logger.info("Удалено лекарство" + medicineService.findById(id) + ": Оператор " + SecurityContextHolder.getContext().getAuthentication().getName());
         medicineService.deleteById(id);
         return "Лекарство удалено";
     }

@@ -50,10 +50,16 @@ public class StatisticServiceImpl implements StatisticService {
         return statisticRepository.findByPharmacyIdAndDate(id, startDate, finishDate);
     }
 
+    @Override
+    public void deleteFromPharmacyId(Long pharmacyId) {
+        statisticRepository.deleteAll(statisticRepository.findByPharmacyId(pharmacyId));
+    }
+
     @Autowired
     public void setStatisticRepository(StatisticRepository statisticRepository) {
         this.statisticRepository = statisticRepository;
     }
+
 
 
 }

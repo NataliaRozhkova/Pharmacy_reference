@@ -8,7 +8,7 @@ import pharmacy.reference.spring_server.repositories.DistrictRepository;
 import java.util.List;
 
 @Service("districtService")
-public class DistrictServiceImpl implements DistrictService{
+public class DistrictServiceImpl implements DistrictService {
 
     private DistrictRepository districtRepository;
 
@@ -25,6 +25,11 @@ public class DistrictServiceImpl implements DistrictService{
     @Override
     public District save(District district) {
         return districtRepository.save(district);
+    }
+
+    @Override
+    public void delete(District district) {
+        districtRepository.delete(district);
     }
 
     @Autowired

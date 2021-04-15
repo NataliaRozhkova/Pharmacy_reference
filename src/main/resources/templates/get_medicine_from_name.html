@@ -31,14 +31,14 @@
     }
 
 
-
-
     </style>
 
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}">Header</div>
 <p class="form-control-static" hidden="true" id="role" th:text=" ${role}">Роль</p>
+<p class="form-control-static" hidden="true" id="address" th:text=" ${address}">Адрес сервера</p>
+
 <div class="container">
     <div>
         <div class="form-horizontal">
@@ -208,6 +208,7 @@
 <script id="script">
 
     document.getElementById('medicine_name').addEventListener('change', submitForm);
+
 
 
 

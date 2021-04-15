@@ -12,4 +12,6 @@ public interface TownService {
 
     Town save(Town town);
 
+    void delete(Town town);
+
 }

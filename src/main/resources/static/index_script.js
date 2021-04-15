@@ -1,3 +1,6 @@
+var listId = [];
+
+
 function submitForm(){
     document.getElementById('defecture').hidden = true;
 
@@ -10,7 +13,10 @@ function submitForm(){
         let town = document.querySelector('#town');
         let chain = document.querySelector('#chain');
         let request = new XMLHttpRequest();
-        let url = 'http://localhost:8080/medicine/get/all';
+        let address = document.getElementById('address').innerHTML;
+        let url = 'http://' + address +'/medicine/get/all';
+         console.log(url);
+
         url += '?name=' + name.value;
         url += '&district=' + district.value;
         url += '&town=' + town.value;
@@ -32,7 +38,8 @@ function submitPharmacy(){
 
     cleanTable();
     let request = new XMLHttpRequest();
-    let url = 'http://localhost:8080/medicine/get/all/from/pharmacy';
+    let address = document.getElementById('address').innerHTML;
+    let url = 'http://' + address +'/medicine/get/all/from/pharmacy';
     url += '&pharmacy=' + pharmacy.value;
     request.open("GET", url);
     request.responseType = 'json';
@@ -145,11 +152,11 @@ function checkedCheckbox() {
 }
 
 
-var listId = [];
 
 function statView() {
     if(listId.length > 0) {
-        let url = 'http://localhost:8080/statistic/view?medicines=';
+        let address = document.getElementById('address').innerHTML;
+        let url = 'http://' + address +'/statistic/view?medicines=';
         for (var i = 0; i < listId.length - 1; i++) {
             url += listId[i] + ","
         }
@@ -176,7 +183,8 @@ function statView() {
 function statAdd() {
 
     if(listId.length > 0) {
-        let url = 'http://localhost:8080/statistic/put?medicines=';
+        let address = document.getElementById('address').innerHTML;
+        let url = 'http://' + address +'/statistic/put?medicines=';
             for (var i = 0; i < listId.length - 1; i++) {
                 url += listId[i] + ","
             }
@@ -240,7 +248,8 @@ function nextPage() {
 }
 
 function addDefecture() {
-    let url = 'http://localhost:8080/medicine/defecture/put?medicines=';
+    let address = document.getElementById('address').innerHTML;
+    let url = 'http://' + address +'/medicine/defecture/put?medicines=';
     url += document.querySelector('#medicine_name').value;
     url += '&role=' + document.getElementById('role').innerHTML;
     let request = new XMLHttpRequest();

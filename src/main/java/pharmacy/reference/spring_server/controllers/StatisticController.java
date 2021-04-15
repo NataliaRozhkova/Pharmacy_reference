@@ -144,10 +144,19 @@ public class StatisticController {
     }
 
     private void generateFile(int year, int month, int day) throws IOException, ParseException {
+
+        Path folder = Paths.get(config.getStatisticPath());
+        if (!Files.exists(folder)) {
+            Files.createDirectory(folder);
+        }
         String filePath = config.getStatisticPath() + "/" + month + "-" + year;
+
         createStatFile(year, month, day, filePath);
+
         createWorkStatFile(year, month, day, filePath);
+
         ZipExtractor.writeToZipFile(listFilesForFolder(new File(filePath)), filePath + ".zip");
+
         FileUtils.deleteDirectory(new File(filePath));
         medicineService.deleteByPharmacyId(pharmacyService.findByName("Дефектура").get(0).getPharmacyId());
     }
@@ -169,9 +178,11 @@ public class StatisticController {
         List<PharmacyChain> chains = pharmacyChainService.findAll();
         for (PharmacyChain chain : chains) {
             if (!chain.getName().equals("Розничные аптеки")) {
+
                 Path filePath = Paths.get(path);
                 if (!Files.exists(filePath)) {
                     Files.createDirectory(filePath);
+
                 }
                 ExcelWriter writer = new ExcelWriter(filePath + "/" + chain.getName(),
                         month,
@@ -200,7 +211,9 @@ public class StatisticController {
                                 .collect(toList())
 
                 );
+
                 writer.write();
+
             } else {
                 for (Pharmacy pharmacy : pharmacyService.findAllByPharmacyChain(chain.getId())) {
                     String pharmacyNameAdress = pharmacy.getName() + "(" + pharmacy.getAddress() + ")";

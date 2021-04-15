@@ -15,12 +15,12 @@
         <form action="/file/view" enctype="multipart/form-data"
               method="POST">
             Выберете файл для загрузки
-            <input name="file" type="file" id="file" onchange="setName()"><br/>
+            <input name="file" type="file" id="file" onchange="setName()" required><br/>
             имя файла
             <input name="name" id="file_name" type="text"><br/>
 
             Выберите аптеку:
-            <select class="form-control" id="pharmacyId" name="pharmacy_name" >
+            <select class="form-control" id="pharmacyId" name="pharmacy_name" required>
                 <option value="" th:if="${#lists.size(pharmacies)}  > 1" disabled selected>Выберите аптеку</option>
                 <option th:each="pharmacy : ${pharmacies}"
                         th:value="${pharmacy.pharmacyId}"

@@ -2,14 +2,13 @@ package pharmacy.reference.spring_server.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pharmacy.reference.spring_server.entitis.Medicine;
 import pharmacy.reference.spring_server.entitis.Pharmacy;
 import pharmacy.reference.spring_server.repositories.PharmacyRepository;
 
 import java.util.List;
 
 @Service("pharmacyService")
-public class PharmacyServiceImpl  implements PharmacyService{
+public class PharmacyServiceImpl implements PharmacyService {
 
     private PharmacyRepository pharmacyRepository;
 
@@ -51,6 +50,11 @@ public class PharmacyServiceImpl  implements PharmacyService{
     @Override
     public List<Pharmacy> findAllByEmail(String email) {
         return pharmacyRepository.findAllByEmail(email);
+    }
+
+    @Override
+    public void delete(Long id) {
+        pharmacyRepository.delete(findById(id));
     }
 
     @Autowired

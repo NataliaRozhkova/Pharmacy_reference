@@ -17,12 +17,12 @@
         <form action="/file/upload" enctype="multipart/form-data"
               method="POST">
 
-            <input class="form-control" id="file_name" name="file" th:value="${file.getAbsolutePath()}">
+            <input class="form-control" id="file_name" name="file" th:value="${file.getAbsolutePath()}" required>
             <option th:value="${file.getAbsolutePath()}"
-                    th:text="${file.getName()}"></option>
+                    th:text="${file.getName()}" ></option>
             </input>
             Аптека:
-            <select class="form-control" id="pharmacyId" name="pharmacy_name">
+            <select class="form-control" id="pharmacyId" name="pharmacy_name" required>
                 <option th:value="${pharmacy.pharmacyId}"
                         th:text="${pharmacy.name} +'  :  '+${pharmacy.address}"></option>
             </select>

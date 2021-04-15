@@ -6,7 +6,8 @@ plugins {
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+sourceCompatibility = '1.11'
+
 
 configurations {
     developmentOnly
@@ -18,8 +19,8 @@ configurations {
 repositories {
     mavenCentral()
     maven { url 'https://jitpack.io' }
-
 }
+
 
 task runApp(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
@@ -27,8 +28,8 @@ task runApp(type: JavaExec) {
 }
 
 
-
 dependencies {
+
     implementation 'org.junit.jupiter:junit-jupiter:5.4.2'
     implementation 'org.junit.jupiter:junit-jupiter:5.4.2'
     implementation 'org.jetbrains:annotations:20.1.0'
@@ -62,4 +63,9 @@ dependencies {
 
 
 
+}
+compileJava.options.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
 }

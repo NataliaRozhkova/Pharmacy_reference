@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -38,10 +39,15 @@ public class ScheduledController {
 
 
     @GetMapping(value = "/download")
-    @Scheduled(cron = "0 01 * * * *")
+    @Scheduled(cron = "0 0 */2 * * *")
     @ResponseBody
     public String autoUpdate() throws IOException {
-        LocalDate localDate = new Date(System.currentTimeMillis() - 86400000l * 100).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        Path folder = Paths.get(config.getEmailDownloadPath());
+        if (!Files.exists(folder)) {
+            Files.createDirectory(folder);
+        }
+        LocalDate localDate = new Date(System.currentTimeMillis()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+//        LocalDate localDate = new Date(System.currentTimeMillis() - 86400000l * 40).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         downloadEmail(localDate);
         updateMedicines(localDate);
         return "Данные обновлены";
@@ -78,7 +84,6 @@ public class ScheduledController {
             List<Pharmacy> pharmacies = pharmacyService.findAllByEmail(email.toLowerCase(Locale.ROOT));
             if (pharmacies.size() == 1) {
                 parseFile(pharmacies.get(0), file, localDate);
-                logger.info(pharmacies.get(0) + " Данные обновлены " + localDate);
             } else {
                 List<File> folders = listFilesForFolder(file);
                 for (File medicineFile : folders) {
@@ -86,7 +91,6 @@ public class ScheduledController {
                     Pharmacy pharmacy = findPharmacyFromAddress(pharmacies, addressDirectory);
                     if (pharmacy != null) {
                         parseFile(pharmacy, medicineFile, localDate);
-                        logger.info(pharmacy + " Данные обновлены " + localDate);
                     } else {
                         List<File> archives = listFilesForFolder(medicineFile);
                         for (File fl : archives) {
@@ -98,7 +102,6 @@ public class ScheduledController {
                                     Pharmacy pharmacyByFind = findPharmacyFromAddress(pharmacies, address);
                                     if (pharmacyByFind != null) {
                                         parseFile(pharmacyByFind, currentFile, localDate);
-                                        logger.info(pharmacyByFind + " Данные обновлены " + localDate);
 
                                     }
                                 }
@@ -130,6 +133,9 @@ public class ScheduledController {
             pharmacyService.save(pharmacy);
             logger.info(pharmacy + " Данные обновлены " + localDate);
 
+        }
+        else {
+            logger.info("Не удолось обновить данные для " + pharmacy + "  " + localDate);
         }
     }
 

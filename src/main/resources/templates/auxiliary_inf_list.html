@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Аптечная справочная</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../public/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/3.2.1/jquery.min.js"
+            th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
+    <style>
+
+   th,td {
+   text-align: center;
+   font-size: small;
+   }
+
+
+
+
+
+    </style>
+</head>
+
+<body>
+<div th:replace="~{fragments/header :: header}">Header</div>
+
+<div class="container">
+
+    <h1>Список городов</h1>
+    <div class="lead">
+
+        <p><a href="/auxiliary/add/town">Добавить город</a></p>
+    </div>
+</div>
+<div class="text-left" th:if="${not #lists.isEmpty(towns)}">
+
+    <div class="lead">
+        <table class="table table-striped">
+            <tr>
+                <th>Название</th>
+                <th>Редактировать</th>
+                <th>Удалить</th>
+
+            </tr>
+            <tr th:each="town : ${towns}">
+                <td th:text="${town.name}">Название</td>
+                <td><a th:href="${'/auxiliary/update/town/' + town.id}">Редактировать</a></td>
+                <td><a th:href="${'/auxiliary/delete/town/' +town.id }">Удалить</a></td>
+
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="container">
+
+    <h1>Список районов</h1>
+    <div class="lead">
+
+        <p><a href="/auxiliary/add/district">Добавить район</a></p>
+    </div>
+</div>
+<div class="text-left" th:if="${not #lists.isEmpty(districts)}">
+    <div class="lead">
+        <table class="table table-striped">
+            <tr>
+                <th>Название</th>
+                <th>Редактировать</th>
+                <th>Удалить</th>
+
+            </tr>
+            <tr th:each="district : ${districts}">
+                <td th:text="${district.name}">Название</td>
+                <td><a th:href="${'/auxiliary/update/district/' + district.id}">Редактировать</a></td>
+                <td><a th:href="${'/auxiliary/delete/district/' +district.id }">Удалить</a></td>
+
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+<div class="container">
+
+    <h1>Список аптечных сетей</h1>
+    <div class="lead">
+        <p><a href="/auxiliary/add/pharmacy_chain">Добавить аптечную сеть</a></p>
+    </div>
+</div>
+<div class="text-left" th:if="${not #lists.isEmpty(pharmacy_chains)}">
+
+    <div class="lead">
+        <table class="table table-striped">
+            <tr>
+                <th>Название</th>
+                <th>Редактировать</th>
+                <th>Удалить</th>
+
+            </tr>
+            <tr th:each="pharmacy_chain : ${pharmacy_chains}">
+                <td th:text="${pharmacy_chain.name}">Название</td>
+                <td><a th:href="${'/auxiliary/update/pharmacy_chain/' + pharmacy_chain.id}">Редактировать</a></td>
+                <td><a th:href="${'/auxiliary/delete/pharmacy_chain/' +pharmacy_chain.id }">Удалить</a></td>
+
+            </tr>
+        </table>
+    </div>
+</div>
+<script>
+</script>
+</body>
+</html>

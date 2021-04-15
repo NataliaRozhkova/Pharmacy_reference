@@ -21,4 +21,6 @@ public interface StatisticService {
 
     List<Statistic> findByPharmacyIdAndDate(Long id, Date startDate, Date finishDate);
 
+    void deleteFromPharmacyId(Long pharmacyId);
+
 }

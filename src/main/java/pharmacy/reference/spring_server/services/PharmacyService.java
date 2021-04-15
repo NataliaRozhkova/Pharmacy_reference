@@ -24,4 +24,6 @@ public interface PharmacyService {
 
     List<Pharmacy> findAllByEmail(String email);
 
+    void delete(Long id);
+
 }

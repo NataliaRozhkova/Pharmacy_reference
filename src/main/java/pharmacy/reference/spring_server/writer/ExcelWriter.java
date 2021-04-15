@@ -38,16 +38,16 @@ public class ExcelWriter {
         Sheet sheet = book.createSheet("Данные");
         int rowCount = writeHeaderStatistic(sheet);
         setPharmacyReport(sheet.createRow(rowCount), report);
-        sheet.autoSizeColumn(0);
-        sheet.autoSizeColumn(1);
+//        sheet.autoSizeColumn(0);
+//        sheet.autoSizeColumn(1);
     }
 
     public void addPharmacyChainReport(PharmacyChainReport report) {
         Sheet sheet = book.createSheet("Данные");
         int rowCount = writeHeaderStatistic(sheet);
         setPharmaciesFromReport(report, sheet, rowCount);
-        sheet.autoSizeColumn(0);
-        sheet.autoSizeColumn(1);
+//        sheet.autoSizeColumn(0);
+//        sheet.autoSizeColumn(1);
     }
 
     public void addOverallPharmacyChainReport(OverallPharmacyChainReport report) {
@@ -57,9 +57,9 @@ public class ExcelWriter {
             rowCount = setPharmaciesFromReportWithPrice(chainReport, sheet, rowCount);
         }
         setOverallResultCallsAndPrice(sheet.createRow(rowCount), report.overall);
-        sheet.autoSizeColumn(0);
-        sheet.autoSizeColumn(1);
-        sheet.autoSizeColumn(2);
+//        sheet.autoSizeColumn(0);
+//        sheet.autoSizeColumn(1);
+//        sheet.autoSizeColumn(2);
     }
 
     public void addCallsReport(List<CallsReport> reports) {
@@ -71,9 +71,9 @@ public class ExcelWriter {
             setCell(row, 1, report.medicinesName, setStyle());
             setCell(row, 2, report.pharmacyName, setStyle());
         }
-        sheet.autoSizeColumn(0);
-        sheet.autoSizeColumn(1);
-        sheet.autoSizeColumn(2);
+//        sheet.autoSizeColumn(0);
+//        sheet.autoSizeColumn(1);
+//        sheet.autoSizeColumn(2);
 
     }
 
@@ -88,10 +88,10 @@ public class ExcelWriter {
             setCell(row, 2, report.pharmacyName, setStyle());
             setCell(row, 3, Float.toString(report.price), setStyle());
         }
-        sheet.autoSizeColumn(0);
-        sheet.autoSizeColumn(1);
-        sheet.autoSizeColumn(2);
-        sheet.autoSizeColumn(3);
+//        sheet.autoSizeColumn(0);
+//        sheet.autoSizeColumn(1);
+//        sheet.autoSizeColumn(2);
+//        sheet.autoSizeColumn(3);
     }
 
     public void addDefectureReports(List<String> defectures) {
@@ -101,7 +101,7 @@ public class ExcelWriter {
         for (String defecture : defectures) {
             setCell(sheet.createRow(rowCount++), 0, defecture, setStyle());
         }
-        sheet.autoSizeColumn(0);
+//        sheet.autoSizeColumn(0);
 
     }
 
@@ -117,8 +117,8 @@ public class ExcelWriter {
             setCell(row, 1, Integer.toString(report.callCount), setStyle());
         }
         setOverall(sheet.createRow(rowCount), callsCountReports.overall);
-        sheet.autoSizeColumn(0);
-        sheet.autoSizeColumn(1);
+//        sheet.autoSizeColumn(0);
+//        sheet.autoSizeColumn(1);
 
     }
 

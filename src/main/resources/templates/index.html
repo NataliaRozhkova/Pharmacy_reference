@@ -24,14 +24,15 @@
                     <p><a href="/medicine/add">Добавить лекарство</a></p>
                     <p><a href="/medicine/get/from/pharmacy">Список лекарств в аптеке</a></p>
                     <p><a href="/pharmacy/pharmacies">Список аптек</a></p>
-                    <p><a href="/medicine/get/all/from/pharmacy?pharmacy=852">Дефектура </a></p>
+                    <p><a href="/medicine/get/all/from/pharmacy?pharmacy=1">Дефектура </a></p>
 
                 </td>
                 <td width="150"></td>
                 <td sec:authorize="hasAuthority('ROLE_ADMIN')">
+                    <p><a href="/auxiliary/list">Вспомогательная информация</a></p>
+
                     <p><a href="/pharmacy/new">Добавить аптеку</a></p>
-                    <p><a href="/auxiliary/add/town">Добавить город</a></p>
-                    <p><a href="/auxiliary/add/district">Добавить район</a></p>
+
                     <p><a href="/file/add">Загрузка данных аптек из файла</a></p>
                     <p><a href="/statistic/file"> Генерация файлов статистики </a></p>
                     <p><a href="/email/download"> Автозагрузка даных с почты</a></p>

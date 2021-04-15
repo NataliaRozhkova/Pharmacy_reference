@@ -53,8 +53,6 @@ public class EmailDownloader {
     public void openFolder(String folderName)
             throws Exception {
         folder = (POP3Folder) store.getFolder(folderName);
-        logger.info((new StringBuilder("For test----")).append
-                (folder.getParent().getFullName()).toString());
         if (folder == null)
             throw new Exception("Invalid folder");
         try {
