@@ -104,8 +104,51 @@ public class StatisticController {
         return "download_statistic_file";
     }
 
+    @GetMapping("/logfile")
+    public String downloadLogfile(Model model) {
+//        model.addAttribute("files", listFilesForFolder(new File("/workspace")).stream()
+        model.addAttribute("files", listFilesForFolder(new File(config.getLogfilePath())).stream()
+                .map(file -> file.getName())
+                .sorted()
+                .collect(toList()));
+        return "download_logfile";
+
+    }
+
+    @RequestMapping(value = "/logfile/{fileName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void downloadLogfile(@PathVariable("fileName") String fileName, HttpServletResponse response) throws IOException {
+        File file;
+        if (fileName.contains("y.log")) {
+            file = new File(config.getLogfilePath() + "/" + fileName);
+        } else {
+            file = new File(config.getLogfilePath() + "/archived/" + fileName);
+        }
+        response.setHeader("Content-Type", "text");
+        response.getOutputStream().write(new FileInputStream(file).readAllBytes());
+
+
+    }
+//
+//    @RequestMapping(value = "/logfile/archived/{fileName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+//    public void downloadLogfile(@PathVariable("fileName") String fileName,  HttpServletResponse response) throws IOException {
+//        File file = new File(config.getLogfilePath() + "/" + fileName);
+//        response.setHeader("Content-Type", "text");
+//        response.getOutputStream().write(new FileInputStream(file).readAllBytes());
+//
+//
+//    }
+
+    @GetMapping("/logfile/archived")
+    public String downloadArchivedLogFile(Model model) {
+        model.addAttribute("files", listFilesForFolder(new File(config.getLogfilePath() + "/archived")).stream()
+                .map(file -> file.getName())
+                .sorted()
+                .collect(toList()));
+        return "download_logfile";
+    }
+
     @RequestMapping(value = "/file/download/{fileName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public void downloadFile(@PathVariable("fileName") String fileName,  HttpServletResponse response) throws IOException {
+    public void downloadFile(@PathVariable("fileName") String fileName, HttpServletResponse response) throws IOException {
         File file = new File(config.getStatisticPath() + "/" + fileName);
         response.setHeader("Content-Type", "application/zip");
         response.getOutputStream().write(new FileInputStream(file).readAllBytes());
@@ -122,7 +165,7 @@ public class StatisticController {
         int year = Integer.parseInt(period.split("-")[0]);
         generateFile(year, month, 1);
         model.addAttribute("text", "Файлы статистики сгенерированы");
-        logger.info("Сгененированы файлы статистики за " + month + "-" + year);
+        logger.info("Generated statistics files for  " + month + "-" + year);
         return "base_page";
     }
 
@@ -138,7 +181,7 @@ public class StatisticController {
         int month = Calendar.getInstance().get(Calendar.MONTH);
         int year = Calendar.getInstance().get(Calendar.YEAR);
         int day = Calendar.getInstance().get(Calendar.DATE);
-        logger.info("Автоматичсески сгененированы файлы статистики за " + month + "-" + year);
+        logger.info("Automatically generated statistics files for " + month + "-" + year);
         generateFile(year, month, day);
 
     }
@@ -329,7 +372,6 @@ public class StatisticController {
                 .map(statistic -> statistic.getMedicinePrice())
                 .reduce(0f, (a, b) -> a + b);
     }
-
 
 
     private List<CallsCountReport> countCallsFromDay(Date startDate, Date finishDate) {

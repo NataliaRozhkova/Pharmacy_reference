@@ -102,7 +102,7 @@ public class PharmacyController {
 
     @PostMapping("/save")
     public String savePharmacy(Pharmacy pharmacy, Model model) {
-        logger.info("Изменены данные аптеки " + pharmacy + ": Оператор " + SecurityContextHolder.getContext().getAuthentication().getName() );
+        logger.info("Pharmacy data changed " + pharmacy + ": Operator " + SecurityContextHolder.getContext().getAuthentication().getName() );
         pharmacyService.save(pharmacy);
         model.addAttribute("text", pharmacy);
         return "base_page";
@@ -116,7 +116,7 @@ public class PharmacyController {
         PharmacyParser pharmacyParser = new PharmacyParser(pharmacyChainService.findAll(), districtService.findAll(), townService.findAll());
         List<Pharmacy> pharmacies = pharmacyParser.parse(new File("/workspace/BOOT-INF/classes/Pharmacy_list.xlsx"));
         pharmacyService.saveAll(pharmacies);
-        logger.info("Парсинг данных аптек из файла " + ": Оператор " + SecurityContextHolder.getContext().getAuthentication().getName() );
+        logger.info("Parsing pharmacy data from a file " + ": Operator " + SecurityContextHolder.getContext().getAuthentication().getName() );
 
         return "pharmacy_update";
     }

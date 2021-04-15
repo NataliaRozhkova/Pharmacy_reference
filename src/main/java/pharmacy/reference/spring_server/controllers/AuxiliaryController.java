@@ -45,7 +45,7 @@ public class AuxiliaryController {
     @PostMapping("/add/town")
     public String checkShowAddFormTown(@Valid Town town, Model model) {
         model.addAttribute("text", townService.save(town).getName());
-        logger.info("Добавлен город" + town + ": Оператор " + SecurityContextHolder.getContext().getAuthentication().getName());
+        logger.info("Add town" + town + ": Operator " + SecurityContextHolder.getContext().getAuthentication().getName());
         return showList(model);
     }
 
@@ -70,7 +70,7 @@ public class AuxiliaryController {
     @PostMapping("/add/district")
     public String checkShowAddFormDistrict(@Valid District district, Model model) {
         model.addAttribute("text", districtService.save(district).getName());
-        logger.info("Добавлен район" + district + ": Оператор " + SecurityContextHolder.getContext().getAuthentication().getName());
+        logger.info("Add district" + district + ": Operator " + SecurityContextHolder.getContext().getAuthentication().getName());
         return showList(model);
     }
     @GetMapping("/delete/district/{id}")
@@ -94,7 +94,7 @@ public class AuxiliaryController {
     @PostMapping("/add/pharmacy_chain")
     public String checkShowAddFormPharmacyChain(@Valid PharmacyChain pharmacyChain, Model model) {
         model.addAttribute("text", chainService.save(pharmacyChain).getName());
-        logger.info("Добавлена сеть" + pharmacyChain + ": Оператор " + SecurityContextHolder.getContext().getAuthentication().getName());
+        logger.info("Add pharmacy chain  " + pharmacyChain + ": Operator " + SecurityContextHolder.getContext().getAuthentication().getName());
         return showList(model);
     }
     @GetMapping("/delete/pharmacy_chain/{id}")

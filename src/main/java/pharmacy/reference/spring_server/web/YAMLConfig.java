@@ -16,6 +16,7 @@ public class YAMLConfig {
     private String emailDownloadPath;
     private String emailAddress;
     private String emailPassword;
+    private String logfilePath;
     private Map<String, Credential> users =  new HashMap<>();;
 
     public String getEmailDownloadPath() {
@@ -32,6 +33,14 @@ public class YAMLConfig {
 
     public Map<String, Credential> getUsers() {
         return users;
+    }
+
+    public void setLogfilePath(String logfilePath) {
+        this.logfilePath = logfilePath;
+    }
+
+    public String getLogfilePath() {
+        return logfilePath;
     }
 
     public void setStatisticPath(String statisticPath) {

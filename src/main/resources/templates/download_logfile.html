@@ -1,0 +1,46 @@
+<html charset="UTF-8" meta xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../public/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/3.2.1/jquery.min.js"
+            th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
+    <title>Аптечная справочная</title>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}">Header</div>
+
+<div class="text-left" th:if="${not #lists.isEmpty(files)}">
+
+    <div class="lead">
+        <table class="table table-striped">
+            <tr>
+                <th>Название</th>
+                <th>Скачать файл</th>
+
+
+            </tr>
+            <tr th:each="file : ${files}">
+                <td th:text="${file}">Название</td>
+
+
+                <div th:switch="${file}">
+                    <p th:case="'archived'">
+                    <td>
+                        <a th:href="${'/statistic/logfile/archived/'}">Открыть</a>
+                    </td>
+                    </p>
+                    <p th:case="*">
+                    <td>
+                        <a th:href="${'/statistic/logfile/' + file}">Скачать</a></td>
+                    </p>
+                </div>
+
+
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>

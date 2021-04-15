@@ -64,11 +64,11 @@ public class FileLoaderController {
             pharmacy.setLastUpdateMedicines(new Date(System.currentTimeMillis()));
             pharmacyService.save(pharmacy);
             model.addAttribute("text", "Добавлено позиций " + saveMedicines.size());
-            logger.info("Обновление списка лекарств аптеки из файла "+ pharmacy + ": Оператор " + SecurityContextHolder.getContext().getAuthentication().getName() );
+            logger.info("Updating a pharmacy drug list from a file "+ pharmacy + ": Operator " + SecurityContextHolder.getContext().getAuthentication().getName() );
 
         } catch (Exception e) {
-            model.addAttribute("text", "Вам не удалось загрузить " + file.getName() + " => " + e.getMessage());
-            logger.info("Не удалось загрузить данные "+ e.getMessage() + ": Оператор " + SecurityContextHolder.getContext().getAuthentication().getName() );
+            model.addAttribute("text", "You were unable to download  " + file.getName() + " => " + e.getMessage());
+            logger.info("You were unable to download"+ e.getMessage() + ": Operator  " + SecurityContextHolder.getContext().getAuthentication().getName() );
 
         }
         return "base_page";
@@ -100,7 +100,7 @@ public class FileLoaderController {
                 model.addAttribute("file", newFile);
                 model.addAttribute("pharmacy", pharmacy);
             } catch (Exception e) {
-                System.out.println("!!!!!!"+e.getMessage());
+               logger.info("!!!!!!"+e.getMessage());
             }
         } else {
         }

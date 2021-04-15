@@ -176,7 +176,7 @@ public class MedicineController {
     @GetMapping("/delete/{id}")
     @ResponseBody
     public String delete(@PathVariable("id") Long id) {
-        logger.info("Удалено лекарство" + medicineService.findById(id) + ": Оператор " + SecurityContextHolder.getContext().getAuthentication().getName());
+        logger.info("Removed medicine " + medicineService.findById(id) + ": Operator " + SecurityContextHolder.getContext().getAuthentication().getName());
         medicineService.deleteById(id);
         return "Лекарство удалено";
     }
@@ -191,7 +191,7 @@ public class MedicineController {
     public String checkShowAddForm(@Valid Medicine medicine, BindingResult bindingResult, Model model) {
         medicine.setDate(new Date(System.currentTimeMillis()));
         model.addAttribute("text", medicineService.save(medicine).toString());
-        logger.info("Добавлено лекарство" + medicine + ": Оператор " + SecurityContextHolder.getContext().getAuthentication().getName());
+        logger.info("Add medicine " + medicine + ": Operator " + SecurityContextHolder.getContext().getAuthentication().getName());
         return "base_page";
     }
 
@@ -199,7 +199,7 @@ public class MedicineController {
     @ResponseBody
     public Medicine putDefecture(@RequestParam(name = "medicines") String medicinesName,
                                  @RequestParam(name = "role") String role) {
-        logger.info("Добавлено в дефектуру " + medicinesName + ": Оператор " + SecurityContextHolder.getContext().getAuthentication().getName());
+        logger.info("Add to defecture  " + medicinesName + ": Operator " + SecurityContextHolder.getContext().getAuthentication().getName());
         Medicine medicineDefecture = new Medicine();
         medicineDefecture.setName(medicinesName);
         medicineDefecture.setPharmacy(pharmacyService.findByName("деф").get(0));

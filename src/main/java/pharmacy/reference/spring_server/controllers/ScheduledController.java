@@ -131,11 +131,11 @@ public class ScheduledController {
             medicineService.saveAll(medicines);
             pharmacy.setLastUpdateMedicines(new Date(System.currentTimeMillis()));
             pharmacyService.save(pharmacy);
-            logger.info(pharmacy + " Данные обновлены " + localDate);
+            logger.info(pharmacy + " Pharmacies medicines updated " + localDate);
 
         }
         else {
-            logger.info("Не удолось обновить данные для " + pharmacy + "  " + localDate);
+            logger.info("Failed to update data for " + pharmacy + "  " + localDate);
         }
     }
 
