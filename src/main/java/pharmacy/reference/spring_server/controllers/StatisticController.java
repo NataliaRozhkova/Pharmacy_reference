@@ -115,15 +115,6 @@ public class StatisticController {
         return "download_logfile";
 
     }
-//
-//    @RequestMapping(value = "/logfile/archived/{fileName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-//    public void downloadLogfile(@PathVariable("fileName") String fileName,  HttpServletResponse response) throws IOException {
-//        File file = new File(config.getLogfilePath() + "/" + fileName);
-//        response.setHeader("Content-Type", "text");
-//        response.getOutputStream().write(new FileInputStream(file).readAllBytes());
-//
-//
-//    }
 
     @RequestMapping(value = "/logfile/{fileName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public void downloadLogfile(@PathVariable("fileName") String fileName, HttpServletResponse response) throws IOException {

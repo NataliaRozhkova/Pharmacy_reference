@@ -64,7 +64,7 @@ public class PharmacyController {
         medicineService.deleteByPharmacyId(id);
         statisticService.deleteFromPharmacyId(id);
         pharmacyService.delete(id);
-        return "УАптека удалена";
+        return "Аптека удалена";
     }
 
 

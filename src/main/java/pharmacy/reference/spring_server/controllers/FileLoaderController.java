@@ -16,8 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 import pharmacy.reference.spring_server.entitis.Medicine;
 import pharmacy.reference.spring_server.entitis.Pharmacy;
 import pharmacy.reference.spring_server.parser.MedicineParser;
-import pharmacy.reference.spring_server.services.MedicineService;
-import pharmacy.reference.spring_server.services.PharmacyService;
+import pharmacy.reference.spring_server.parser.PharmacyParser;
+import pharmacy.reference.spring_server.services.*;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -35,6 +35,9 @@ public class FileLoaderController {
     private final Logger logger = LoggerFactory.getLogger(MedicineController.class);
     private MedicineService medicineService;
     private PharmacyService pharmacyService;
+    private TownService townService;
+    private DistrictService districtService;
+    private PharmacyChainService chainService;
 
     @GetMapping(value = "/add")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -43,6 +46,14 @@ public class FileLoaderController {
         model.addAttribute("pharmacies", pharmacies);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return "file_loader";
+    }
+
+    @GetMapping(value = "/pharmacy/add")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String addAllPharmacy(Model model) {
+        List<Pharmacy> pharmacies = pharmacyService.findAll();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return "pharmacy_file_loader";
     }
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
@@ -90,11 +101,7 @@ public class FileLoaderController {
                         new BufferedOutputStream(new FileOutputStream(newFile));
                 stream.write(bytes);
                 stream.close();
-
                 List<Medicine> medicines = parseFile(newFile, pharmacy);
-
-                System.out.println(newFile);
-
                 model.addAttribute("medicines", medicines);
                 model.addAttribute("file", newFile);
                 model.addAttribute("pharmacy", pharmacy);
@@ -107,6 +114,32 @@ public class FileLoaderController {
 
         return "file_view";
 
+    }
+
+    @RequestMapping(value = "/pharmacy/parse", method = RequestMethod.POST)
+    public String parsePharmacy(@RequestParam("file") MultipartFile file,
+                                @RequestParam("name") String name,
+                                Model model) {
+        if (!file.isEmpty()) {
+            try {
+                byte[] bytes = file.getBytes();
+                String[] str = name.split("\\.");
+                String newFileName = "upload_file." + str[str.length - 1];
+                File newFile = new File(newFileName);
+                BufferedOutputStream stream =
+                        new BufferedOutputStream(new FileOutputStream(newFile));
+                stream.write(bytes);
+                stream.close();
+                PharmacyParser parser = new PharmacyParser(chainService.findAll(),districtService.findAll(), townService.findAll());
+                List<Pharmacy> pharmacies = parser.parse(newFile);
+                pharmacyService.saveAll(pharmacies);
+                model.addAttribute("text", pharmacies);
+            } catch (Exception e) {
+                logger.info("!!!!!!" + e.getMessage());
+            }
+        } else {
+        }
+        return "base_page";
     }
 
     private List<Medicine> parseFile(File file, Pharmacy pharmacy) {
@@ -126,4 +159,20 @@ public class FileLoaderController {
     public void setPharmacyService(PharmacyService pharmacyService) {
         this.pharmacyService = pharmacyService;
     }
+
+    @Autowired
+    public void setChainService(PharmacyChainService chainService) {
+        this.chainService = chainService;
+    }
+
+    @Autowired
+    public void setTownService(TownService townService) {
+        this.townService = townService;
+    }
+
+    @Autowired
+    public void setDistrictService(DistrictService districtService) {
+        this.districtService = districtService;
+    }
+
 }
