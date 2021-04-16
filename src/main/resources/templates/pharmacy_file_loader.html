@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link href="../../public/css/bootstrap.min.css"
+          media="screen"
+          rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"/>
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/3.2.1/jquery.min.js"
+            th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
+    <title>Аптечная справочная</title>
+<body>
+<div th:replace="~{fragments/header :: header}">Header</div>
+<div class="container">
+    <div>
+        <form action="/file/pharmacy/parse" enctype="multipart/form-data"
+              method="POST">
+            Выберете файл для загрузки информации по аптекам
+            <input id="file" name="file" onchange="setName()" required type="file"><br/>
+            имя файла
+            <input id="file_name" name="name" type="text"><br/>
+
+            <br/><br/>
+
+            <input id="button_submit" type="submit" value="Загрузить"> Нажмите для просмотра!
+
+        </form>
+    </div>
+</div>
+
+
+<script>
+ function setName() {
+        document.getElementById('file_name').value = document.querySelector('#file').files[0].name;
+    }
+</script>
+</body>
+</html>

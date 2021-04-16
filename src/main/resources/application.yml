@@ -1,10 +1,10 @@
-#statisticPath: "/home/natasha/pharmacy_reference/statistics"
-#emailDownloadPath: "/home/natasha/pharmacy_reference/file_download"
-#logfilePath: "/home/natasha/log"
-
-statisticPath: "/workspace/statistic"
-emailDownloadPath: "/workspace/download"
-logfilePath: "/workspace"
+statisticPath: "/home/natasha/pharmacy_reference/statistics"
+emailDownloadPath: "/home/natasha/pharmacy_reference/file_download"
+logfilePath: "/home/natasha/log"
+#
+#statisticPath: "/workspace/statistic"
+#emailDownloadPath: "/workspace/download"
+#logfilePath: "/workspace"
 
 emailAddress: "sprav074@mail.ru"
 emailPassword: "Spravka654321"

@@ -10,8 +10,8 @@
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n</pattern>
         </encoder>
     </appender>
-    <property name="DEV_HOME" value="/workspace"/>
-    <!--    <property name="DEV_HOME" value="/home/natasha/log" />-->
+<!--    <property name="DEV_HOME" value="/workspace"/>-->
+        <property name="DEV_HOME" value="/home/natasha/log" />
 
     <appender name="FILE-AUDIT"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
