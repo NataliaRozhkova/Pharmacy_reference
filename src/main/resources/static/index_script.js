@@ -7,31 +7,31 @@ function submitForm(){
     let name = document.querySelector('#medicine_name');
 
     if(name.value.length > 2) {
-        cleanTable();
-        var table = document.getElementById('table');
-        let district = document.querySelector('#district');
-        let town = document.querySelector('#town');
-        let chain = document.querySelector('#chain');
-        let request = new XMLHttpRequest();
-        let address = document.getElementById('address').innerHTML;
-        let url = 'http://' + address +'/medicine/get/all';
-         console.log(url);
+            cleanTable();
+            var table = document.getElementById('table');
+            let district = document.querySelector('#district');
+            let town = document.querySelector('#town');
+            let chain = document.querySelector('#chain');
+            let request = new XMLHttpRequest();
+            let address = document.getElementById('address').innerHTML;
+            let url = 'http://' + address +'/medicine/get/all';
+             console.log(url);
 
-        url += '?name=' + name.value;
-        url += '&district=' + district.value;
-        url += '&town=' + town.value;
-        url += '&chain=' + chain.value;
-        url += '&pharmacy=' + pharmacy.value;
-        url += '&page=' + document.getElementById('pageNumber').value;
-        url += '&rows=' + 100;
-        request.open("GET", url);
-        request.responseType = 'json';
-        request.onload = function () {
-            var response = request.response;
-                validationDate(response);
+            url += '?name=' + name.value;
+            url += '&district=' + district.value;
+            url += '&town=' + town.value;
+            url += '&chain=' + chain.value;
+            url += '&pharmacy=' + pharmacy.value;
+            url += '&page=' + document.getElementById('pageNumber').value;
+            url += '&rows=' + 100;
+            request.open("GET", url, true);
+            request.responseType = 'json';
+            request.onload = function () {
+                var response = request.response;
+                    validationDate(response);
+            }
+             request.send();
         }
-         request.send();
-    }
 }
 
 function submitPharmacy(){
@@ -85,7 +85,6 @@ function drawTable(data) {
     var date = 'date';
 
     var table = document.getElementById("table");
-
 
     for (var i = 0; i < data.length; i++) {
 

@@ -185,6 +185,7 @@ public class ScheduledController {
                     isAddress &= true;
                 } else {
                     isAddress &= false;
+                    System.out.println("!!!!!!!!!!!!!!" + pharmacy);
                 }
             }
             if (isAddress) {

@@ -59,9 +59,9 @@ public class MedicineController {
         return "get_medicine_from_name";
     }
 
-    @CrossOrigin
     @GetMapping("/get/all")
     @ResponseBody
+    @CrossOrigin
     public MedicineGrid getAll(@RequestParam(name = "name", required = false) String name,
                                @RequestParam(name = "district", required = false) Long district,
                                @RequestParam(name = "town", required = false) Long town,
@@ -131,7 +131,7 @@ public class MedicineController {
         return Arrays.asList(line.split(" ").clone());
     }
 
-
+    @CrossOrigin
     @GetMapping("/get/one")
     @ResponseBody
     public Medicine getOne(@RequestParam(name = "id", required = false, defaultValue = "") Long id) {

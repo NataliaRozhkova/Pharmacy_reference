@@ -26,4 +26,5 @@ public interface MedicineRepository extends JpaRepository<Medicine, Long> {
     Integer countByPharmacy(@Param("pharmacyId") Long id);
 
 
+
 }

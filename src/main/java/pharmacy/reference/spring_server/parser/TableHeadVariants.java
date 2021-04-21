@@ -36,6 +36,7 @@ public class TableHeadVariants {
             case "ost":
             case "остатокнаскладе":
             case "остаток":
+            case "остаток(посистеме)":
             case "%qnt%":
                 return QUANTITY;
             case "цена":
@@ -49,6 +50,7 @@ public class TableHeadVariants {
             case "ценапопрайсу({currencysymbol})заединицутовара":
             case "ценапопрайсу({currencysymbol})":
             case "%price%":
+            case "ценапродажи":
                 return PRICE;
             case "country":
             case "страна":
