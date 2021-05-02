@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Date;
 import java.util.Properties;
 
 public class EmailDownloader {
@@ -71,7 +72,9 @@ public class EmailDownloader {
             LocalDate messegeDate = message.getSentDate()
                     .toInstant().atZone(ZoneId.systemDefault())
                     .toLocalDate();
-            if (localDate.equals(messegeDate)) {
+            Date dateStartLoad = new Date(System.currentTimeMillis() - 7500000);
+            if (message.getSentDate().after(dateStartLoad) ) {
+
                 dump(message);
             } else if (localDate.isAfter(messegeDate)) {
                 break;
