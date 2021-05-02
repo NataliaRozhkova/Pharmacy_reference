@@ -63,7 +63,7 @@
                         <tr>
                             <td>
                                 <div>
-                                    <select class="form-control" id="district" name="district">
+                                    <select class="form-control" id="district" name="district" required oninput="setPharmacyListFromChainAndDistrict()">
                                         <option value="">Все районы</option>
                                         <option th:each="district : ${districts}"
                                                 th:text="${district.name} "
@@ -83,7 +83,7 @@
                             </td>
                             <td>
                                 <div>
-                                    <select class="form-control" id="chain" name="chain">
+                                    <select class="form-control" id="chain" name="chain"  required oninput="setPharmacyListFromChainAndDistrict()">
                                         <option value="">Все сети</option>
                                         <option th:each="chain : ${chains}"
                                                 th:text="${chain.name} "
@@ -205,6 +205,7 @@
 
 
 </div>
+
 </body>
 <script id="script">
 

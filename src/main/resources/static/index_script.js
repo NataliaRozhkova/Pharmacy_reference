@@ -12,6 +12,9 @@ function submitForm(){
             let district = document.querySelector('#district');
             let town = document.querySelector('#town');
             let chain = document.querySelector('#chain');
+            let pharmacy =  document.querySelector('#pharmacy');
+
+            console.log("!!!!!!!"+pharmacy.value)
             let request = new XMLHttpRequest();
             let address = document.getElementById('address').innerHTML;
             let url = 'http://' + address +'/medicine/get/all';
@@ -221,8 +224,9 @@ function clearInput() {
     document.getElementById('pageNumber').value = 1;
     document.getElementById('previous').disabled = true;
     document.getElementById('next').disabled = true;
-
-
+    document.getElementById('statAdd').hidden = true;
+    document.getElementById('defecture').hidden = true;
+    setAllPharmacyList()
 }
 
 function cleanTable() {
@@ -264,4 +268,61 @@ function addDefecture() {
         alert('Добавлена запись: ' + response['name'])
     }
      request.send();
+}
+
+function setPharmacyListFromChainAndDistrict() {
+    console.log(document.getElementById("chain").value)
+    let address = document.getElementById('address').innerHTML;
+    let url = 'http://' + address +'/pharmacy/from_district_and_chain';
+    url += "?chain=" + document.getElementById("chain").value + "&"
+    url += "district=" + document.getElementById("district").value
+    let request = new XMLHttpRequest();
+    console.log(url)
+    request.open("GET", url, true);
+    request.responseType = 'json';
+    request.onload = function () {
+        var response = request.response;
+        console.log(response)
+        drawPharmacyListFromChain(response);
+    }
+     request.send();
+ }
+
+function setAllPharmacyList(){
+    let address = document.getElementById('address').innerHTML;
+    let url = 'http://' + address +'/pharmacy/all';
+    let request = new XMLHttpRequest();
+    request.open("GET", url, true);
+    request.responseType = 'json';
+    request.onload = function () {
+        var response = request.response;
+        console.log(response)
+        drawPharmacyListFromChain(response);
+    }
+     request.send();
+}
+
+function drawPharmacyListFromChain(json){
+    let select = document.getElementById("pharmacy")
+    clearPharmacySelect()
+    var el = document.createElement("option");
+    el.textContent = "Выберите аптеку";
+    el.value = "";
+
+    select.appendChild(el);
+    for(var i = 0; i < json.length; i++) {
+        var pharmacy = json[i];
+        var el = document.createElement("option");
+        el.textContent = pharmacy["name"] + " - " + pharmacy["address"];
+        el.value = pharmacy["pharmacyId"];
+        select.appendChild(el);
+    }
+}
+
+function clearPharmacySelect(){
+    let select = document.getElementById("pharmacy")
+    var length = select.options.length;
+    for (i = length-1; i >= 0; i--) {
+      select.options[i] = null;
+    }
 }
