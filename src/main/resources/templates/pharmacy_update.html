@@ -22,6 +22,7 @@
     <div>
         <form class="form-horizontal" method="post" th:action="@{/pharmacy/save}" th:object="${pharmacy}">
             <input th:field="*{pharmacyId}" type="hidden"/>
+            <input th:field="*{lastUpdateMedicines}"  type="hidden"/>
             <div class="form-group">
                 <label class="col-sm-2 control-label">Название:</label>
                 <div class="col-sm-10">
