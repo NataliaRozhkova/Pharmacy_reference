@@ -1,0 +1,35 @@
+собрать проект
+./gradlew clean && ./gradlew build && ./gradlew bootBuildImage
+
+запуск проекта:
+docker run --restart always -ti -e LC_ALL=C.UTF-8  -p 8081:8081 --network="host" docker.io/library/pharmacy_reference:0.0.1-SNAPSHOT
+ 
+docker run --restart always -ti -e LC_ALL=C.UTF-8 -e TZ=Asia/Tashkent -p 8081:8081 --network="host" docker.io/library/pharmacy_reference:0.0.1-SNAPSHOT 
+
+Скопировать логи:
+docker cp 228a353489b9:/workspace/pharmacy.log /home/natasha/log/ssssss.log
+
+создание сети
+docker network create   --driver=bridge   --subnet=172.28.0.0/16   --ip-range=172.28.5.0/24   --gateway=172.28.5.254  network_pharmacy
+
+
+создание контейнера базы
+docker run --restart always --name pharmacy_reference_db -e POSTGRES_PASSWORD=123 -d postgres
+
+подключение к локальной сети
+docker network connect --ip 172.28.0.10 network_pharmacy  pharmacy_reference_db
+
+
+создвние базы в контейнере:
+docker exec -it <имя контейнера-> bash
+
+psql -U postgres -dbname postgres --password
+
+ CREATE USER user1 PASSWORD '123' CREATEDB;
+
+CREATE DATABASE pharmacy_reference OWNER user1;
+
+
+
+
+
