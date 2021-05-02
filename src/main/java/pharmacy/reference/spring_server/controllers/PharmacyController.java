@@ -31,6 +31,7 @@ public class PharmacyController {
     private DistrictService districtService;
     private TownService townService;
     private StatisticService statisticService;
+
     @Autowired
     private YAMLConfig config;
 
@@ -65,6 +66,41 @@ public class PharmacyController {
         statisticService.deleteFromPharmacyId(id);
         pharmacyService.delete(id);
         return "Аптека удалена";
+    }
+
+    @GetMapping("/from_chain")
+    @ResponseBody
+    public List<Pharmacy> getPharmacyFromChain(@RequestParam(name = "chain", required = false) Long chain){
+        return pharmacyService.findAllByPharmacyChain(chain);
+    }
+
+    @GetMapping("/all")
+    @ResponseBody
+    public List<Pharmacy> getAllPharmacy(){
+        return pharmacyService.findAllVisible();
+    }
+
+    @GetMapping("/from_district")
+    @ResponseBody
+    public List<Pharmacy> getPharmacyFromDistrict(@RequestParam(name = "district", required = false) Long district){
+        return pharmacyService.findAllByDistrict(district);
+    }
+
+    @GetMapping("/from_district_and_chain")
+    @ResponseBody
+    public List<Pharmacy> getPharmacyFromDistrictAndChain(@RequestParam(name = "district", required = false) Long district,
+                                                          @RequestParam(name = "chain", required = false) Long chain
+                                                          ){
+        if (district == null && chain == null) {
+            return pharmacyService.findAll();
+        }
+        if (district == null && chain != null) {
+            return pharmacyService.findAllByPharmacyChain(chain);
+        }
+        if (district != null && chain == null) {
+            return pharmacyService.findAllByDistrict(district);
+        }
+        return pharmacyService.findAllByDistrictAndChain(district, chain);
     }
 
 

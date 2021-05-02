@@ -94,6 +94,9 @@ public class ScheduledController {
             String[] directories = file.getAbsolutePath().split("/");
             String email = directories[directories.length - 1];
             List<Pharmacy> pharmacies = pharmacyService.findAllByEmail(email.toLowerCase(Locale.ROOT));
+            if (email.toLowerCase(Locale.ROOT).contains("svezheereshenie_gag_16@fastmail.com")) {
+                System.out.println("Мы нашли его");
+            }
             if (pharmacies.size() == 1) {
                 parseFile(pharmacies.get(0), file, localDate);
             } else {
@@ -159,6 +162,8 @@ public class ScheduledController {
     }
 
     private Pharmacy findPharmacyFromAddress(List<Pharmacy> pharmacies, String address) {
+
+
 
         if (!address.chars()
                 .mapToObj(Character.UnicodeBlock::of)
