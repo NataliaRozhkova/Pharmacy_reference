@@ -1,6 +1,15 @@
 собрать проект
 ./gradlew clean && ./gradlew build && ./gradlew bootBuildImage
 
+собрать проект для 32bit
+docker build -t pharmacy_reference:0.0.1-SNAPSHOT .
+
+сохранить образ на диск
+docker save pharmacy_reference:0.0.1-SNAPSHOT -o /home/natasha/conteiners/32bit/server.img
+
+скопировать на сервер
+scp ./server.img galogen@95.78.165.230:/home/galogen/server/32bit/
+
 запуск проекта:
 docker run --restart always -ti -e LC_ALL=C.UTF-8  -p 8081:8081 --network="host" docker.io/library/pharmacy_reference:0.0.1-SNAPSHOT
  
