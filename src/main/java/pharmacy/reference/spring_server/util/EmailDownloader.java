@@ -69,14 +69,14 @@ public class EmailDownloader {
         Message messages[] = folder.getMessages();
         for (int i = messages.length - 1; i >= 0; i--) {
             Message message = messages[i];
-            LocalDate messegeDate = message.getSentDate()
-                    .toInstant().atZone(ZoneId.systemDefault())
-                    .toLocalDate();
+//            LocalDate messegeDate = message.getSentDate()
+//                    .toInstant().atZone(ZoneId.systemDefault())
+//                    .toLocalDate();
             Date dateStartLoad = new Date(System.currentTimeMillis() - 7500000);
             if (message.getSentDate().after(dateStartLoad) ) {
 
                 dump(message);
-            } else if (localDate.isAfter(messegeDate)) {
+            } else {
                 break;
             }
 
