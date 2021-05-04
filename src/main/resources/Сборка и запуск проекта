@@ -9,6 +9,8 @@ docker save pharmacy_reference:0.0.1-SNAPSHOT -o /home/natasha/conteiners/32bit/
 
 скопировать на сервер
 scp ./server.img galogen@95.78.165.230:/home/galogen/server/32bit/
+docker load -i ./server.img
+
 
 запуск проекта:
 docker run --restart always -ti -e LC_ALL=C.UTF-8  -p 8081:8081 --network="host" docker.io/library/pharmacy_reference:0.0.1-SNAPSHOT
