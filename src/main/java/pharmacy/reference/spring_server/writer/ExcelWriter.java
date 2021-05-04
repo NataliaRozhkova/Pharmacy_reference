@@ -20,11 +20,19 @@ public class ExcelWriter {
     private final HSSFWorkbook book;
     private final String file;
     private final int month;
+    private final HSSFCellStyle style;
+    private final HSSFCellStyle boldStyle;
+    private final HSSFCellStyle dateStyle;
+    private final HSSFCellStyle dataStyleWithoutTime;
 
     public ExcelWriter(String fileName, int month, int year) {
         this.file = fileName + getMonth(month) + year + ".xlsx";
         this.month = month;
         this.book = new HSSFWorkbook();
+        this.style = setStyle();
+        this.boldStyle = setBoldStyle();
+        this.dateStyle = setDateStyle();
+        this.dataStyleWithoutTime = setDateStyleWithoutTime();
 
     }
 
@@ -38,16 +46,12 @@ public class ExcelWriter {
         Sheet sheet = book.createSheet("Данные");
         int rowCount = writeHeaderStatistic(sheet);
         setPharmacyReport(sheet.createRow(rowCount), report);
-//        sheet.autoSizeColumn(0);
-//        sheet.autoSizeColumn(1);
     }
 
     public void addPharmacyChainReport(PharmacyChainReport report) {
         Sheet sheet = book.createSheet("Данные");
         int rowCount = writeHeaderStatistic(sheet);
         setPharmaciesFromReport(report, sheet, rowCount);
-//        sheet.autoSizeColumn(0);
-//        sheet.autoSizeColumn(1);
     }
 
     public void addOverallPharmacyChainReport(OverallPharmacyChainReport report) {
@@ -57,9 +61,6 @@ public class ExcelWriter {
             rowCount = setPharmaciesFromReportWithPrice(chainReport, sheet, rowCount);
         }
         setOverallResultCallsAndPrice(sheet.createRow(rowCount), report.overall);
-//        sheet.autoSizeColumn(0);
-//        sheet.autoSizeColumn(1);
-//        sheet.autoSizeColumn(2);
     }
 
     public void addCallsReport(List<CallsReport> reports) {
@@ -67,14 +68,10 @@ public class ExcelWriter {
         int rowCount = writeHeaderCalls(sheet);
         for (CallsReport report : reports) {
             Row row = sheet.createRow(rowCount++);
-            setCellDate(row, 0, report.date, setDateStyle());
-            setCell(row, 1, report.medicinesName, setStyle());
-            setCell(row, 2, report.pharmacyName, setStyle());
+            setCellDate(row, 0, report.date, dateStyle);
+            setCell(row, 1, report.medicinesName, style);
+            setCell(row, 2, report.pharmacyName,style);
         }
-//        sheet.autoSizeColumn(0);
-//        sheet.autoSizeColumn(1);
-//        sheet.autoSizeColumn(2);
-
     }
 
 
@@ -83,43 +80,34 @@ public class ExcelWriter {
         int rowCount = writeHeaderCallsWithPrice(sheet);
         for (CallsReport report : reports) {
             Row row = sheet.createRow(rowCount++);
-            setCellDate(row, 0, report.date, setDateStyle());
-            setCell(row, 1, report.medicinesName, setStyle());
-            setCell(row, 2, report.pharmacyName, setStyle());
-            setCell(row, 3, Float.toString(report.price), setStyle());
+            setCellDate(row, 0, report.date, dateStyle);
+            setCell(row, 1, report.medicinesName, style);
+            setCell(row, 2, report.pharmacyName, style);
+            setCell(row, 3, Float.toString(report.price), style);
         }
-//        sheet.autoSizeColumn(0);
-//        sheet.autoSizeColumn(1);
-//        sheet.autoSizeColumn(2);
-//        sheet.autoSizeColumn(3);
     }
 
     public void addDefectureReports(List<String> defectures) {
         Sheet sheet = book.createSheet("Дефектура");
-        setCell(sheet.createRow(0), 0, "Наименование препарата", setBoldStyle());
+        setCell(sheet.createRow(0), 0, "Наименование препарата", boldStyle);
         int rowCount = 1;
         for (String defecture : defectures) {
-            setCell(sheet.createRow(rowCount++), 0, defecture, setStyle());
+            setCell(sheet.createRow(rowCount++), 0, defecture, style);
         }
-//        sheet.autoSizeColumn(0);
-
     }
 
     public void addCallCountReports(OverallCallsCountReport callsCountReports) {
         Sheet sheet = book.createSheet("Учет звонков");
         Row head = sheet.createRow(0);
-        setCell(head, 0, "Дата", setBoldStyle());
-        setCell(head, 1, "Звонки", setBoldStyle());
+        setCell(head, 0, "Дата", boldStyle);
+        setCell(head, 1, "Звонки", boldStyle);
         int rowCount = 1;
         for (CallsCountReport report : callsCountReports.callsCountReports) {
             Row row = sheet.createRow(rowCount++);
-            setCellDate(row, 0, report.date, setDateStyleWithoutTime());
-            setCell(row, 1, Integer.toString(report.callCount), setStyle());
+            setCellDate(row, 0, report.date, dataStyleWithoutTime);
+            setCell(row, 1, Integer.toString(report.callCount), style);
         }
         setOverall(sheet.createRow(rowCount), callsCountReports.overall);
-//        sheet.autoSizeColumn(0);
-//        sheet.autoSizeColumn(1);
-
     }
 
     private int setPharmaciesFromReportWithPrice(PharmacyChainReport reports, Sheet sheet, int rowCount) {
@@ -139,32 +127,32 @@ public class ExcelWriter {
     }
 
     private void setPharmacyReport(Row row, PharmacyReport report) {
-        setCell(row, 0, report.name, setStyle());
-        setCell(row, 1, Integer.toString(report.callCount), setStyle());
+        setCell(row, 0, report.name, style);
+        setCell(row, 1, Integer.toString(report.callCount), style);
     }
 
     private void setPharmacyReportWithPrice(Row row, PharmacyReport report) {
-        setCell(row, 0, report.name, setStyle());
-        setCell(row, 1, Integer.toString(report.callCount), setStyle());
-        setCell(row, 2, Float.toString(report.sumPrice), setStyle());
+        setCell(row, 0, report.name, style);
+        setCell(row, 1, Integer.toString(report.callCount), style);
+        setCell(row, 2, Float.toString(report.sumPrice), style);
     }
 
     private void setOverall(Row row, Overall overall) {
-        setCell(row, 0, "Итог", setBoldStyle());
-        setCell(row, 1, Integer.toString(overall.callCount), setBoldStyle());
+        setCell(row, 0, "Итог", boldStyle);
+        setCell(row, 1, Integer.toString(overall.callCount), boldStyle);
     }
 
     private void setOverallCallsAndPrice(Row row, Overall overall) {
-        setCell(row, 0, "Итог", setBoldStyle());
-        setCell(row, 1, Integer.toString(overall.callCount), setBoldStyle());
-        setCell(row, 2, Float.toString(overall.sumPrice), setBoldStyle());
+        setCell(row, 0, "Итог", boldStyle);
+        setCell(row, 1, Integer.toString(overall.callCount), boldStyle);
+        setCell(row, 2, Float.toString(overall.sumPrice), boldStyle);
 
     }
 
     private void setOverallResultCallsAndPrice(Row row, Overall overall) {
-        setCell(row, 0, "Общий итог", setBoldStyle());
-        setCell(row, 1, Integer.toString(overall.callCount), setBoldStyle());
-        setCell(row, 2, Float.toString(overall.sumPrice), setBoldStyle());
+        setCell(row, 0, "Общий итог", boldStyle);
+        setCell(row, 1, Integer.toString(overall.callCount), boldStyle);
+        setCell(row, 2, Float.toString(overall.sumPrice), boldStyle);
 
     }
 
@@ -178,11 +166,10 @@ public class ExcelWriter {
     private int writeHeaderStatistic(Sheet sheet) {
         int rowCount = 0;
         Row head = sheet.createRow(rowCount++);
-        HSSFCellStyle style = setBoldStyle();
-        setCell(head, 0, "Статистика за " + getMonth(month), style);
+        setCell(head, 0, "Статистика за " + getMonth(month), boldStyle);
         Row columnName = sheet.createRow(rowCount++);
-        setCell(columnName, 0, "Аптека", style);
-        setCell(columnName, 1, "Количество звонков", style);
+        setCell(columnName, 0, "Аптека", boldStyle);
+        setCell(columnName, 1, "Количество звонков", boldStyle);
         sheet.addMergedRegion(new CellRangeAddress(
                 0, //first row (0-based)
                 0, //last row  (0-based)
@@ -195,17 +182,15 @@ public class ExcelWriter {
     private int writeHeaderCalls(Sheet sheet) {
         int rowCount = 0;
         Row head = sheet.createRow(rowCount++);
-        HSSFCellStyle style = setBoldStyle();
-        setCell(head, 0, "Дата/Время", style);
-        setCell(head, 1, "Название препарата", style);
-        setCell(head, 2, "Апетка", style);
+        setCell(head, 0, "Дата/Время", boldStyle);
+        setCell(head, 1, "Название препарата", boldStyle);
+        setCell(head, 2, "Апетка", boldStyle);
         return rowCount;
     }
 
     private int writeHeaderCallsWithPrice(Sheet sheet) {
         int rowCount = 0;
         Row head = sheet.createRow(rowCount++);
-        HSSFCellStyle style = setBoldStyle();
         setCell(head, 0, "Дата/Время", style);
         setCell(head, 1, "Название препарата", style);
         setCell(head, 2, "Апетка", style);
@@ -217,12 +202,11 @@ public class ExcelWriter {
     private int writeOverallHeaderStatistic(Sheet sheet) {
         int rowCount = 0;
         Row head = sheet.createRow(rowCount++);
-        HSSFCellStyle style = setBoldStyle();
-        setCell(head, 0, "Статистика за " + getMonth(month), style);
+        setCell(head, 0, "Статистика за " + getMonth(month), boldStyle);
         Row columnName = sheet.createRow(rowCount++);
-        setCell(columnName, 0, "Аптека", style);
-        setCell(columnName, 1, "Количество звонков", style);
-        setCell(columnName, 2, "Сумма по звонкам", style);
+        setCell(columnName, 0, "Аптека", boldStyle);
+        setCell(columnName, 1, "Количество звонков", boldStyle);
+        setCell(columnName, 2, "Сумма по звонкам", boldStyle);
         sheet.addMergedRegion(new CellRangeAddress(
                 0, //first row (0-based)
                 0, //last row  (0-based)
