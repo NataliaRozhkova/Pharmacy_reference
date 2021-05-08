@@ -172,6 +172,16 @@ public class MedicineController {
         return "get_medicine_from_pharmacy";
     }
 
+    @GetMapping("/get/all/from_defecture")
+//    @ResponseBody
+    public String getAllFromDefecture(Model model) {
+        model.addAttribute("medicines", medicineService.findByPharmacyId(pharmacyService.findByName("Дефектура").get(0).getPharmacyId()));
+
+        model.addAttribute("pharmacies", pharmacyService.findByName("Дефектура").get(0));
+        model.addAttribute("pharmacy", pharmacyService.findByName("Дефектура").get(0));
+        return "get_medicine_from_pharmacy";
+    }
+
     @GetMapping("/delete/{id}")
     @ResponseBody
     public String delete(@PathVariable("id") Long id) {

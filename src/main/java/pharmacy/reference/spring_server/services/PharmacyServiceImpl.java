@@ -57,6 +57,16 @@ public class PharmacyServiceImpl implements PharmacyService {
         pharmacyRepository.delete(findById(id));
     }
 
+    @Override
+    public List<Pharmacy> findAllByDistrict(Long district) {
+        return pharmacyRepository.findAllByDistrict(district);
+    }
+
+    @Override
+    public List<Pharmacy> findAllByDistrictAndChain(Long district, Long pharmacyChain) {
+        return pharmacyRepository.findAllByDistrictAndChain(district, pharmacyChain);
+    }
+
     @Autowired
     public void setPharmacyRepository(PharmacyRepository pharmacyRepository) {
         this.pharmacyRepository = pharmacyRepository;

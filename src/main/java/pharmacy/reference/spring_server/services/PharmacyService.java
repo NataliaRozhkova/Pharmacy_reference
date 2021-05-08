@@ -24,4 +24,7 @@ public interface PharmacyService {
 
     void delete(Long id);
 
+    List<Pharmacy> findAllByDistrict(Long district);
+
+    List<Pharmacy> findAllByDistrictAndChain(Long district, Long pharmacyChain);
 }
