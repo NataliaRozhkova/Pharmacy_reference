@@ -21,6 +21,7 @@ public class TableHeadVariants {
             case "название":
             case "номенклатура":
             case "%name%":
+            case "nama":
                 return NAME;
             case "производитель":
             case "изготовитель":
@@ -38,6 +39,7 @@ public class TableHeadVariants {
             case "остаток":
             case "остаток(посистеме)":
             case "%qnt%":
+            case "available":
                 return QUANTITY;
             case "цена":
             case "цена,руб.":
@@ -50,6 +52,7 @@ public class TableHeadVariants {
             case "ценапопрайсу({currencysymbol})заединицутовара":
             case "ценапопрайсу({currencysymbol})":
             case "%price%":
+            case "price":
             case "ценапродажи":
                 return PRICE;
             case "country":

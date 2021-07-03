@@ -9,17 +9,17 @@ import java.util.List;
 
 public interface MedicineRepository extends JpaRepository<Medicine, Long> {
 
-    @Query("SELECT b from Medicine b WHERE lower(b.name)  LIKE  concat('%', lower(:name), '%')")
+    @Query("SELECT b from Medicine b  WHERE lower(b.name)  LIKE  concat('%', lower(:name), '%') AND b.pharmacy.visibility = 'true'")
     List<Medicine> findByName(@Param("name") String name);
 
     @Query("SELECT b from Medicine b  JOIN FETCH b.pharmacy  WHERE lower(b.name)  LIKE  concat('%', lower(:name), '%')" +
-            " AND lower(b.pharmacy.district)  LIKE  concat('%', lower(:district), '%')")
+            " AND lower(b.pharmacy.district)  LIKE  concat('%', lower(:district), '%') AND b.pharmacy.visibility = 'true'")
     List<Medicine> findByNameAndDistrict(@Param("name") String name, @Param("district") String district);
 
-    @Query("SELECT b from Medicine b  JOIN FETCH b.pharmacy  WHERE b.pharmacy.pharmacyId = :id")
+    @Query("SELECT b from Medicine b  JOIN FETCH b.pharmacy  WHERE b.pharmacy.pharmacyId = :id ")
     List<Medicine> findByPharmacyId(@Param("id") Long id);
 
-    @Query("SELECT b from Medicine b WHERE lower(b.name)  LIKE  concat('%', lower(:name), '%') AND b.pharmacy.pharmacyId = :id")
+    @Query("SELECT b from Medicine b WHERE lower(b.name)  LIKE  concat('%', lower(:name), '%') AND b.pharmacy.pharmacyId = :id AND b.pharmacy.visibility = 'true'")
     List<Medicine> findByNameAndPharmacy(@Param("name") String name, @Param("id") Long id);
 
     @Query("SELECT count(b) from Medicine b WHERE b.pharmacy.pharmacyId = :pharmacyId")

@@ -15,19 +15,19 @@ public interface PharmacyRepository extends JpaRepository<Pharmacy, Long> {
     @Query("SELECT b FROM Pharmacy b WHERE b.visibility = 'true' ORDER BY b.pharmacyChain")
     List<Pharmacy> findAllVisible();
 
-    @Query("SELECT b FROM Pharmacy b WHERE b.pharmacyChain.id = :chainId")
+    @Query("SELECT b FROM Pharmacy b WHERE b.pharmacyChain.id = :chainId AND  b.visibility = 'true'")
     List<Pharmacy> findAllByPharmacyChain(@Param("chainId") Long chainId);
 
-    @Query("SELECT b FROM Pharmacy b WHERE lower(b.email) LIKE  concat('%', lower(:email), '%')")
+    @Query("SELECT b FROM Pharmacy b WHERE lower(b.email) LIKE  concat('%', lower(:email), '%') ")
     List<Pharmacy> findAllByEmail(@Param("email") String email);
 
     @Query("SELECT b FROM Pharmacy b ORDER BY b.pharmacyChain")
     List<Pharmacy> findAll();
 
-    @Query("SELECT b FROM Pharmacy b WHERE b.district.id = :district ORDER BY b.pharmacyChain")
+    @Query("SELECT b FROM Pharmacy b WHERE b.district.id = :district AND  b.visibility = 'true' ORDER BY b.pharmacyChain ")
     List<Pharmacy> findAllByDistrict(@Param("district") Long district);
 
-    @Query("SELECT b FROM Pharmacy b WHERE b.district.id = :district AND b.pharmacyChain.id = :chainId  ORDER BY b.pharmacyChain")
+    @Query("SELECT b FROM Pharmacy b WHERE b.district.id = :district AND b.pharmacyChain.id = :chainId AND  b.visibility = 'true' ORDER BY b.pharmacyChain ")
     List<Pharmacy> findAllByDistrictAndChain(@Param("district") Long district, @Param("chainId") Long chainId);
 
 }
