@@ -34,7 +34,7 @@ docker network connect --ip 172.28.0.10 network_pharmacy  pharmacy_reference_db
 создвние базы в контейнере:
 docker exec -it <имя контейнера-> bash
 
-psql -U postgres -dbname postgres --password
+psql -U postgres postgres --password
 
  CREATE USER user1 PASSWORD '123' CREATEDB;
 
