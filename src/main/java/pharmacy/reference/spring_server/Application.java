@@ -12,7 +12,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import javax.servlet.MultipartConfigElement;
 
 @Configuration
-@EnableAutoConfiguration
 @SpringBootApplication
 @EnableScheduling
 @EnableJpaRepositories(basePackages = "pharmacy.reference.spring_server.repositories")

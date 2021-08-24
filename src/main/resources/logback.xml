@@ -35,13 +35,13 @@
     </appender>
 
 
-    <logger name="pharmacy.reference.spring_server" level="info"/>
+    <logger name="pharmacy.reference.spring_server" level="error"/>
 
     <logger name="org.hibernate" level="error"/>
 
-    <logger name="org.springframework" level="ERROR"/>
+    <logger name="org.springframework" level="trace"/>
 
-    <root level="info">
+    <root level="error">
         <appender-ref ref="FILE-AUDIT"/>
         <!--        <appender-ref ref="console" />-->
     </root>

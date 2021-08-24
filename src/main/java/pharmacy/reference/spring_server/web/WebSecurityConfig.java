@@ -1,7 +1,9 @@
 package pharmacy.reference.spring_server.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -9,19 +11,21 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import pharmacy.reference.spring_server.services.UsersService;
 
 @Configuration
 @EnableWebSecurity
+@ComponentScan()
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private YAMLConfig config;
+    private UsersService usersService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/file").hasRole("ADMIN")
                 .antMatchers("/file/**").hasRole("ADMIN")
@@ -45,41 +49,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/")
                 .and()
-                .csrf().disable()
         ;
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-        auth.inMemoryAuthentication()
-                .passwordEncoder(passwordEncoder)
-                .withUser("user1")
-                .password(passwordEncoder.encode(config.getUsers().get("user1").getPassword()))
-                .roles("USER")
-                .and()
-                .withUser("user2")
-                .password(passwordEncoder.encode(config.getUsers().get("user2").getPassword()))
-                .roles("USER")
-                .and()
-                .withUser("user3")
-                .password(passwordEncoder.encode(config.getUsers().get("user3").getPassword()))
-                .roles("USER")
-                .and()
-                .withUser("user4")
-                .password(passwordEncoder.encode(config.getUsers().get("user4").getPassword()))
-                .roles("USER")
-                .and()
-                .withUser("admin")
-                .password(passwordEncoder.encode(config.getUsers().get("admin").getPassword()))
-                .roles("USER", "ADMIN");
+        auth.userDetailsService(usersService)
+                .passwordEncoder(passwordEncoder())
+        ;
+
     }
 
-    @Autowired
-    public void setConfig(YAMLConfig config) {
-        this.config = config;
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+        return new CustomAuthenticationFailureHandler();
+    }
 
 }

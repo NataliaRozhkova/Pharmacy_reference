@@ -130,7 +130,7 @@ public class Medicine implements Serializable {
                 quantity + "\t" +
                 manufacturer + "\t" +
                 country + "\t" +
-                pharmacy.getName() + "\t" +
+//                pharmacy.getName() + "\t" +
                 date + "\t";
     }
 

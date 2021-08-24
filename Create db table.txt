@@ -144,7 +144,7 @@ CREATE INDEX fki_pharm
 *****************************************************************************************************
 
 
-CREATE TABLE public."user"
+CREATE TABLE public.operators
 (
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
     name character varying(255) COLLATE pg_catalog."default",
@@ -158,7 +158,7 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public."user"
+ALTER TABLE public.operators
     OWNER to user1;
 
 ***********************************************************************************************************************
@@ -239,5 +239,57 @@ TABLESPACE pg_default;
 
 ALTER TABLE public.towns
     OWNER to user1;
+
+    **************************************************************************
+
+CREATE TABLE public.user_role
+(
+    id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
+    name character varying(255) COLLATE pg_catalog."default"
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.user_role
+    OWNER to user1;
+
+******************************************************************
+
+-- Table: public.operators
+
+-- DROP TABLE public.operators;
+
+CREATE TABLE public.operators
+(
+    id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
+    name character varying(255) COLLATE pg_catalog."default",
+    login character varying(255) COLLATE pg_catalog."default",
+    password character varying(255) COLLATE pg_catalog."default",
+    version bigint NOT NULL,
+    role bigint,
+    CONSTRAINT operators_pkey PRIMARY KEY (id),
+    CONSTRAINT role FOREIGN KEY (role)
+        REFERENCES public.user_role (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.operators
+    OWNER to user1;
+-- Index: fki_roel
+
+-- DROP INDEX public.fki_roel;
+
+CREATE INDEX fki_roel
+    ON public.operators USING btree
+    (role ASC NULLS LAST)
+    TABLESPACE pg_default;
 
 
