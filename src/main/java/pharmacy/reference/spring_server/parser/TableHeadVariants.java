@@ -54,6 +54,7 @@ public class TableHeadVariants {
             case "%price%":
             case "price":
             case "ценапродажи":
+            case "ценарозничная":
                 return PRICE;
             case "country":
             case "страна":
