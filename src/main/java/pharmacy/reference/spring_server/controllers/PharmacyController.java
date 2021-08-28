@@ -52,7 +52,6 @@ public class PharmacyController {
     }
 
     @GetMapping("/{id}")
-//    @ResponseBody
     public String getPharmacy(@PathVariable("id") Long id, Model model) {
         Pharmacy pharmacy = pharmacyService.findById(id);
         model.addAttribute("pharmacies", new ArrayList<Pharmacy>().add(pharmacy));

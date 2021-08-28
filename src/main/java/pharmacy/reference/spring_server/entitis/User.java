@@ -18,9 +18,9 @@ public class User implements UserDetails {
     private long id;
     @Column
     @Size(min = 3, max = 255)
-    @UniqueElements
     private String name;
     @Column
+    @Size(min = 6, max = 255)
     private String password;
     @JoinTable(
             name = "user_role",

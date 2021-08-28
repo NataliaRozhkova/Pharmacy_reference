@@ -6,23 +6,16 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pharmacy.reference.spring_server.entitis.Role;
 import pharmacy.reference.spring_server.entitis.User;
 import pharmacy.reference.spring_server.repositories.RoleRepository;
 import pharmacy.reference.spring_server.repositories.UsersRepository;
 
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Service("userDetailsService")
 @Transactional
@@ -39,6 +32,9 @@ public class UsersService implements UserDetailsService {
 
     @Autowired
     private HttpServletRequest request;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
@@ -63,6 +59,10 @@ public class UsersService implements UserDetailsService {
         }
     }
 
+    public User getUser(String userName) {
+        return usersRepository.findByName(userName);
+    }
+
     private String getClientIP() {
         String xfHeader = request.getHeader("X-Forwarded-For");
         if (xfHeader == null) {
@@ -79,6 +79,24 @@ public class UsersService implements UserDetailsService {
                     role.getName()));
         });
         return grantedAuthorities;
+    }
+
+    public void changeUserPassword(User user, final String password) {
+        user.setPassword(passwordEncoder.encode(password));
+        usersRepository.save(user);
+    }
+
+    public void saveUser(String userName, String password) throws Exception {
+        if (usersRepository.findByName(userName) != null) {
+            throw new Exception("Пользователь с таким именем уже существует");
+        }
+        User user = new User();
+        user.setName(userName);
+        user.setPassword(passwordEncoder.encode(password));
+        Set<Role> role = new HashSet<>();
+        role.add(roleRepository.findByName("ROLE_USER").get(0));
+        user.setRoles(role);
+        usersRepository.save(user);
     }
 
 
