@@ -10,8 +10,8 @@
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n</pattern>
         </encoder>
     </appender>
-    <property name="DEV_HOME" value="/workspace"/>
-<!--        <property name="DEV_HOME" value="/home/natasha/log" />-->
+        <property name="DEV_HOME" value="/workspace"/>
+<!--    <property name="DEV_HOME" value="/home/natasha/log" />-->
 
     <appender name="FILE-AUDIT"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -35,13 +35,13 @@
     </appender>
 
 
-    <logger name="pharmacy.reference.spring_server" level="error"/>
+    <logger name="pharmacy.reference.spring_server" level="info"/>
 
     <logger name="org.hibernate" level="error"/>
 
-    <logger name="org.springframework" level="trace"/>
+    <logger name="org.springframework" level="ERROR"/>
 
-    <root level="error">
+    <root level="info">
         <appender-ref ref="FILE-AUDIT"/>
         <!--        <appender-ref ref="console" />-->
     </root>

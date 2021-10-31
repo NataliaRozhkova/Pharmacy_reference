@@ -15,7 +15,7 @@ docker load -i ./server.img
 запуск проекта:
 docker run --restart always -ti -e LC_ALL=C.UTF-8  -p 8081:8081 --network="host" docker.io/library/pharmacy_reference:0.0.1-SNAPSHOT
  
-docker run --restart always -ti -e LC_ALL=C.UTF-8 -e TZ=Asia/Tashkent -p 8081:8081 --network="host" docker.io/library/pharmacy_reference:0.0.1-SNAPSHOT 
+docker run --restart always -ti -e LC_ALL=C.UTF-8 -e TZ=Asia/Tashkent -p 8081:8081 --network="host" docker.io/library/pharmacy_reference:0.0.1-SNAPSHOT &
 
 Скопировать логи:
 docker cp 228a353489b9:/workspace/pharmacy.log /home/natasha/log/ssssss.log
@@ -40,7 +40,17 @@ psql -U postgres postgres --password
 
 CREATE DATABASE pharmacy_reference OWNER user1;
 
+клонирование базы данных
+sudo -u postgres pg_dump -Fc -c pharmacy_reference_localhost > file_name.pgdump
 
 
+Удаленный сервис
+пароль
+v.LUmeg+S;7mJhrA
+
+o37O6moR51qcR7QYCs - root password
+
+копирование на удаленный сервер
+scp ./db.img root@23.111.121.186:/home/server/
 
 
