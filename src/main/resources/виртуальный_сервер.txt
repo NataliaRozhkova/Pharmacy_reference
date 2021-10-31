@@ -11,7 +11,7 @@ IP-адрес: 23.111.121.186
 
 Логин: root
 
-Пароль: pgVI3rAfM9F6t54V6q
+Пароль: o37O6moR51qcR7QYCs
 
 
 
@@ -35,7 +35,5 @@ IP-адрес: 23.111.121.186
 
 
 Удаленный сервис
-пароль
+пароль для входа в личный кабинет Kobra-17@mail.ru
 v.LUmeg+S;7mJhrA
-
-o37O6moR51qcR7QYCs - root password
