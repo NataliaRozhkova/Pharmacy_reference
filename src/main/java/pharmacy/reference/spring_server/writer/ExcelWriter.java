@@ -26,7 +26,7 @@ public class ExcelWriter {
     private final HSSFCellStyle dataStyleWithoutTime;
 
     public ExcelWriter(String fileName, int month, int year) {
-        this.file = fileName + getMonth(month) + year + ".xlsx";
+        this.file = fileName + getMonth(month) + year + ".xls";
         this.month = month;
         this.book = new HSSFWorkbook();
         this.style = setStyle();
