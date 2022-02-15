@@ -6,6 +6,7 @@ docker build -t pharmacy_reference:0.0.1-SNAPSHOT .
 
 сохранить образ на диск
 docker save pharmacy_reference:0.0.1-SNAPSHOT -o /home/natasha/conteiners/32bit/server.img
+docker save pharmacy_reference:0.0.1-SNAPSHOT -o /home/natasha/conteiners/64bit/server.img
 
 скопировать на сервер
 scp ./server.img galogen@95.78.165.230:/home/galogen/server/32bit/
@@ -48,7 +49,7 @@ sudo -u postgres pg_dump -Fc -c pharmacy_reference_localhost > file_name.pgdump
 пароль
 v.LUmeg+S;7mJhrA
 
-o37O6moR51qcR7QYCs - root password
+b5ftBvgL9rFJKJ2686 - root password
 
 копирование на удаленный сервер
 scp ./db.img root@23.111.121.186:/home/server/

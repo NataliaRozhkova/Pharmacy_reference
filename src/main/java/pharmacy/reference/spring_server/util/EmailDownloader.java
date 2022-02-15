@@ -113,11 +113,12 @@ public class EmailDownloader {
         int numberOfParts = multiPart.getCount();
         for (int partCount = 0; partCount < numberOfParts; partCount++) {
             MimeBodyPart part = (MimeBodyPart) multiPart.getBodyPart(partCount);
-            if (Part.ATTACHMENT.equalsIgnoreCase(part.getDisposition())) {
+            try {
                 String fileName = MimeUtility.decodeText(part.getFileName());
                 part.saveFile(filePath + "/" + fileName);
-            } else {
-                String messageContent = part.getContent().toString();
+            } catch (Exception exception){
+                logger.error("Can't save file from email");
+
             }
         }
     }

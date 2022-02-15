@@ -117,6 +117,13 @@ public class ScheduledController {
 
                                     }
                                 }
+                            } else {
+                                String address = fl.getAbsolutePath().split("/")[fl.getAbsolutePath().split("/").length - 1];
+                                Pharmacy pharmacyByFind = findPharmacyFromAddress(pharmacies, address);
+                                if (pharmacyByFind != null) {
+                                    parseFile(pharmacyByFind, fl, localDate);
+
+                                }
                             }
                         }
 
